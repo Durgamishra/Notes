@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 1: Introduction to Data Science - Detailed Master Exam Hub</title>
+    <style>
+        :root {
+            --bg-primary: #0a192f;
+            --bg-secondary: #112240;
+            --bg-card: #1d2d50;
+            --text-primary: #e6f1ff;
+            --text-secondary: #8892b0;
+            --accent-cyan: #64ffda;
+            --accent-cyan-hover: #00f5d4;
+            --accent-blue: #0077b6;
+            --border-color: #233554;
+            --code-bg: #0d1b2a;
+            --shadow: 0 10px 30px -15px rgba(2,12,27,0.7);
+            --transition: all 0.3s cubic-bezier(0.645,0.045,0.355,1);
+        }
+
+        .light-theme {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-card: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --accent-cyan: #0284c7;
+            --accent-cyan-hover: #0369a1;
+            --accent-blue: #2563eb;
+            --border-color: #cbd5e1;
+            --code-bg: #e2e8f0;
+            --shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            transition: var(--transition);
+        }
+
+        header {
+            background-color: var(--bg-secondary);
+            border-bottom: 2px solid var(--accent-cyan);
+            padding: 2rem 1.5rem 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .header-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .title-area h1 {
+            font-size: 1.8rem;
+            color: var(--accent-cyan);
+            letter-spacing: -0.5px;
+        }
+
+        .title-area p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .theme-toggle-btn {
+            background: transparent;
+            border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 0.5rem 1.2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .theme-toggle-btn:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
+        }
+
+        nav {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.75rem 1.5rem;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .nav-links {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 600;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-cyan);
+            background: var(--border-color);
+        }
+
+        main {
+            max-width: 1300px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .topic-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            color: var(--accent-cyan);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .subsection-title {
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            margin: 1.5rem 0 0.8rem 0;
+            font-weight: 700;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        ul, ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            color: var(--text-primary);
+        }
+
+        .venn-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+
+        .venn-container {
+            position: relative;
+            width: 380px;
+            height: 340px;
+        }
+
+        .circle {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 0.85rem;
+            text-align: center;
+            opacity: 0.8;
+            color: #fff;
+            padding: 10px;
+        }
+
+        .circle-cs { background: rgba(0, 119, 182, 0.75); top: 0; left: 90px; }
+        .circle-stat { background: rgba(100, 255, 218, 0.5); top: 130px; left: 10px; color: #0a192f; }
+        .circle-domain { background: rgba(255, 183, 3, 0.65); top: 130px; right: 10px; color: #0a192f; }
+        
+        .venn-center {
+            position: absolute;
+            top: 130px;
+            left: 140px;
+            width: 100px;
+            text-align: center;
+            font-weight: 900;
+            color: #ffffff;
+            background: rgba(10, 25, 47, 0.9);
+            padding: 5px;
+            border-radius: 6px;
+            border: 1px solid var(--accent-cyan);
+            font-size: 0.8rem;
+        }
+
+        .pipeline-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        @media (min-width: 768px) {
+            .pipeline-container {
+                flex-direction: row;
+            }
+        }
+
+        .pipeline-step {
+            flex: 1;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-cyan);
+            padding: 1.25rem;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .pipeline-step h4 {
+            color: var(--accent-cyan);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .pipeline-step p {
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .data-table-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 0.9rem;
+            border: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--bg-card);
+            color: var(--accent-cyan);
+            font-weight: 700;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.25rem;
+            overflow-x: auto;
+            margin: 1rem 0 1.5rem 0;
+        }
+
+        code {
+            font-family: 'Consolas', 'Courier New', Courier, monospace;
+            color: var(--accent-cyan);
+            font-size: 0.9rem;
+        }
+
+        .accordion-item {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            background: var(--bg-card);
+            padding: 1.2rem;
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        .accordion-header:hover {
+            color: var(--accent-cyan);
+        }
+
+        .accordion-content {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0, 1, 0, 1), padding 0.3s ease;
+            background: var(--bg-secondary);
+        }
+
+        .accordion-item.active .accordion-content {
+            padding: 1.5rem;
+            max-height: 2500px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .accordion-icon {
+            transition: transform 0.3s;
+            color: var(--accent-cyan);
+        }
+
+        .accordion-item.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .callout-box {
+            background: var(--bg-card);
+            border-left: 4px solid var(--accent-blue);
+            padding: 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+
+        .callout-box h4 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2.5rem;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            margin-top: 4rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="title-area">
+                <h1>Unit–1: Introduction to Data Science</h1>
+                <p>Complete Exam-Oriented Study Hub & Deep Dive | BCA Curriculum</p>
+            </div>
+            <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()">☀️ Light Mode</button>
+        </div>
+    </header>
+
+    <nav>
+        <ul class="nav-links">
+            <li><a href="#intro">Introduction</a></li>
+            <li><a href="#toolbox">Tool Box</a></li>
+            <li><a href="#actionable">Actionable Knowledge</a></li>
+            <li><a href="#vcs">Version Control</a></li>
+            <li><a href="#markdown">Markdown</a></li>
+            <li><a href="#git">Git</a></li>
+            <li><a href="#github">GitHub</a></li>
+            <li><a href="#r-lang">R Language</a></li>
+            <li><a href="#rstudio">RStudio IDE</a></li>
+            <li><a href="#comparison">Git vs GitHub</a></li>
+            <li><a href="#exam-qa">Exam Blueprints</a></li>
+            <li><a href="#cheatsheet">Cheat Sheet</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="intro" class="topic-section">
+            <h2 class="section-title"><span>🌐</span> 1. What is Data Science? (In-Depth)</h2>
+            <div class="content-body">
+                <h3 class="subsection-title">1.1 Formal Definition & Interdisciplinary Nature</h3>
+                <p><strong>Data Science</strong> is an interdisciplinary field that extracts non-trivial, actionable, and meaningful insights, patterns, and knowledge from large volumes of structured, semi-structured, and unstructured data using specialized statistical algorithms, scientific computing frameworks, data mining, and machine learning techniques.</p>
+                
+                <p>Rather than existing as an isolated discipline, Data Science operates strictly at the intersection of three fundamental fields:</p>
+                <ul>
+                    <li><strong>Computer Science & Programming:</strong> Provides computational pipelines, algorithm design, software engineering best practices, data management architectures, and automated script execution capability.</li>
+                    <li><strong>Mathematics & Statistics:</strong> Forms the core analytical backbone needed to perform hypothesis testing, probability distribution estimation, regression analysis, mathematical optimization, and inferential statistical operations.</li>
+                    <li><strong>Domain Expertise & Business Acumen:</strong> Supplies the real-world contextual understanding required to formulate relevant business questions, design domain-specific metrics, interpret statistical findings correctly, and devise strategic solutions.</li>
+                </ul>
+
+                <!-- CSS Venn Diagram -->
+                <div class="venn-wrapper">
+                    <div class="venn-container">
+                        <div class="circle circle-cs">Computer Science<br>& Coding</div>
+                        <div class="circle circle-stat">Math &<br>Statistics</div>
+                        <div class="circle circle-domain">Domain / Business<br>Expertise</div>
+                        <div class="venn-center">DATA SCIENCE</div>
+                    </div>
+                </div>
+
+                <h3 class="subsection-title">1.2 Historical Evolution: From Statistics to Big Data</h3>
+                <p>The progression of Data Science over time follows distinct technical evolutionary phases:</p>
+                <ol>
+                    <li><strong>Traditional Statistics Era (Pre-1990s):</strong> Characterized by small, clean sample datasets analyzed via manual mathematical procedures or basic mainframe computing programs focused purely on descriptive statistics and elementary probability theory.</li>
+                    <li><strong>Data Warehousing & Business Intelligence Era (1990s–2000s):</strong> Emergence of relational database management systems (RDBMS), SQL queries, data warehouses (ETL pipeline development), and Business Intelligence (BI) dashboards focused on historical enterprise reporting.</li>
+                    <li><strong>The Big Data Revolution (2010s):</strong> The explosion of web data, social media, mobile platforms, and IoT devices generated high-volume, high-velocity, and diverse data structures that exceeded the capabilities of traditional enterprise databases. This forced the development of distributed storage systems like Apache Hadoop and Apache Spark.</li>
+                    <li><strong>Modern Data Science & AI Era (Present):</strong> Focuses on automated Machine Learning (AutoML), Deep Learning networks, Predictive Analytics, real-time analytics streaming, and Generative AI integration across commercial and research workflows.</li>
+                </ol>
+
+                <h3 class="subsection-title">1.3 Real-World Applications across Major Domains</h3>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Industry Domain</th>
+                                <th>Primary Application</th>
+                                <th>Methodology / Tools Used</th>
+                                <th>Business Value Delivered</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Healthcare & Medicine</strong></td>
+                                <td>Medical Image Diagnosis & Predictive Prognostics</td>
+                                <td>Deep Convolutional Neural Networks (CNNs), Computer Vision</td>
+                                <td>Early detection of tumors, reduction of diagnostic errors, automated radiology triage.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>E-Commerce & Retail</strong></td>
+                                <td>Personalized Recommendation Engines</td>
+                                <td>Collaborative Filtering, Matrix Factorization, Association Rules</td>
+                                <td>Drives cross-selling, optimizes user click-through rates, increases conversion metrics.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Banking & Finance</strong></td>
+                                <td>Real-time Credit Card Fraud Detection</td>
+                                <td>Anomaly Detection, Random Forests, Isolation Forests</td>
+                                <td>Identifies suspicious transaction signatures instantly, preventing financial theft.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Logistics & Mobility</strong></td>
+                                <td>Dynamic Route Optimization & Autonomous Vehicles</td>
+                                <td>Reinforcement Learning, Graph Algorithms, Spatial-Temporal Models</td>
+                                <td>Minimizes delivery fuel consumption, enables self-driving sensor navigation.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="subsection-title">1.4 Data in Strategic Decision Making: The DIKW Pyramid</h3>
+                <p>The core objective of Data Science is facilitating evidence-based, data-driven decisions rather than relying on subjective intuition or gut-feeling heuristic choices. This transition is formally illustrated by the <strong>DIKW (Data, Information, Knowledge, Wisdom) Hierarchy</strong>:</p>
+
+                <ul>
+                    <li><strong>Data:</strong> Unprocessed, raw, atomic signals, numbers, text logs, or symbols lacking explicit context (e.g., <i>"104.5, 98.2, 101.1"</i>).</li>
+                    <li><strong>Information:</strong> Structured, processed, and contextually qualified data that resolves basic operational questions like Who, What, Where, and When (e.g., <i>"These numbers represent patient body temperatures in degrees Fahrenheit recorded in Ward A"</i>).</li>
+                    <li><strong>Knowledge:</strong> Analytical synthesis of information patterns, trends, and correlations to answer 'How' and 'Why' questions (e.g., <i>"Statistical analysis shows 60% of Ward A patients display elevated fever patterns following a specific medication change"</i>).</li>
+                    <li><strong>Wisdom:</strong> The high-level application of knowledge to execute optimal, actionable, and ethical strategic choices (e.g., <i>"Immediately halt the administration of the new medication batch in Ward A and initiate an updated clinical safety protocol"</i>).</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="toolbox" class="topic-section">
+            <h2 class="section-title"><span>🧰</span> 2. Data Scientist’s Tool Box (Comprehensive)</h2>
+            <div class="content-body">
+                <p>The modern Data Science landscape relies on an ecosystem of specialized software engines, programming frameworks, and specialized utilities categorized across the end-to-end data processing life cycle:</p>
+
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Life Cycle Phase</th>
+                                <th>Primary Software / Language</th>
+                                <th>Key Characteristics & Technical Scope</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>1. Data Collection & Storage</strong></td>
+                                <td>SQL (PostgreSQL, MySQL)<br>NoSQL (MongoDB, Cassandra)<br>Web Scraping (BeautifulSoup, Scrapy)</td>
+                                <td>RDBMS schemas manage structured relational tables using SQL queries. NoSQL stores flexible JSON-like unstructured document collections. Web scrapers systematically fetch external web content.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>2. Data Cleaning & Wrangling</strong></td>
+                                <td>Pandas (Python)<br>dplyr & tidyr (R)<br>OpenRefine</td>
+                                <td>Provides high-performance tabular data structures (DataFrames) optimized for filtering, merging, missing value imputation, text parsing, and matrix transformations.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>3. Statistical Computing</strong></td>
+                                <td>R Language<br>Python (SciPy, Statsmodels)<br>Julia</td>
+                                <td>Specialized computational environments equipped with native mathematical distribution functions, statistical hypothesis testing methods, and regression execution pipelines.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>4. Machine Learning & AI</strong></td>
+                                <td>Scikit-Learn<br>TensorFlow & PyTorch<br>XGBoost</td>
+                                <td>Frameworks supplying pre-built model algorithms for classification, regression, clustering, neural network construction, and mathematical backpropagation.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>5. Visualization & Reporting</strong></td>
+                                <td>ggplot2 (R)<br>Matplotlib & Seaborn (Python)<br>Tableau / Power BI</td>
+                                <td>Renders multi-dimensional quantitative charts, statistical distribution plots, dynamic dashboards, and publishable graphics based on graphic grammar primitives.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>6. Workspace Environments</strong></td>
+                                <td>Jupyter Notebooks<br>RStudio IDE<br>Git & Command Line CLI</td>
+                                <td>Integrated environments that allow executable code blocks, mathematical LaTeX expressions, visual rendering, and version tracking to coexist within unified documents.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout-box">
+                    <h4>Ecosystem Synergy Example</h4>
+                    <p>A data team uses <strong>Scrapy</strong> to extract unstructured product reviews, loads them into <strong>MongoDB</strong>, processes text cleanups with <strong>Pandas</strong>, runs sentiment classification using <strong>Scikit-Learn</strong>, renders analytical summaries with <strong>ggplot2</strong> in <strong>RStudio</strong>, and manages project revisions using <strong>Git/GitHub</strong>.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="actionable" class="topic-section">
+            <h2 class="section-title"><span>🔄</span> 3. Turning Data into Actionable Knowledge (Full Pipeline)</h2>
+            <div class="content-body">
+                <p>Converting raw quantitative records into strategic business execution requires adhering to a structured 5-step Data Science Lifecycle process:</p>
+
+                <!-- CSS Pipeline -->
+                <div class="pipeline-container">
+                    <div class="pipeline-step">
+                        <h4>1. Data Acquisition</h4>
+                        <p>Extract raw data from APIs, databases, web servers, and physical IoT sensors.</p>
+                    </div>
+                    <div class="pipeline-step">
+                        <h4>2. Preprocessing</h4>
+                        <p>Clean missing values, normalize outliers, convert formats, deduplicate entries.</p>
+                    </div>
+                    <div class="pipeline-step">
+                        <h4>3. Analysis & Modeling</h4>
+                        <p>Run Exploratory Data Analysis (EDA), fit statistical algorithms, validate models.</p>
+                    </div>
+                    <div class="pipeline-step">
+                        <h4>4. Visualization</h4>
+                        <p>Build interactive graphs and executive dashboards for analytical storytelling.</p>
+                    </div>
+                    <div class="pipeline-step">
+                        <h4>5. Action & Feedback</h4>
+                        <p>Execute data-driven strategy and monitor real-world performance metrics.</p>
+                    </div>
+                </div>
+
+                <h3 class="subsection-title">Detailed Phase Breakdown for Examination Frameworks</h3>
+                <ol>
+                    <li><strong>Step 1: Data Collection & Acquisition:</strong> Involves systematically fetching raw inputs using primary methods (surveys, direct IoT sensor logging) or secondary sources (RESTful APIs, SQL query extraction, web crawling). Must account for data format diversity (JSON, CSV, Parquet, Unstructured Text).</li>
+                    <li><strong>Step 2: Data Cleaning & Preprocessing:</strong> Generally consumes ~70-80% of project time. Key tasks include:
+                        <ul>
+                            <li><i>Missing Value Imputation:</i> Replacing null fields using mean, median, mode, or k-Nearest Neighbors (KNN).</li>
+                            <li><i>Outlier Handling:</i> Identifying statistical anomalies via Z-scores or IQR bounds and capping/removing them.</li>
+                            <li><i>Normalization & Scaling:</i> Transforming numerical scales using Min-Max or Standard Scaling ($Z = \frac{X - \mu}{\sigma}$).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Step 3: Data Analysis & Modeling:</strong> Applying Exploratory Data Analysis (EDA) to understand distributions via histograms/boxplots, followed by hypothesis testing, feature selection, and algorithm fitting (Linear Regression, Decision Trees, Neural Networks).</li>
+                    <li><strong>Step 4: Data Visualization & Storytelling:</strong> Translating complex matrix results into intuitive visual representations. Requires selecting appropriate visualization formats (e.g., scatter plots for correlation, line charts for time-series trends).</li>
+                    <li><strong>Step 5: Actionable Deployment & Feedback Loop:</strong> Implementing decisions guided by analytical findings. The outcomes are continuously measured to retrain models and optimize strategies.</li>
+                </ol>
+
+                <div class="callout-box">
+                    <h4>What Defines an Insight as "Actionable"?</h4>
+                    <ul>
+                        <li><strong>Relevance:</strong> Directly addresses a core business objective or key performance indicator (KPI).</li>
+                        <li><strong>Feasibility:</strong> Can be operationalized within existing organizational constraints and budgets.</li>
+                        <li><strong>Measurability:</strong> Produces quantifiable impact trackable over time.</li>
+                        <li><strong>Novelty/Clarity:</strong> Uncovers non-obvious patterns and provides clear directional paths for intervention.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="vcs" class="topic-section">
+            <h2 class="section-title"><span>⏳</span> 4. Version Control Systems (VCS)</h2>
+            <div class="content-body">
+                <p>A <strong>Version Control System (VCS)</strong> is a category of software infrastructure designed to track, record, and manage changes made to source code, dataset configurations, computational scripts, and project assets over time within a computational repository.</p>
+
+                <h3 class="subsection-title">4.1 Why Data Science Specifically Demands Version Control</h3>
+                <ul>
+                    <li><strong>Scientific Reproducibility:</strong> Ensures that statistical experiments, data split states, script parameters, and model outputs can be re-run and verified across external computational environments.</li>
+                    <li><strong>Model & Pipeline Iteration Tracking:</strong> Data science requires continuous adjustments to hyperparameters, feature engineering transformations, and model definitions. VCS allows reverting to previous configurations if newer code degrades predictive performance.</li>
+                    <li><strong>Audit Trails & Compliance:</strong> Maintains an absolute historical ledger detailing who modified specific analytical logic, when the change occurred, and why it was introduced.</li>
+                    <li><strong>Experimental Sandbox Branching:</strong> Enables data engineers and data scientists to test experimental algorithms on separate isolated branches without risking the stability of production code pipelines.</li>
+                </ul>
+
+                <h3 class="subsection-title">4.2 Centralized VCS vs. Distributed VCS Architecture</h3>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Comparison Dimension</th>
+                                <th>Centralized VCS (CVCS) (e.g., SVN, Perforce)</th>
+                                <th>Distributed VCS (DVCS) (e.g., Git, Mercurial)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Repository Storage Location</strong></td>
+                                <td>Single centralized server holds full repository history. Clients check out only single file working copies.</td>
+                                <td>Every team member clones a full local copy of the entire repository history onto their local machine.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Offline Capability</strong></td>
+                                <td>Requires continuous network connectivity to commit changes, inspect logs, or create branches.</td>
+                                <td>Fully operational offline. Commits, branch creation, diff checking, and log searches occur locally.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Fault Tolerance / Redundancy</strong></td>
+                                <td>High single-point-of-failure risk. If the central server suffers corruption without backup, history is lost.</td>
+                                <td>Extremely high redundancy. Every cloned copy acts as a complete full backup of the entire repository.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Branching & Merging Speed</strong></td>
+                                <td>Relatively slow and network-dependent as operations interact with the central server.</td>
+                                <td>Extremely fast, localized pointer updates performed in seconds.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="markdown" class="topic-section">
+            <h2 class="section-title"><span>📝</span> 5. Markdown Documentation</h2>
+            <div class="content-body">
+                <p><strong>Markdown</strong> is a lightweight, human-readable plain-text formatting syntax created by John Gruber in 2004. It allows authors to format text documents easily using simple symbols that convert cleanly into valid HTML structure.</p>
+
+                <h3 class="subsection-title">5.1 Why Markdown is Essential in Data Science</h3>
+                <p>Markdown is the primary documentation standard across computational platforms, including <strong>Jupyter Notebooks</strong> (`.ipynb`), <strong>R Markdown reports</strong> (`.Rmd`), and <strong>GitHub README repository pages</strong> (`.md`). It allows data scientists to interleave executable script blocks alongside rich explanations, inline LaTeX mathematical equations, images, and data tables.</p>
+
+                <h3 class="subsection-title">5.2 Master Markdown Syntax Reference Guide</h3>
+                <pre><code># H1: Primary Document Title
+## H2: Major Section Heading
+### H3: Subsection Heading
+
+**Bold Text Emphasis** or __Bold Text__
+*Italicized Text* or _Italicized Text_
+~~Strikethrough Text~~
+`Inline Code Snippet Block`
+
+Ordered List Syntax:
+1. First processing phase
+2. Second analysis phase
+3. Model evaluation phase
+
+Unordered List Syntax:
+- Feature extraction
+* Data transformation
++ Output rendering
+
+Hyperlink Syntax:
+[Click Here to Access Dataset](https://example.com/data.csv)
+
+Markdown Table Syntax:
+| Feature Name | Data Type | Imputation Method |
+| :--- | :---: | ---: |
+| Customer_Age | Integer | Median Imputation |
+| Income_Level | Numeric | Mean Imputation |
+| Segment | Factor | Mode Imputation |
+
+Fenced Code Block Syntax with Language Identifier:
+```python
+import pandas as pd
+df = pd.read_csv("data.csv")
+print(df.head())
+```
+
+Blockquote Syntax:
+> "Data is the new oil, but unrefined it cannot be used."</code></pre>
+            </div>
+        </section>
+
+        <section id="git" class="topic-section">
+            <h2 class="section-title"><span>🔀</span> 6. Git (Distributed Version Control System)</h2>
+            <div class="content-body">
+                <p><strong>Git</strong> is an open-source, high-performance distributed version control system developed by <strong>Linus Torvalds</strong> in 2005 to manage Linux kernel development. It provides rapid operational speed, distributed redundancy, and strong data integrity mechanisms based on SHA hashing algorithms.</p>
+
+                <h3 class="subsection-title">6.1 Architecture: The 3 Local Git States</h3>
+                <p>Git manages files across three primary local structural areas:</p>
+                <ul>
+                    <li><strong>Working Directory:</strong> The local disk file folder where files are actively edited and modified.</li>
+                    <li><strong>Staging Area (Index):</strong> An intermediate preparation layer containing snapshot information for tracked files marked to be included in the next formal snapshot.</li>
+                    <li><strong>Local Repository (.git folder):</strong> The permanent local database storing committed object trees, commit objects, and historical revisions.</li>
+                </ul>
+
+                <h3 class="subsection-title">6.2 Essential Git Command Reference</h3>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Git Command</th>
+                                <th>Syntax Example</th>
+                                <th>Operational Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>git init</code></td>
+                                <td><code>git init</code></td>
+                                <td>Initializes a new empty Git repository inside the current active folder, creating the hidden <code>.git</code> database folder.</td>
+                            </tr>
+                            <tr>
+                                <td><code>git clone</code></td>
+                                <td><code>git clone &lt;url&gt;</code></td>
+                                <td>Downloads a complete copy of a remote repository along with its entire version history onto the local computer.</td>
+                            </tr>
+                            <tr>
+                                <td><code>git status</code></td>
+                                <td><code>git status</code></td>
+                                <td>Displays untracked files, modified files, and files currently staged for the upcoming commit.</td>
+                            </tr>
+                            <tr>
+                                <td><code>git add</code></td>
+                                <td><code>git add script.py</code><br><code>git add .</code></td>
+                                <td>Moves file changes from the Working Directory into the Staging Area (Index). Using <code>.</code> stages all local changes.</td>
+                            </tr>
+                            <tr>
+                                <td><code>git commit</code></td>
+                                <td><code>git commit -m "Add EDA script"</code></td>
+                                <td>Saves the staged snapshot permanently into the local repository database alongside a descriptive commit message.</td>
+                            </tr>
+                            <tr>
+                                <td><code>git branch</code></td>
+                                <td><code>git branch feature-model</code></td>
+                                <td>Lists existing branches or creates a new isolated pointer line off the current commit tree.</td>
+                            </tr>
+                            <tr>
+                                <td><code>git checkout / switch</code></td>
+                                <td><code>git checkout feature-model</code><br><code>git switch -c new-branch</code></td>
+                                <td>Switches the working directory workspace to point to a specified target branch. <code>switch -c</code> creates and moves to a new branch in one step.</td>
+                            </tr>
+                            <tr>
+                                <td><code>git merge</code></td>
+                                <td><code>git merge feature-model</code></td>
+                                <td>Combines revision histories from a specified branch into the currently active branch.</td>
+                            </tr>
+                            <tr>
+                                <td><code>git log</code></td>
+                                <td><code>git log --oneline</code></td>
+                                <td>Prints the historical chronological log of repository commit records, SHA hashes, author names, and timestamps.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="github" class="topic-section">
+            <h2 class="section-title"><span>☁️</span> 7. GitHub (Cloud Collaboration Platform)</h2>
+            <div class="content-body">
+                <p><strong>GitHub</strong> is a cloud-based hosting and collaboration platform built around Git. It provides a web-based visual user interface, user access controls, project tracking tools, and automation tools built on top of local Git repository operations.</p>
+
+                <h3 class="subsection-title">7.1 Core Feature Ecosystem</h3>
+                <ul>
+                    <li><strong>Remote Repository Hosting:</strong> Stores project code off-site in the cloud with flexible access options (Public for open-source visibility, Private for enterprise privacy).</li>
+                    <li><strong>Pull Requests (PR) & Code Reviews:</strong> Enables team members to propose changes from feature branches, allowing peer reviewers to inspect line-by-line diffs, add comments, and approve integrations into main production branches.</li>
+                    <li><strong>GitHub Actions (CI/CD):</strong> Built-in continuous integration and deployment automation runners that execute unit tests, run linters, and deploy data pipelines whenever new commits are pushed.</li>
+                    <li><strong>Issue Tracking & Kanban Projects:</strong> Built-in task boards, feature request trackers, and bug reporting frameworks to organize development sprints.</li>
+                    <li><strong>GitHub Pages & Gists:</strong> Simple web hosting services for publishing analytical reports, documentation, portfolio websites, or sharing code snippets.</li>
+                </ul>
+
+                <h3 class="subsection-title">7.2 Strategic Value for Data Science Careers</h3>
+                <p>GitHub acts as a digital portfolio for data professionals. Demonstrating active GitHub contributions—including well-documented READMEs, clean repository structures, reproducible Jupyter notebooks, and pull requests to open-source libraries—serves as strong practical proof of technical expertise to employers.</p>
+            </div>
+        </section>
+
+        <section id="r-lang" class="topic-section">
+            <h2 class="section-title"><span>📊</span> 8. R Programming Language</h2>
+            <div class="content-body">
+                <p><strong>R</strong> is an open-source programming language and environment specifically designed for statistical computing, scientific data processing, graphical generation, and data analysis. Originally created by <strong>Ross Ihaka and Robert Gentleman</strong> at the University of Auckland, New Zealand in 1993, R is a modern implementation of the earlier S programming language.</p>
+
+                <h3 class="subsection-title">8.1 Key Technical Features of R</h3>
+                <ul>
+                    <li><strong>Vectorized Operations:</strong> R natively performs vectorized calculations across entire data sequences without requiring explicit, slow iterative looping structures (`for` loops).</li>
+                    <li><strong>Built-in Statistical Capabilities:</strong> Provides native functions for linear modeling, non-linear regression, classical statistical hypothesis tests (t-test, ANOVA, Chi-Square), time-series analysis, and clustering algorithms.</li>
+                    <li><strong>Comprehensive Package Ecosystem (CRAN):</strong> The <i>Comprehensive R Archive Network (CRAN)</i> hosts thousands of peer-reviewed packages maintained by global developers (e.g., `tidyverse`, `caret`, `ggplot2`).</li>
+                    <li><strong>Native Data Frame Data Structure:</strong> Implements native, tightly optimized tabular data structures (`data.frame`) to store heterogeneous records across rows and named columns.</li>
+                    <li><strong>Data Visualization Capabilities:</strong> Includes powerful visualization tools, particularly via the `ggplot2` package based on Leland Wilkinson's *Grammar of Graphics* methodology.</li>
+                </ul>
+
+                <h3 class="subsection-title">8.2 Practical R Syntax and Executable Code Snippet</h3>
+                <pre><code># =========================================================
+# Practical R Syntax: Vectors, DataFrames, and Statistics
+# =========================================================
+
+# 1. Vector Creation & Vectorized Calculations
+student_names <- c("Alice", "Bob", "Charlie", "David", "Eva")
+score_math    <- c(88, 92, 79, 95, 84)
+score_stats   <- c(90, 85, 88, 98, 91)
+
+# Vectorized addition (Calculates total without explicit loops)
+total_scores  <- score_math + score_stats
+
+# 2. Constructing a Native R Data Frame
+class_data <- data.frame(
+  Name = student_names,
+  Math = score_math,
+  Stats = score_stats,
+  Total = total_scores
+)
+
+# Printing tabular output
+print("--- Class Grade R Data Frame ---")
+print(class_data)
+
+# 3. Descriptive Statistical Analysis
+print("--- Summary Statistics for Math Scores ---")
+print(summary(class_data$Math))
+
+# Calculate Mean and Standard Deviation
+mean_math <- mean(class_data$Math)
+sd_math   <- sd(class_data$Math)
+cat("Mean Math Score:", mean_math, "| Standard Deviation:", sd_math, "\n")
+
+# 4. Basic Visual Plotting Command
+# Generates a quick scatter plot comparing Math and Stats scores
+plot(class_data$Math, class_data$Stats, 
+     main="Math vs Stats Scores", 
+     xlab="Math Marks", ylab="Stats Marks", 
+     col="blue", pch=19)</code></pre>
+            </div>
+        </section>
+
+        <section id="rstudio" class="topic-section">
+            <h2 class="section-title"><span>🖥️</span> 9. RStudio Integrated Development Environment (IDE)</h2>
+            <div class="content-body">
+                <p><strong>RStudio</strong> (developed by Posit, PBC) is an Integrated Development Environment (IDE) explicitly customized for working with R and Python. It unifies script writing, console execution, workspace variable inspection, dynamic plot rendering, and package management into a cohesive user interface.</p>
+
+                <h3 class="subsection-title">9.1 The Four Master Workspace Panes of RStudio</h3>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Workspace Pane</th>
+                                <th>Quadrant Position</th>
+                                <th>Primary Functional Scope & Utilities</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>1. Source Editor Pane</strong></td>
+                                <td>Top-Left</td>
+                                <td>Write, edit, and save multi-line R scripts (`.R`), R Markdown documents (`.Rmd`), and Shiny web apps. Includes syntax highlighting, auto-completion, line debugging, and single-click script execution.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>2. Console / Terminal Pane</strong></td>
+                                <td>Bottom-Left</td>
+                                <td>Interactive execution environment where R commands run line-by-line instantly. Displays real-world program output, diagnostic warnings, and error messages. Includes system terminal access.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>3. Environment & History Pane</strong></td>
+                                <td>Top-Right</td>
+                                <td><strong>Environment tab:</strong> Lists all active in-memory variables, data frames, matrices, vectors, and custom functions alongside memory footprints. <br><strong>History tab:</strong> Logs every command run during the session. Includes Git version control integration tab.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>4. Files, Plots, Packages, Help, & Viewer Pane</strong></td>
+                                <td>Bottom-Right</td>
+                                <td><strong>Files:</strong> File explorer navigation.<br><strong>Plots:</strong> Renders visual graphs with export options (PNG, PDF).<br><strong>Packages:</strong> GUI interface to install, update, and load CRAN libraries.<br><strong>Help:</strong> Displays technical documentation for R functions.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="comparison" class="topic-section">
+            <h2 class="section-title"><span>⚖️</span> 10. Master Comparison Table: Git vs. GitHub</h2>
+            <div class="content-body">
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Comparison Dimension</th>
+                                <th>Git</th>
+                                <th>GitHub</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Core Definition</strong></td>
+                                <td>Command-line Distributed Version Control System tool installed locally on a computer.</td>
+                                <td>Cloud-based web hosting service and graphical platform for managing Git repositories online.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Category Type</strong></td>
+                                <td>Software Tool / System Infrastructure engine.</td>
+                                <td>Web Application Service / SaaS Platform.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>User Interface</strong></td>
+                                <td>Command-line interface (CLI) commands (Terminal/Git Bash) or basic GUIs.</td>
+                                <td>Feature-rich web interface (UI) with visual graph tools, dashboards, and code reviewers.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Data Storage Location</strong></td>
+                                <td>Stores version snapshots locally in the hidden <code>.git</code> database on the user's computer.</td>
+                                <td>Stores repositories on remote cloud servers managed by Microsoft.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Internet Requirement</strong></td>
+                                <td>Fully functional offline for committing, branching, logging, and diffing.</td>
+                                <td>Requires an active internet connection to push, pull, review PRs, or manage issues.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Maintainer / Creator</strong></td>
+                                <td>Linus Torvalds (2005) / Open Source Community.</td>
+                                <td>GitHub, Inc. (Acquired by Microsoft in 2018).</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Collaboration Features</strong></td>
+                                <td>Provides localized merge and branch primitives; lacks native web discussion tools.</td>
+                                <td>Provides Pull Requests, Code Reviews, Issue Trackers, Project Boards, CI/CD, and Discussion forums.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="exam-qa" class="topic-section">
+            <h2 class="section-title"><span>🎓</span> 11. Master 10-Mark Exam Answer Blueprints</h2>
+            <p>Expand the accordions below to study structured, top-scoring model answer frameworks designed specifically for university examination evaluation standards.</p>
+
+            <div class="accordion-container">
+                <!-- Question 1 -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Q1: What is Data Science? Explain its importance, applications, and the role of data in strategic decision-making. (10 Marks)</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <h4>Structured Exam Blueprint Answer:</h4>
+                        <ol>
+                            <li><strong>Formal Definition & Interdisciplinary Venn Breakdown (2 Marks):</strong>
+                                <p>Define Data Science clearly. Draw the 3-circle Venn diagram detailing the intersection of Computer Science, Mathematics & Statistics, and Domain Expertise.</p>
+                            </li>
+                            <li><strong>Core Industry Importance (2 Marks):</strong>
+                                <p>Discuss how modern organizations collect massive volumes of structured/unstructured data. Highlight how predictive analytics shifts business models from reactive decision-making to proactive forecasting.</p>
+                            </li>
+                            <li><strong>Major Domain Applications (3 Marks):</strong>
+                                <p>Detail at least 3 distinct domains with clear real-world examples:</p>
+                                <ul>
+                                    <li><i>Healthcare:</i> Early tumor detection using CNN deep learning models.</li>
+                                    <li><i>Finance:</i> Real-time automated transaction fraud detection algorithms.</li>
+                                    <li><i>E-Commerce:</i> Personalization engines driving recommendation lists (Collaborative Filtering).</li>
+                                </ul>
+                            </li>
+                            <li><strong>Data in Strategic Decision Making & DIKW Hierarchy (3 Marks):</strong>
+                                <p>Explain the step-by-step transformation: Data $\rightarrow$ Information $\rightarrow$ Knowledge $\rightarrow$ Wisdom. Contrast data-driven evidence strategies against traditional, error-prone gut-instinct decisions.</p>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Q2: Explain the Data Scientist’s Tool Box across all phases of the data lifecycle. (10 Marks)</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <h4>Structured Exam Blueprint Answer:</h4>
+                        <ol>
+                            <li><strong>Tool Box Overview (1.5 Marks):</strong>
+                                <p>Introduce the multi-disciplinary software ecosystem required to manage data throughout its complete lifecycle.</p>
+                            </li>
+                            <li><strong>Detailed Lifecycle Phase & Tool Categorization (7 Marks - ~1.25 Marks per Phase):</strong>
+                                <ul>
+                                    <li><i>Phase 1: Collection & Storage:</i> SQL (PostgreSQL), NoSQL (MongoDB), Web Scraping (BeautifulSoup).</li>
+                                    <li><i>Phase 2: Wrangling & Cleaning:</i> Python Pandas, R dplyr, OpenRefine. Highlight tabular DataFrames.</li>
+                                    <li><i>Phase 3: Statistical Computing:</i> R Language native stats engine, SciPy/Statsmodels in Python.</li>
+                                    <li><i>Phase 4: Machine Learning & AI:</i> Scikit-Learn, TensorFlow, PyTorch, XGBoost.</li>
+                                    <li><i>Phase 5: Data Visualization:</i> R ggplot2, Python Matplotlib/Seaborn, enterprise tools like Tableau.</li>
+                                    <li><i>Phase 6: Environments & Versioning:</i> Jupyter Notebooks, RStudio, Git/GitHub CLI environments.</li>
+                                </ul>
+                            </li>
+                            <li><strong>End-to-End Synergy Summary (1.5 Marks):</strong>
+                                <p>Provide a concrete, real-world operational workflow scenario demonstrating how these tools interact sequentially to resolve a business objective.</p>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Q3: Elaborate on the step-by-step process of turning raw data into actionable knowledge with appropriate diagrams. (10 Marks)</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <h4>Structured Exam Blueprint Answer:</h4>
+                        <ol>
+                            <li><strong>Conceptual Distinctions (2 Marks):</strong>
+                                <p>Define Raw Data (unprocessed values), Information (contextualized data), and Actionable Knowledge (insights driving measurable interventions).</p>
+                            </li>
+                            <li><strong>Visual Lifecycle Flowchart Diagram (2 Marks):</strong>
+                                <p>Draw a clean horizontal or vertical flowchart showing: Data Collection $\rightarrow$ Preprocessing $\rightarrow$ Modeling $\rightarrow$ Visualization $\rightarrow$ Decision Deployment.</p>
+                            </li>
+                            <li><strong>Detailed 5-Step Process Breakdown (5 Marks):</strong>
+                                <ul>
+                                    <li><i>1. Data Acquisition:</i> APIs, IoT sensors, SQL queries, web logs.</li>
+                                    <li><i>2. Data Preprocessing:</i> Imputing missing values, removing outliers, normalizing numerical distributions.</li>
+                                    <li><i>3. Statistical Modeling:</i> EDA, correlation matrices, algorithm training (Regression/Classification).</li>
+                                    <li><i>4. Visual Storytelling:</i> Executive dashboards, graphs, communicating analytical findings.</li>
+                                    <li><i>5. Deployment & Feedback Loop:</i> Implementing real-world strategy changes and tracking ongoing performance metrics.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Criteria for "Actionable" Insights (1 Mark):</strong>
+                                <p>List and explain Relevance, Feasibility, Measurability, and Impact.</p>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Q4: Define Version Control. Explain Git architecture, essential commands, and how Git/GitHub facilitate collaborative data science. (10 Marks)</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <h4>Structured Exam Blueprint Answer:</h4>
+                        <ol>
+                            <li><strong>Definition & Importance in Data Science (2 Marks):</strong>
+                                <p>Define VCS. Explain why data science requires version control: scientific reproducibility, experiment branch tracking, model parameter auditing, and collaborative code development.</p>
+                            </li>
+                            <li><strong>Git Architecture & Local States (2 Marks):</strong>
+                                <p>Detail the 3 fundamental Git areas: Working Directory, Staging Area (Index), and Local Repository (`.git`). Include a structural flow diagram.</p>
+                            </li>
+                            <li><strong>Essential Git Commands & Syntax (3 Marks):</strong>
+                                <p>Provide exact syntax and explanations for: `git init`, `git clone`, `git status`, `git add`, `git commit -m`, `git branch`, `git checkout/switch`, `git merge`, `git log`.</p>
+                            </li>
+                            <li><strong>Git vs. GitHub Comparison & Collaboration Features (3 Marks):</strong>
+                                <p>Contrast Git (local command-line engine) with GitHub (cloud hosting platform). Detail Pull Requests, Code Reviews, Issue Tracking, and GitHub Actions (CI/CD).</p>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Q5: Discuss the R Programming Language and RStudio IDE. Detail the key features of R and explain the four-pane workspace of RStudio. (10 Marks)</span>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <h4>Structured Exam Blueprint Answer:</h4>
+                        <ol>
+                            <li><strong>Introduction to R Language & History (2 Marks):</strong>
+                                <p>Created by Ross Ihaka & Robert Gentleman in 1993 at University of Auckland based on S. Explain its role as an open-source statistical computing powerhouse.</p>
+                            </li>
+                            <li><strong>Key Features of R (3 Marks):</strong>
+                                <p>Explain Vectorized Operations, CRAN Package Ecosystem, Native Data Frame structure, statistical function libraries, and high-quality graphics generation (`ggplot2`). Include a simple code block snippet.</p>
+                            </li>
+                            <li><strong>RStudio IDE Overview & 4-Pane Architecture (5 Marks):</strong>
+                                <p>Draw a 2x2 grid representing the RStudio IDE layout and detail each quadrant:</p>
+                                <ul>
+                                    <li><i>Top-Left (Source Editor):</i> Writing scripts, auto-completion, execution triggers.</li>
+                                    <li><i>Bottom-Left (Console / Terminal):</i> Executing interactive commands, viewing output logs.</li>
+                                    <li><i>Top-Right (Environment / History):</i> Workspace memory inspection, active variables, git tab.</li>
+                                    <li><i>Bottom-Right (Files / Plots / Packages / Help):</i> Asset browsing, graph rendering, CRAN package management, documentation lookups.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="cheatsheet" class="topic-section">
+            <h2 class="section-title"><span>⚡</span> 12. Quick Revision Cheat Sheet</h2>
+            <div class="content-body">
+                <div class="callout-box">
+                    <h4>High-Density Revision Bullet Points</h4>
+                    <ul>
+                        <li><strong>Data Science Definition:</strong> Interdisciplinary field combining Computer Science, Mathematics/Statistics, and Domain Expertise to extract insights from structured/unstructured data.</li>
+                        <li><strong>DIKW Pyramid:</strong> Data (Raw facts) $\rightarrow$ Information (Contextualized) $\rightarrow$ Knowledge (Patterns/How & Why) $\rightarrow$ Wisdom (Strategic execution).</li>
+                        <li><strong>Data Lifecycle Steps:</strong> Acquisition $\rightarrow$ Cleaning/Preprocessing $\rightarrow$ EDA/Modeling $\rightarrow$ Visualization $\rightarrow$ Strategic Action.</li>
+                        <li><strong>Standard Normalization Formula:</strong> $Z = \frac{X - \mu}{\sigma}$ (Transforms values to mean 0 and standard deviation 1).</li>
+                        <li><strong>DVCS vs. CVCS:</strong> Distributed (Git) mirrors the complete repository history locally on every machine; Centralized (SVN) relies on a single central server.</li>
+                        <li><strong>3 Git Local States:</strong> Working Directory (Files edited) $\rightarrow$ Staging Area (Files indexed) $\rightarrow$ Local Repository (`.git` committed snapshots).</li>
+                        <li><strong>Git vs GitHub:</strong> Git is the local CLI version tracking engine; GitHub is the cloud platform for hosting repositories and remote team collaboration.</li>
+                        <li><strong>R Language Origin:</strong> Created by Ross Ihaka and Robert Gentleman (1993). Key package repository: CRAN.</li>
+                        <li><strong>RStudio 4 Panes:</strong> Source Editor (Top-Left), Console (Bottom-Left), Environment/History (Top-Right), Files/Plots/Packages/Help (Bottom-Right).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Prepared for BCA Introduction to Data Science Examination | Complete Exam Guide</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--accent-cyan);">Unit 1 Complete Study Hub • Designed for Maximum Academic Performance</p>
+    </footer>
+
+    <script>
+        // Theme Toggle Logic with Persistence
+        function toggleTheme() {
+            const body = document.body;
+            const btn = document.getElementById('themeToggle');
+            
+            if (body.classList.contains('light-theme')) {
+                body.classList.remove('light-theme');
+                btn.textContent = '☀️ Light Mode';
+                localStorage.setItem('unit1_theme', 'dark');
+            } else {
+                body.classList.add('light-theme');
+                btn.textContent = '🌙 Dark Mode';
+                localStorage.setItem('unit1_theme', 'light');
+            }
+        }
+
+        // Restore Theme State on Page Load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('unit1_theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+                document.getElementById('themeToggle').textContent = '🌙 Dark Mode';
+            }
+        });
+
+        // Accordion Interactive Trigger Logic
+        function toggleAccordion(header) {
+            const item = header.parentElement;
+            item.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
