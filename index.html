@@ -1,0 +1,1949 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCA Notes Repository</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           CSS Variables (Theming & Colors)
+           ========================================== */
+        :root {
+            /* Dark Theme (Default) */
+            --bg-color: #030712; /* Deep Navy/Black */
+            --surface-color: rgba(17, 24, 39, 0.6);
+            --surface-hover: rgba(31, 41, 55, 0.8);
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --accent-primary: #00f2fe;
+            --accent-secondary: #4facfe;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --gradient-text: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            --timeline-line: rgba(255, 255, 255, 0.15);
+            --btn-text: #000000;
+        }
+
+        [data-theme="light"] {
+            /* Light Theme */
+            --bg-color: #f8fafc;
+            --surface-color: rgba(255, 255, 255, 0.8);
+            --surface-hover: rgba(255, 255, 255, 1);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --accent-primary: #0284c7;
+            --accent-secondary: #0369a1;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            --glass-border: rgba(0, 0, 0, 0.05);
+            --gradient-text: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            --timeline-line: rgba(0, 0, 0, 0.1);
+            --btn-text: #ffffff;
+        }
+
+        /* ==========================================
+           Reset & Base Styles
+           ========================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            line-height: 1.2;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .text-gradient {
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 6rem 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ==========================================
+           Animated Background
+           ========================================== */
+        .bg-animations {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+
+        .glow-orb-1 {
+            width: 40vw;
+            height: 40vw;
+            background: var(--accent-primary);
+            top: -10%;
+            left: -10%;
+        }
+
+        .glow-orb-2 {
+            width: 50vw;
+            height: 50vw;
+            background: var(--accent-secondary);
+            bottom: -20%;
+            right: -10%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(5vw, 5vh) scale(1.1); }
+        }
+
+        /* ==========================================
+           Navigation
+           ========================================== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.2rem 0;
+            background: rgba(var(--bg-color), 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .theme-toggle {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.6rem;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--surface-hover);
+            transform: scale(1.05);
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* ==========================================
+           Buttons
+           ========================================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-text);
+            color: var(--btn-text);
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 242, 254, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--surface-color);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface-hover);
+            border-color: var(--accent-primary);
+            transform: translateY(-3px);
+        }
+
+        /* ==========================================
+           Hero Section
+           ========================================== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 6rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 10;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 5vw, 4.5rem);
+            letter-spacing: -1px;
+            margin-bottom: 1rem;
+        }
+
+        .hero h2 {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--text-primary);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-inline: auto;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Hero Floating Illustrations */
+        .hero-visuals {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-icon {
+            position: absolute;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 1rem;
+            backdrop-filter: blur(10px);
+            animation: float-icon 6s infinite ease-in-out;
+            color: var(--accent-primary);
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-1 { top: 20%; left: 15%; animation-delay: 0s; }
+        .icon-2 { top: 60%; right: 15%; animation-delay: 2s; }
+        .icon-3 { bottom: 25%; left: 20%; animation-delay: 4s; }
+
+        @keyframes float-icon {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+
+        /* ==========================================
+           Subjects Cards (Grid)
+           ========================================== */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .subject-card {
+            background: var(--surface-color);
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem;
+            padding: 2rem;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(0,242,254,0.1), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-primary);
+            box-shadow: var(--card-shadow);
+        }
+
+        .subject-card:hover::before {
+            opacity: 1;
+        }
+
+        .subject-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .subject-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .subject-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            flex-grow: 1; /* Pushes button to bottom */
+            position: relative;
+            z-index: 2;
+        }
+
+        .subject-card .btn {
+            width: 100%;
+            margin-top: auto;
+            position: relative;
+            z-index: 2;
+            font-size: 0.9rem;
+            padding: 0.8rem 1rem;
+        }
+
+        /* ==========================================
+           Features Section
+           ========================================== */
+        #features .grid-container {
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        }
+
+        .feature-card {
+            background: transparent;
+            border-top: 2px solid var(--accent-primary);
+            padding: 2rem 1.5rem;
+            transition: all 0.3s ease;
+            text-align: center;
+            background: var(--surface-color);
+            border-radius: 0 0 1rem 1rem;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: var(--surface-hover);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        /* ==========================================
+           Statistics Section
+           ========================================== */
+        .stats-section {
+            background: linear-gradient(180deg, transparent, var(--surface-color), transparent);
+            padding: 4rem 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item h4 {
+            font-size: 3.5rem;
+            margin-bottom: 0.2rem;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .stat-item p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ==========================================
+           Learning Roadmap Timeline
+           ========================================== */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background: var(--timeline-line);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            right: -8px;
+            background-color: var(--bg-color);
+            border: 4px solid var(--accent-primary);
+            top: 20px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .timeline-left {
+            left: 0;
+        }
+
+        .timeline-right {
+            left: 50%;
+        }
+
+        .timeline-right::after {
+            left: -8px;
+        }
+
+        .timeline-content {
+            padding: 1.5rem;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: scale(1.03);
+            border-color: var(--accent-primary);
+        }
+
+        .timeline-content h3 {
+            color: var(--accent-primary);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* ==========================================
+           About Section
+           ========================================== */
+        #about .container {
+            text-align: center;
+            max-width: 800px;
+        }
+
+        #about p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            background: var(--surface-color);
+            padding: 3rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        /* ==========================================
+           Footer
+           ========================================== */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 4rem 0 2rem;
+            background: var(--surface-color);
+            text-align: center;
+        }
+
+        .footer-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-content p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background: var(--accent-primary);
+            color: #000;
+            border-color: var(--accent-primary);
+            transform: translateY(-3px);
+        }
+
+        /* ==========================================
+           Scroll Reveal Utility
+           ========================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==========================================
+           Responsive Design
+           ========================================== */
+        @media screen and (max-width: 992px) {
+            .hero h1 { font-size: 2.8rem; }
+            .timeline::after { left: 31px; }
+            .timeline-item { width: 100%; padding-left: 70px; padding-right: 15px; }
+            .timeline-item::after { left: 23px; }
+            .timeline-right { left: 0%; }
+        }
+
+        @media screen and (max-width: 768px) {
+            .nav-links { display: none; } /* Hide links on mobile for simplicity */
+            .hero h1 { font-size: 2.2rem; }
+            .hero h2 { font-size: 1.2rem; }
+            .hero-visuals { display: none; } /* Hide floating icons on small screens */
+            .hero-btns { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto; }
+            .hero-btns .btn { width: 100%; }
+            #about p { padding: 2rem 1rem; font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Animated Background -->
+    <div class="bg-animations">
+        <div class="glow-orb glow-orb-1"></div>
+        <div class="glow-orb glow-orb-2"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-content">
+            <a href="#" class="logo">
+                🎓 BCA<span class="text-gradient">Notes</span>
+            </a>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#subjects">Subjects</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Theme">
+                <!-- Moon Icon (Default Dark) -->
+                <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                <!-- Sun Icon -->
+                <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero" id="home">
+        <div class="hero-visuals">
+            <div class="floating-icon icon-1">💻</div>
+            <div class="floating-icon icon-2">🤖</div>
+            <div class="floating-icon icon-3">📊</div>
+        </div>
+        <div class="container hero-content reveal">
+            <h1>BCA Notes <span class="text-gradient">Repository</span></h1>
+            <h2>Complete Study Materials for Bachelor of Computer Applications</h2>
+            <p>Access organized notes, programming concepts, and academic resources for your BCA journey. Designed for university students.</p>
+            <div class="hero-btns">
+                <a href="#subjects" class="btn btn-primary">Explore Subjects</a>
+                <a href="#stats" class="btn btn-secondary">View Repository</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Subjects Section -->
+    <section id="subjects" class="container">
+        <div class="section-header reveal">
+            <h2>Explore BCA <span class="text-gradient">Subjects</span></h2>
+            <p>Select a subject below to access comprehensive notes, programs, and study guides.</p>
+        </div>
+
+        <div class="grid-container">
+            <!-- Card 1: Data Science -->
+            <div class="subject-card reveal">
+                <div class="subject-icon">📊</div>
+                <h3>Data Science</h3>
+                <p>Complete Data Science notes covering all units, concepts, tools, R programming, data cleaning, and exploratory data analysis.</p>
+                <a href="DATA_SCIENCE/ds.html" class="btn btn-secondary">Open Data Science Notes</a>
+            </div>
+
+            <!-- Card 2: C Programming -->
+            <div class="subject-card reveal" style="transition-delay: 0.1s;">
+                <div class="subject-icon">💻</div>
+                <h3>C Programming</h3>
+                <p>Programming fundamentals, syntax, functions, arrays, pointers, structures, and practical programs.</p>
+                <a href="C_PROGRAMMING/c.html" class="btn btn-secondary">Open C Notes</a>
+            </div>
+
+            <!-- Card 3: C++ Programming -->
+            <div class="subject-card reveal" style="transition-delay: 0.2s;">
+                <div class="subject-icon">⚡</div>
+                <h3>C++ Programming</h3>
+                <p>Object-oriented programming concepts including classes, inheritance, polymorphism, and STL.</p>
+                <a href="CPP_PROGRAMMING/cpp.html" class="btn btn-secondary">Open C++ Notes</a>
+            </div>
+
+            <!-- Card 4: Python Programming -->
+            <div class="subject-card reveal" style="transition-delay: 0.3s;">
+                <div class="subject-icon">🐍</div>
+                <h3>Python Programming</h3>
+                <p>Python basics, data structures, functions, OOP, file handling, and practical examples.</p>
+                <a href="PYTHON/python.html" class="btn btn-secondary">Open Python Notes</a>
+            </div>
+
+            <!-- Card 5: DBMS -->
+            <div class="subject-card reveal">
+                <div class="subject-icon">🗄️</div>
+                <h3>DBMS</h3>
+                <p>Database concepts, SQL, normalization, ER diagrams, and database management.</p>
+                <a href="DBMS/dbms.html" class="btn btn-secondary">Open DBMS Notes</a>
+            </div>
+
+            <!-- Card 6: Operating System -->
+            <div class="subject-card reveal" style="transition-delay: 0.1s;">
+                <div class="subject-icon">⚙️</div>
+                <h3>Operating System</h3>
+                <p>OS concepts, processes, memory management, scheduling, and file systems.</p>
+                <a href="OS/os.html" class="btn btn-secondary">Open OS Notes</a>
+            </div>
+
+            <!-- Card 7: Web Technology -->
+            <div class="subject-card reveal" style="transition-delay: 0.2s;">
+                <div class="subject-icon">🌐</div>
+                <h3>Web Technology</h3>
+                <p>HTML, CSS, JavaScript, frontend development, and web concepts.</p>
+                <a href="WEB_TECH/web.html" class="btn btn-secondary">Open Web Technology Notes</a>
+            </div>
+
+            <!-- Card 8: Artificial Intelligence -->
+            <div class="subject-card reveal" style="transition-delay: 0.3s;">
+                <div class="subject-icon">🤖</div>
+                <h3>Artificial Intelligence</h3>
+                <p>AI fundamentals, machine learning concepts, algorithms, and applications.</p>
+                <a href="AI/ai.html" class="btn btn-secondary">Open AI Notes</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="container">
+        <div class="section-header reveal">
+            <h2>Platform <span class="text-gradient">Features</span></h2>
+        </div>
+        <div class="grid-container">
+            <div class="feature-card reveal">
+                <div class="feature-icon">📚</div>
+                <h3>Organized Notes</h3>
+                <p>All BCA subjects arranged systematically for seamless navigation.</p>
+            </div>
+            <div class="feature-card reveal" style="transition-delay: 0.1s;">
+                <div class="feature-icon">🎯</div>
+                <h3>Exam Preparation</h3>
+                <p>Notes specifically designed for university examinations and quick revision.</p>
+            </div>
+            <div class="feature-card reveal" style="transition-delay: 0.2s;">
+                <div class="feature-icon">💻</div>
+                <h3>Programming Practice</h3>
+                <p>Includes thoroughly tested examples and practical source codes.</p>
+            </div>
+            <div class="feature-card reveal" style="transition-delay: 0.3s;">
+                <div class="feature-icon">🚀</div>
+                <h3>Continuous Learning</h3>
+                <p>New subjects, units, and updated notes are added regularly.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section id="stats" class="stats-section">
+        <div class="container reveal">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h4 class="counter" data-target="8">0</h4>
+                    <p>Subjects+</p>
+                </div>
+                <div class="stat-item">
+                    <h4 class="counter" data-target="4">0</h4>
+                    <p>Languages+</p>
+                </div>
+                <div class="stat-item">
+                    <h4 class="counter" data-target="100">0</h4>
+                    <p>Notes+</p>
+                </div>
+                <div class="stat-item">
+                    <h4 class="text-gradient">BCA</h4>
+                    <p>Course</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Learning Roadmap Section -->
+    <section id="roadmap" class="container">
+        <div class="section-header reveal">
+            <h2>Learning <span class="text-gradient">Roadmap</span></h2>
+            <p>Your semester-by-semester learning journey through the BCA program.</p>
+        </div>
+        
+        <div class="timeline">
+            <div class="timeline-item timeline-left reveal">
+                <div class="timeline-content">
+                    <h3>Step 1: Semester Journey</h3>
+                    <p>Begin your degree with fundamental subjects and basic mathematics for computer science.</p>
+                </div>
+            </div>
+            <div class="timeline-item timeline-right reveal">
+                <div class="timeline-content">
+                    <h3>Step 2: Programming Fundamentals</h3>
+                    <p>Master logic building with C and C++ programming. Understand arrays, pointers, and OOP concepts.</p>
+                </div>
+            </div>
+            <div class="timeline-item timeline-left reveal">
+                <div class="timeline-content">
+                    <h3>Step 3: Core CS Subjects</h3>
+                    <p>Dive deep into Operating Systems, Database Management Systems, and Web Technologies.</p>
+                </div>
+            </div>
+            <div class="timeline-item timeline-right reveal">
+                <div class="timeline-content">
+                    <h3>Step 4: Data Science & AI</h3>
+                    <p>Explore modern technologies including Python, Data Science, Machine Learning, and Artificial Intelligence.</p>
+                </div>
+            </div>
+            <div class="timeline-item timeline-left reveal">
+                <div class="timeline-content">
+                    <h3>Step 5: Development Skills</h3>
+                    <p>Build real-world projects, implement full-stack systems, and prepare for industry roles.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container reveal">
+            <div class="section-header">
+                <h2>About This <span class="text-gradient">Repository</span></h2>
+            </div>
+            <p>
+                "This repository contains my BCA academic notes, programming materials, and computer science resources organized for easy learning and revision. Built to help students easily access course materials, prepare for exams, and strengthen programming fundamentals."
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container footer-content reveal">
+            <h3>BCA Notes <span class="text-gradient">Repository</span></h3>
+            <p>Built for students, by a student.</p>
+            <div class="social-icons">
+                <a href="#" class="social-icon" aria-label="GitHub">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.1```html
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCA Notes Repository</title>
+    
+    <!-- Google Fonts for Modern Typography -->
+    <link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
+    <link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+    <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap)" rel="stylesheet">
+
+    <style>
+        /* =========================================
+           CSS Variables & Theming
+           ========================================= */
+        :root {
+            /* Dark Theme (Default) */
+            --bg-base: #060913;
+            --bg-surface: rgba(17, 24, 39, 0.6);
+            --bg-surface-hover: rgba(31, 41, 55, 0.8);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-primary: #00f2fe;
+            --accent-secondary: #4facfe;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(0, 242, 254, 0.4);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            --gradient-text: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            --timeline-line: rgba(255, 255, 255, 0.1);
+        }
+
+        [data-theme="light"] {
+            /* Light Theme */
+            --bg-base: #f8fafc;
+            --bg-surface: rgba(255, 255, 255, 0.7);
+            --bg-surface-hover: rgba(255, 255, 255, 1);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --accent-primary: #0284c7;
+            --accent-secondary: #0369a1;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --border-hover: rgba(2, 132, 199, 0.4);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+            --gradient-text: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            --timeline-line: rgba(0, 0, 0, 0.1);
+        }
+
+        /* =========================================
+           Reset & Base Styles
+           ========================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* =========================================
+           Animated Background
+           ========================================= */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .bg-animation::before, .bg-animation::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            animation: drift 25s infinite ease-in-out alternate;
+        }
+
+        .bg-animation::before {
+            width: 50vw;
+            height: 50vw;
+            background: var(--accent-primary);
+            top: -10%;
+            left: -10%;
+        }
+
+        .bg-animation::after {
+            width: 40vw;
+            height: 40vw;
+            background: var(--accent-secondary);
+            bottom: -10%;
+            right: -10%;
+            animation-delay: -12.5s;
+        }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(10vw, 10vh) scale(1.1); }
+        }
+
+        /* =========================================
+           Typography & Layout
+           ========================================= */
+        h1, h2, h3, h4 {
+            line-height: 1.2;
+            font-weight: 700;
+        }
+
+        .text-gradient {
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 6rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* =========================================
+           Navbar
+           ========================================= */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.2rem 0;
+            background: rgba(var(--bg-base), 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .theme-toggle {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-surface-hover);
+            transform: scale(1.05);
+        }
+
+        /* =========================================
+           Buttons
+           ========================================= */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 1.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--gradient-text);
+            color: #000 !important; /* Always black on gradient for contrast */
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.25);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 242, 254, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-surface-hover);
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .btn-card {
+            width: 100%;
+            margin-top: auto;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.75rem;
+        }
+
+        [data-theme="light"] .btn-card {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        .btn-card:hover {
+            background: var(--gradient-text);
+            color: #000;
+            border-color: transparent;
+        }
+
+        /* =========================================
+           Hero Section
+           ========================================= */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 5rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 10;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            letter-spacing: -1.5px;
+            margin-bottom: 1rem;
+        }
+
+        .hero h2 {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-inline: auto;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Floating Hero Visuals */
+        .hero-visuals {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            backdrop-filter: blur(8px);
+            color: var(--accent-primary);
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: float 6s infinite ease-in-out;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .el-1 { top: 20%; left: 15%; animation-delay: 0s; }
+        .el-2 { top: 65%; right: 15%; animation-delay: 2s; }
+        .el-3 { bottom: 25%; left: 25%; animation-delay: 4s; }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+
+        /* =========================================
+           Cards Grid (Subjects & Features)
+           ========================================= */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--glass-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(0, 242, 254, 0.1), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: var(--border-hover);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        /* Subject Cards Specific */
+        .subject-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .subject-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+            position: relative;
+            z-index: 2;
+        }
+
+        .subject-card .btn-card {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Feature Cards Specific */
+        .feature-card {
+            text-align: center;
+            align-items: center;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 70px;
+            height: 70px;
+            background: var(--bg-surface-hover);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .feature-card h4 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* =========================================
+           Statistics Section
+           ========================================= */
+        .stats-wrapper {
+            background: linear-gradient(180deg, transparent, var(--bg-surface), transparent);
+            padding: 4rem 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* =========================================
+           Learning Roadmap Section
+           ========================================= */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background: var(--timeline-line);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+        }
+
+        .timeline-item.left { left: 0; }
+        .timeline-item.right { left: 50%; }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            background-color: var(--bg-base);
+            border: 4px solid var(--accent-primary);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+        }
+
+        .timeline-item.right::after { left: -10px; }
+
+        .timeline-content {
+            padding: 1.5rem;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .timeline-content:hover {
+            border-color: var(--accent-primary);
+            transform: scale(1.02);
+        }
+
+        .timeline-step {
+            font-size: 0.85rem;
+            color: var(--accent-primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .timeline-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* =========================================
+           About Section
+           ========================================= */
+        #about {
+            text-align: center;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            backdrop-filter: blur(12px);
+        }
+
+        .about-content p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* =========================================
+           Footer
+           ========================================= */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 4rem 0 2rem;
+            background: rgba(var(--bg-base), 0.9);
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .footer-desc {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-primary);
+            border-color: var(--accent-primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        /* =========================================
+           Scroll Reveal Classes
+           ========================================= */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* =========================================
+           Responsive Design
+           ========================================= */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; /* Keep simple for mobile */
+            }
+
+            .hero h1 { font-size: 2.2rem; }
+            .hero-visuals { display: none; }
+
+            .timeline::after { left: 31px; }
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 0;
+            }
+            .timeline-item.right { left: 0; }
+            .timeline-item.left::after, .timeline-item.right::after { left: 21px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Animated Background Effect -->
+    <div class="bg-animation"></div>
+
+    <!-- Navbar -->
+    <nav>
+        <div class="container nav-content">
+            <a href="#" class="logo">🎓 BCA <span class="text-gradient" style="margin-left: 5px;">Notes</span></a>
+            <div class="nav-links">
+                <a href="#">Home</a>
+                <a href="#subjects">Subjects</a>
+                <a href="#roadmap">Roadmap</a>
+                <a href="#about">About</a>
+            </div>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">
+                <!-- Moon icon (default) -->
+                <svg id="moonIcon" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                <!-- Sun icon (hidden by default) -->
+                <svg id="sunIcon" style="display: none;" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero container">
+        <div class="hero-visuals">
+            <div class="floating-element el-1">&lt;/&gt;</div>
+            <div class="floating-element el-2">{}</div>
+            <div class="floating-element el-3">⌘</div>
+        </div>
+        <div class="hero-content reveal">
+            <h1>BCA <span class="text-gradient">Notes Repository</span></h1>
+            <h2>Complete Study Materials for Bachelor of Computer Applications</h2>
+            <p>Access organized notes, programming concepts, and academic resources for your BCA journey.</p>
+            <div class="hero-btns">
+                <a href="#subjects" class="btn btn-primary">Explore Subjects</a>
+                <a href="#about" class="btn btn-secondary">View Repository</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Subjects Section -->
+    <section id="subjects" class="container">
+        <div class="section-header reveal">
+            <h2>Explore BCA <span class="text-gradient">Subjects</span></h2>
+        </div>
+        <div class="grid-container">
+            
+            <!-- Card 1 -->
+            <div class="card subject-card reveal">
+                <h3>📊 Data Science</h3>
+                <p>Complete Data Science notes covering all units, concepts, tools, R programming, data cleaning, and exploratory data analysis.</p>
+                <a href="DATA_SCIENCE/ds.html" class="btn btn-card">Open Data Science Notes</a>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card subject-card reveal">
+                <h3>💻 C Programming</h3>
+                <p>Programming fundamentals, syntax, functions, arrays, pointers, structures, and practical programs.</p>
+                <a href="C_PROGRAMMING/c.html" class="btn btn-card">Open C Notes</a>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card subject-card reveal">
+                <h3>⚡ C++ Programming</h3>
+                <p>Object-oriented programming concepts including classes, inheritance, polymorphism, and STL.</p>
+                <a href="CPP_PROGRAMMING/cpp.html" class="btn btn-card">Open C++ Notes</a>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="card subject-card reveal">
+                <h3>🐍 Python Programming</h3>
+                <p>Python basics, data structures, functions, OOP, file handling, and practical examples.</p>
+                <a href="PYTHON/python.html" class="btn btn-card">Open Python Notes</a>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="card subject-card reveal">
+                <h3>🗄️ DBMS</h3>
+                <p>Database concepts, SQL, normalization, ER diagrams, and database management.</p>
+                <a href="DBMS/dbms.html" class="btn btn-card">Open DBMS Notes</a>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="card subject-card reveal">
+                <h3>⚙️ Operating System</h3>
+                <p>OS concepts, processes, memory management, scheduling, and file systems.</p>
+                <a href="OS/os.html" class="btn btn-card">Open OS Notes</a>
+            </div>
+
+            <!-- Card 7 -->
+            <div class="card subject-card reveal">
+                <h3>🌐 Web Technology</h3>
+                <p>HTML, CSS, JavaScript, frontend development, and web concepts.</p>
+                <a href="WEB_TECH/web.html" class="btn btn-card">Open Web Technology Notes</a>
+            </div>
+
+            <!-- Card 8 -->
+            <div class="card subject-card reveal">
+                <h3>🤖 Artificial Intelligence</h3>
+                <p>AI fundamentals, machine learning concepts, algorithms, and applications.</p>
+                <a href="AI/ai.html" class="btn btn-card">Open AI Notes</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="container">
+        <div class="section-header reveal">
+            <h2>Platform <span class="text-gradient">Features</span></h2>
+        </div>
+        <div class="grid-container">
+            <div class="card feature-card reveal">
+                <div class="feature-icon">📚</div>
+                <h4>Organized Notes</h4>
+                <p>All BCA subjects arranged systematically.</p>
+            </div>
+            <div class="card feature-card reveal">
+                <div class="feature-icon">🎯</div>
+                <h4>Exam Preparation</h4>
+                <p>Designed for university examinations.</p>
+            </div>
+            <div class="card feature-card reveal">
+                <div class="feature-icon">💻</div>
+                <h4>Programming Practice</h4>
+                <p>Includes examples and practical codes.</p>
+            </div>
+            <div class="card feature-card reveal">
+                <div class="feature-icon">🚀</div>
+                <h4>Continuous Learning</h4>
+                <p>New subjects and notes added regularly.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <div class="stats-wrapper">
+        <section id="stats" class="container stats-grid reveal">
+            <div class="stat-item">
+                <div class="stat-number" data-target="8" data-suffix="+">0</div>
+                <div class="stat-label">Subjects</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="4" data-suffix="+">0</div>
+                <div class="stat-label">Programming Languages</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="100" data-suffix="+">0</div>
+                <div class="stat-label">Notes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-text="BCA">...</div>
+                <div class="stat-label">Course</div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Learning Roadmap Section -->
+    <section id="roadmap" class="container">
+        <div class="section-header reveal">
+            <h2>Learning <span class="text-gradient">Roadmap</span></h2>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item left reveal">
+                <div class="timeline-content">
+                    <span class="timeline-step">Step 1</span>
+                    <div class="timeline-title">Semester Learning Journey</div>
+                </div>
+            </div>
+            <div class="timeline-item right reveal">
+                <div class="timeline-content">
+                    <span class="timeline-step">Step 2</span>
+                    <div class="timeline-title">Programming Fundamentals</div>
+                </div>
+            </div>
+            <div class="timeline-item left reveal">
+                <div class="timeline-content">
+                    <span class="timeline-step">Step 3</span>
+                    <div class="timeline-title">Core Computer Science Subjects</div>
+                </div>
+            </div>
+            <div class="timeline-item right reveal">
+                <div class="timeline-content">
+                    <span class="timeline-step">Step 4</span>
+                    <div class="timeline-title">Data Science & AI</div>
+                </div>
+            </div>
+            <div class="timeline-item left reveal">
+                <div class="timeline-content">
+                    <span class="timeline-step">Step 5</span>
+                    <div class="timeline-title">Development Skills</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="container">
+        <div class="section-header reveal">
+            <h2>About This <span class="text-gradient">Repository</span></h2>
+        </div>
+        <div class="about-content reveal">
+            <p>"This repository contains my BCA academic notes, programming materials, and computer science resources organized for easy learning and revision."</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-logo">BCA <span class="text-gradient">Notes Repository</span></div>
+            <p class="footer-desc">Built for students, by a student.</p>
+            
+            <div class="social-links">
+                <!-- GitHub Icon -->
+                <a href="#" aria-label="GitHub">
+                    <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                </a>
+                <!-- LinkedIn Icon -->
+                <a href="#" aria-label="LinkedIn">
+                    <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                </a>
+            </div>
+            
+            <div class="copyright">
+                &copy; <script>document.write(new Date().getFullYear())</script> BCA Notes Repository. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 1. Theme Toggle & LocalStorage Logic
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
+
+        // Check LocalStorage for theme
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        setTheme(savedTheme);
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            setTheme(newTheme);
+        });
+
+        function setTheme(theme) {
+            htmlElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            
+            if(theme === 'light') {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+            } else {
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            }
+        }
+
+        // 2. Scroll Reveal Animations (Intersection Observer)
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealOptions = {
+            threshold: 0.15,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const revealObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    return;
+                }
+                entry.target.classList.add('active');
+                observer.unobserve(entry.target); // Run once
+            });
+        }, revealOptions);
+
+        revealElements.forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        // 3. Animated Counters Logic
+        const counters = document.querySelectorAll('.stat-number');
+        let hasCounted = false;
+
+        const counterObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !hasCounted) {
+                    hasCounted = true;
+                    counters.forEach(counter => {
+                        // Check if it's a text-based stat (like "BCA")
+                        if (counter.hasAttribute('data-text')) {
+                            counter.innerText = counter.getAttribute('data-text');
+                            return;
+                        }
+
+                        // Otherwise, animate numbers
+                        const target = +counter.getAttribute('data-target');
+                        const suffix = counter.getAttribute('data-suffix') || '';
+                        const duration = 2000; // ms
+                        const increment = target / (duration / 16); // 60fps
+
+                        let current = 0;
+                        const updateCounter = () => {
+                            current += increment;
+                            if (current < target) {
+                                counter.innerText = Math.ceil(current) + suffix;
+                                requestAnimationFrame(updateCounter);
+                            } else {
+                                counter.innerText = target + suffix;
+                            }
+                        };
+                        updateCounter();
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const statsSection = document.getElementById('stats');
+        if (statsSection) {
+            counterObserver.observe(statsSection);
+        }
+
+        // 4. Navbar Background on Scroll
+        const navbar = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.1)';
+            } else {
+                navbar.style.boxShadow = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
