@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit–4: Exploratory Data Analysis (EDA) | BCA Exam Preparation</title>
+    <style>
+        :root {
+            --bg-primary: #0a0f1d;
+            --bg-secondary: #121a2d;
+            --bg-card: rgba(22, 31, 53, 0.75);
+            --bg-card-border: rgba(0, 229, 255, 0.18);
+            --text-primary: #f0f4f8;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-cyan: #00e5ff;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-emerald: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
+            --shadow-glow: 0 0 25px rgba(0, 229, 255, 0.15);
+            --glass-blur: blur(16px);
+            --card-radius: 16px;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --code-bg: #070b14;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #f1f5f9;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-card-border: rgba(14, 165, 233, 0.25);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --accent-cyan: #0284c7;
+            --accent-blue: #2563eb;
+            --accent-purple: #7c3aed;
+            --accent-emerald: #059669;
+            --accent-amber: #d97706;
+            --accent-rose: #e11d48;
+            --shadow-glow: 0 8px 30px rgba(2, 132, 199, 0.08);
+            --code-bg: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            transition: var(--transition-smooth);
+            overflow-x: hidden;
+        }
+
+        header.navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--bg-card);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-bottom: 1px solid var(--bg-card-border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: #0a0f1d;
+            font-size: 1.2rem;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+        }
+
+        .brand-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--text-primary), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            background: var(--bg-secondary);
+            border: 1px solid var(--bg-card-border);
+            color: var(--text-primary);
+            padding: 0.6rem 1rem 0.6rem 2.5rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            outline: none;
+            width: 220px;
+            transition: var(--transition-smooth);
+        }
+
+        .search-box input:focus {
+            width: 300px;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+        }
+
+        .search-box svg {
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+
+        .theme-toggle-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--bg-card-border);
+            color: var(--text-primary);
+            padding: 0.6rem;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-smooth);
+            width: 40px;
+            height: 40px;
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: var(--accent-cyan);
+            transform: rotate(15deg);
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .hero-banner {
+            background: linear-gradient(135deg, rgba(0, 229, 255, 0.08), rgba(59, 130, 246, 0.05));
+            border: 1px solid var(--bg-card-border);
+            border-radius: var(--card-radius);
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 229, 255, 0.05) 0%, transparent 60%);
+            animation: pulse 10s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(0, 229, 255, 0.15);
+            color: var(--accent-cyan);
+            padding: 0.4rem 1.2rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(0, 229, 255, 0.3);
+        }
+
+        .hero-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+
+        .quick-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .quick-nav-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--bg-card-border);
+            color: var(--text-primary);
+            padding: 0.4rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .quick-nav-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+
+        .academic-section {
+            background: var(--bg-card);
+            border: 1px solid var(--bg-card-border);
+            border-radius: var(--card-radius);
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            box-shadow: var(--shadow-glow);
+            transition: var(--transition-smooth);
+        }
+
+        .section-header {
+            border-bottom: 2px solid var(--bg-card-border);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-number {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: #0a0f1d;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        .exam-short-box {
+            background: rgba(0, 229, 255, 0.05);
+            border-left: 4px solid var(--accent-cyan);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 1.8rem;
+        }
+
+        .exam-short-title {
+            font-weight: 700;
+            color: var(--accent-cyan);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .exam-long-box {
+            background: rgba(59, 130, 246, 0.03);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 12px;
+            padding: 1.75rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .exam-long-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sub-heading {
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin: 1.5rem 0 1rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px dashed var(--bg-card-border);
+        }
+
+        .sub-sub-heading {
+            font-size: 1.1rem;
+            color: var(--accent-cyan);
+            margin: 1.2rem 0 0.6rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .formula-card {
+            background: var(--code-bg);
+            border: 1px solid var(--bg-card-border);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--accent-cyan);
+            margin: 1rem 0;
+            display: inline-block;
+            width: 100%;
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .example-box {
+            background: rgba(16, 185, 129, 0.06);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            margin: 1.2rem 0;
+        }
+
+        .example-title {
+            font-weight: 700;
+            color: var(--accent-emerald);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-radius: 12px;
+            border: 1px solid var(--bg-card-border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            background: var(--bg-secondary);
+        }
+
+        th {
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--accent-cyan);
+            padding: 1rem;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border-bottom: 2px solid var(--bg-card-border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 0.9rem 1rem;
+            border-bottom: 1px solid var(--bg-card-border);
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-primary);
+        }
+
+        .timeline {
+            position: relative;
+            padding: 1rem 0 1rem 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--accent-cyan), var(--accent-blue), var(--accent-purple));
+        }
+
+        .timeline-step {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-node {
+            position: absolute;
+            left: -2rem;
+            top: 0.2rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+            border: 3px solid var(--bg-primary);
+            box-shadow: 0 0 10px var(--accent-cyan);
+        }
+
+        .timeline-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--bg-card-border);
+            padding: 1.2rem;
+            border-radius: 10px;
+        }
+
+        .timeline-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .accordion-item {
+            border: 1px solid var(--bg-card-border);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            background: var(--bg-secondary);
+        }
+
+        .accordion-header {
+            padding: 1.2rem 1.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition-smooth);
+        }
+
+        .accordion-header:hover {
+            background: rgba(0, 229, 255, 0.05);
+            color: var(--accent-cyan);
+        }
+
+        .accordion-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
+            background: var(--bg-primary);
+        }
+
+        .accordion-item.active .accordion-content {
+            padding: 1.5rem;
+            max-height: 1200px;
+            border-top: 1px solid var(--bg-card-border);
+        }
+
+        .accordion-item.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-icon {
+            transition: var(--transition-smooth);
+            fill: var(--accent-cyan);
+        }
+
+        .revision-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .revision-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--bg-card-border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .revision-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-cyan);
+        }
+
+        .revision-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 5px 20px rgba(0, 229, 255, 0.1);
+        }
+
+        .revision-term {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--accent-cyan);
+            margin-bottom: 0.5rem;
+        }
+
+        .revision-def {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2.5rem;
+            border-top: 1px solid var(--bg-card-border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 3rem;
+            background: var(--bg-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2rem; }
+            .hero-subtitle { font-size: 1rem; }
+            .academic-section { padding: 1.5rem; }
+            header.navbar { padding: 1rem; }
+            .search-box input { width: 140px; }
+            .search-box input:focus { width: 180px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="brand-container">
+            <div class="brand-icon">BCA</div>
+            <div class="brand-title">Data Science Exam Hub</div>
+        </div>
+        <div class="nav-controls">
+            <div class="search-box">
+                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                <input type="text" id="searchInput" placeholder="Search topics, formulas..." onkeyup="filterContent()">
+            </div>
+            <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Light/Dark Theme">
+                <span id="themeIcon">🌙</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="hero-banner">
+            <span class="hero-badge">BCA University Examination Special Notes</span>
+            <h1 class="hero-title">Unit–4: Exploratory Data Analysis (EDA)</h1>
+            <p class="hero-subtitle">Comprehensive Textbook-Level Study Guide | 2-Mark Short Answers & 10-Mark Detailed Blueprints</p>
+            
+            <div class="quick-nav">
+                <a href="#sec1" class="quick-nav-btn">📍 1. EDA Intro</a>
+                <a href="#sec2" class="quick-nav-btn">📊 2. Summarization</a>
+                <a href="#sec3" class="quick-nav-btn">📈 3. Visualization</a>
+                <a href="#sec4" class="quick-nav-btn">⚙️ 4. Model Prep</a>
+                <a href="#sec5" class="quick-nav-btn">💡 5. Hypotheses</a>
+                <a href="#sec6" class="quick-nav-btn">🔢 6. Multivariate</a>
+                <a href="#sec7" class="quick-nav-btn">🌐 7. High-Dim Data</a>
+                <a href="#sec8" class="quick-nav-btn">⏳ 8. Process Flow</a>
+                <a href="#sec9" class="quick-nav-btn">🎓 9. Exam Questions</a>
+                <a href="#sec10" class="quick-nav-btn">⚡ 10. Quick Revision</a>
+            </div>
+        </section>
+
+        <section id="sec1" class="academic-section searchable">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-number">1</span>
+                    Introduction to Exploratory Data Analysis (EDA)
+                </h2>
+            </div>
+
+            <div class="exam-short-box">
+                <div class="exam-short-title">⚡ Short Exam Answer (2–5 Marks)</div>
+                <p><strong>Exploratory Data Analysis (EDA)</strong> is an iterative data analysis approach used to summarize, analyze, and investigate the main characteristics of a dataset, often using visual methods and summary statistics before executing formal statistical modeling or machine learning tasks. Developed by American mathematician John Tukey in the 1970s, EDA helps uncover hidden underlying structures, spot anomalies (outliers), test basic assumptions, and check hypothesis validity without relying on predefined model assumptions.</p>
+            </div>
+
+            <div class="exam-long-box">
+                <div class="exam-long-title">📖 Detailed 10-Mark Answer Blueprint</div>
+
+                <h3 class="sub-heading">1.1 Detailed Definition of Exploratory Data Analysis</h3>
+                <p>Exploratory Data Analysis is the critical first step in the data science lifecycle. It emphasizes critical scrutiny of dataset features without imposing a rigid predictive statistical model onto the data beforehand. Rather than testing a pre-selected formal probabilistic hypothesis right away (which is Confirmatory Data Analysis), EDA allows the raw data itself to reveal its underlying distribution, structure, relationships, and irregularities. It relies heavily on graphical representation and intuitive summary calculations to maximize insight into a dataset's internal characteristics.</p>
+
+                <h3 class="sub-heading">1.2 History & The Pivotal Role of John Tukey</h3>
+                <p>The groundwork for modern EDA was laid by the eminent American statistician <strong>John W. Tukey</strong> in his seminal 1977 textbook titled <em>"Exploratory Data Analysis"</em>. Tukey argued that classical statistical practice was over-emphasizing Confirmatory Data Analysis (CDA)—where statistical significance testing (such as p-values, hypothesis tests) was strictly applied to confirm existing theories—often blinding researchers to unexpected insights hidden within raw data. Tukey advocated for a philosophical shift toward treating data like a detective investigates a crime scene, using techniques such as stem-and-leaf plots, box plots, and schematic summaries to let the data speak for itself before drawing definitive conclusions.</p>
+
+                <h3 class="sub-heading">1.3 Why EDA is Performed Before Formal Statistical Modeling</h3>
+                <p>Building complex statistical algorithms or predictive machine learning models directly on raw, unexamined data frequently leads to inaccurate predictions, biased models, or complete model failure ("garbage in, garbage out"). EDA provides mandatory foundational insurance by enabling data scientists to:</p>
+                <ul>
+                    <li><strong>Validate Structural Assumptions:</strong> Machine learning algorithms like Linear Regression assume Gaussian distribution and linear relationships. EDA verifies if these assumptions hold true.</li>
+                    <li><strong>Identify Anomalies & Outliers:</strong> Outliers can heavily distort standard statistical measures (like mean) and warp linear model fitting lines.</li>
+                    <li><strong>Handle Missing Data Appropriately:</strong> EDA exposes missingness patterns (Missing Completely at Random vs. Missing Systematically), guiding whether imputation or deletion is required.</li>
+                    <li><strong>Evaluate Feature Variance & Correlation:</strong> EDA prevents multi-collinearity issues by identifying redundant features before model training.</li>
+                </ul>
+
+                <h3 class="sub-heading">1.4 Role of EDA in the Data Science Workflow</h3>
+                <p>In a standard Data Science lifecycle (CRISP-DM framework), EDA acts as the core bridge connecting Data Engineering (ingestion, cleaning) with Advanced Data Modeling (machine learning, AI). It transforms unstructured or structured raw observations into refined, domain-actionable data attributes while refining project scope and problem statements.</p>
+
+                <div class="example-box">
+                    <div class="example-title">💡 Real-World Enterprise Example: Retail Customer Churn</div>
+                    <p><strong>Scenario:</strong> An e-commerce enterprise experiences a 15% drop in monthly user retention and wants to build a predictive customer churn model.</p>
+                    <p><strong>EDA Application:</strong> Before building a neural network or logistic regression model, analysts perform EDA. By creating box plots of customer account age vs. churn, histograms of transaction frequencies, and correlation heatmaps of discount usage, they discover that 80% of churned users experienced payment gateway delays greater than 5 seconds. EDA identified this unexpected structural bottleneck, allowing the business to fix the payment infrastructure before running machine learning models on corrupted retention metrics.</p>
+                </div>
+
+                <h3 class="sub-heading">1.5 Key Advantages of EDA</h3>
+                <ul>
+                    <li><strong>Early Detection of Flaws:</strong> Spots errors, missing records, data entry bugs, and extreme values before committing computational resources to training models.</li>
+                    <li><strong>Informed Feature Selection:</strong> Helps select the most impactful variables (features) and drop uninformative ones, drastically reducing model variance and execution time.</li>
+                    <li><strong>Enhanced Stakeholder Communication:</strong> Visual outputs (bar charts, box plots) translate complex mathematical distributions into clear business insights for executive decision-makers.</li>
+                    <li><strong>Assumption Validation:</strong> Ensures chosen algorithms match the mathematical reality of the underlying data distribution.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="sec2" class="academic-section searchable">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-number">2</span>
+                    Essential Exploratory Techniques for Summarizing Data
+                </h2>
+            </div>
+
+            <div class="exam-short-box">
+                <div class="exam-short-title">⚡ Short Exam Answer (2–5 Marks)</div>
+                <p><strong>Data Summarization</strong> is the process of compressing large, complex raw datasets into compact, interpretable quantitative statistics that describe the central tendency, dispersion, and overall shape of a dataset's distribution without losing critical structural information. It uses <em>Measures of Central Tendency</em> (Mean, Median, Mode) to pinpoint the middle value and <em>Measures of Dispersion</em> (Range, Variance, Standard Deviation) to measure variability and spread around that center.</p>
+            </div>
+
+            <div class="exam-long-box">
+                <div class="exam-long-title">📖 Detailed 10-Mark Answer Blueprint</div>
+
+                <h3 class="sub-heading">2.1 Detailed Concepts of Central Tendency</h3>
+
+                <h4 class="sub-sub-heading">A. Arithmetic Mean</h4>
+                <p><strong>Definition:</strong> The arithmetic mean (or average) is the sum of all numerical values in a dataset divided by the total number of observations.</p>
+                <div class="formula-card">Formula: x̄ = (∑ x_i) / N = (x₁ + x₂ + ... + x_n) / N</div>
+                <p><strong>Step-by-Step Example:</strong> Calculate the mean for customer support response times (in minutes): [12, 15, 18, 20, 25].<br>
+                Sum = 12 + 15 + 18 + 20 + 25 = 90. N = 5. Mean = 90 / 5 = 18 minutes.</p>
+                <p><strong>Key Applications & Limitations:</strong> Ideal for symmetrical distributions without extreme values. Highly sensitive to outliers (e.g., adding an outlier of 300 minutes inflates the average drastically to 65 minutes, skewing true performance metrics).</p>
+
+                <h4 class="sub-sub-heading">B. Median</h4>
+                <p><strong>Definition:</strong> The median is the positional middle value of a dataset when ordered sequentially from lowest to highest. It splits the dataset into two equal halves (50% above, 50% below).</p>
+                <div class="formula-card">
+                    Formula (Odd N): Median = Value at position [(N + 1) / 2]<br>
+                    Formula (Even N): Median = Average of values at positions (N/2) and (N/2 + 1)
+                </div>
+                <p><strong>Step-by-Step Example:</strong> Dataset [12, 15, 18, 20, 25, 300]. N = 6 (Even).<br>
+                Middle positions: 6/2 = 3rd element (18) and 4th element (20). Median = (18 + 20) / 2 = 19 minutes.</p>
+                <p><strong>Key Applications:</strong> Highly robust against extreme outliers. Preferred measure for skewed data such as real estate prices, household income distributions, and web server latencies.</p>
+
+                <h4 class="sub-sub-heading">C. Mode</h4>
+                <p><strong>Definition:</strong> The mode is the specific value that appears with the highest frequency within a dataset. A dataset can be unimodal, bimodal, multimodal, or have no mode at all.</p>
+                <p><strong>Example:</strong> E-commerce clothing sizes purchased: [S, M, M, M, L, L, XL]. Mode = Size 'M' (appears 3 times).</p>
+                <p><strong>Key Applications:</strong> Primary summary metric for categorical (nominal) data where numerical operations like mean or median are mathematically impossible.</p>
+
+                <h3 class="sub-heading">2.2 Detailed Concepts of Measures of Dispersion</h3>
+
+                <h4 class="sub-sub-heading">A. Range</h4>
+                <p><strong>Definition:</strong> The simplest measure of spread, calculated as the absolute difference between the maximum and minimum observations in a dataset.</p>
+                <div class="formula-card">Formula: Range = X_max - X_min</div>
+                <p><strong>Example:</strong> Transaction values [$10, $25, $50, $120, $500]. Range = $500 - $10 = $490.</p>
+                <p><strong>Importance:</strong> Provides an immediate snapshot of total spread but depends entirely on extreme boundary values, ignoring how data points are distributed within those bounds.</p>
+
+                <h4 class="sub-sub-heading">B. Variance (Sample & Population)</h4>
+                <p><strong>Definition:</strong> Variance measures the average squared deviation of each data point from the mean of the dataset. It quantifies how far data values spread out from their center.</p>
+                <div class="formula-card">
+                    Population Variance (σ²): σ² = ∑ (x_i - μ)² / N<br>
+                    Sample Variance (s²): s² = ∑ (x_i - x̄)² / (n - 1)
+                </div>
+                <p><strong>Meaning:</strong> Squaring deviations eliminates negative values so opposite deviations don't cancel out. However, it changes the measurement scale to squared units (e.g., dollars squared), making intuitive interpretation difficult.</p>
+
+                <h4 class="sub-sub-heading">C. Standard Deviation</h4>
+                <p><strong>Definition:</strong> Standard deviation is the square root of the variance. It measures the spread of data in the exact same measurement units as the original observations.</p>
+                <div class="formula-card">Formula: Standard Deviation (s or σ) = √Variance</div>
+                <p><strong>Interpretation:</strong> In a standard normal distribution (bell curve), approximately 68.2% of data falls within ±1σ of the mean, 95.4% within ±2σ, and 99.7% within ±3σ (Empirical Rule).</p>
+
+                <h3 class="sub-heading">2.3 Master Comparison Table: Measures of Central Tendency & Dispersion</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Measure</th>
+                                <th>Type</th>
+                                <th>Meaning</th>
+                                <th>Mathematical Formula</th>
+                                <th>Outlier Sensitivity</th>
+                                <th>Primary Use Case</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Mean</strong></td>
+                                <td>Central Tendency</td>
+                                <td>Arithmetic average of all observations</td>
+                                <td><code>∑x / N</code></td>
+                                <td><span style="color:var(--accent-rose)">High</span></td>
+                                <td>Symmetric numerical data (e.g., heights, test scores)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Median</strong></td>
+                                <td>Central Tendency</td>
+                                <td>Exact middle value in sorted sequence</td>
+                                <td><code>Pos: (N+1)/2</code></td>
+                                <td><span style="color:var(--accent-emerald)">Low (Robust)</span></td>
+                                <td>Skewed numerical data (e.g., income, house prices)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mode</strong></td>
+                                <td>Central Tendency</td>
+                                <td>Most frequently occurring observation</td>
+                                <td><code>Highest Frequency</code></td>
+                                <td><span style="color:var(--accent-emerald)">Low</span></td>
+                                <td>Categorical data (e.g., survey responses, product types)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Range</strong></td>
+                                <td>Dispersion</td>
+                                <td>Difference between highest & lowest value</td>
+                                <td><code>X_max - X_min</code></td>
+                                <td><span style="color:var(--accent-rose)">Extremely High</span></td>
+                                <td>Quick rough estimate of boundary spread</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Variance</strong></td>
+                                <td>Dispersion</td>
+                                <td>Average squared distance from mean</td>
+                                <td><code>∑(x - x̄)² / (n - 1)</code></td>
+                                <td><span style="color:var(--accent-rose)">High</span></td>
+                                <td>Mathematical statistical modeling & risk analysis</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Std Deviation</strong></td>
+                                <td>Dispersion</td>
+                                <td>Standard spread in original units</td>
+                                <td><code>√Variance</code></td>
+                                <td><span style="color:var(--accent-rose)">High</span></td>
+                                <td>Quantifying operational risk, variability, & normal curves</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec3" class="academic-section searchable">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-number">3</span>
+                    Data Visualization in EDA
+                </h2>
+            </div>
+
+            <div class="exam-short-box">
+                <div class="exam-short-title">⚡ Short Exam Answer (2–5 Marks)</div>
+                <p><strong>Data Visualization</strong> is the graphic representation of information and data using visual elements such as charts, plots, graphs, and maps. In EDA, visualization translates complex numerical patterns, correlations, trends, and anomalies into clear human-interpretable visual signals. Visual tools are indispensable for pattern recognition because the human visual cortex processes visual relationships far faster than raw tabular numbers.</p>
+            </div>
+
+            <div class="exam-long-box">
+                <div class="exam-long-title">📖 Detailed 10-Mark Answer Blueprint</div>
+
+                <h3 class="sub-heading">3.1 Importance of Visualization in Pattern Discovery & Decision Making</h3>
+                <p>Tables of raw numerical data struggle to convey underlying structural information, especially when handling thousands of rows. Data visualization addresses this by enabling data scientists to perform intuitive pattern discovery, detect subtle data entry issues, observe multimodal distributions, and evaluate complex multi-variable interactions. A classic example demonstrating the absolute necessity of visualization is <strong>Anscombe's Quartet</strong>—four datasets with identical statistical means, variances, and correlations, yet completely distinct spatial distributions when plotted visually.</p>
+
+                <h3 class="sub-heading">3.2 Key EDA Graphical Visualization Techniques</h3>
+
+                <h4 class="sub-sub-heading">A. Bar Chart</h4>
+                <p><strong>Definition & Construction:</strong> A graph that represents categorical data using rectangular bars where the length/height of each bar is directly proportional to the values or frequencies it represents. One axis shows the discrete categories while the other shows numerical frequency or percentage scales.</p>
+                <p><strong>Uses & Example:</strong> Comparing revenue performance across distinct regional store branches (North, South, East, West). Best applied to nominal or ordinal categorical variables.</p>
+
+                <h4 class="sub-sub-heading">B. Histogram</h4>
+                <p><strong>Definition & Characteristics:</strong> A visual plot used to show the frequency distribution of a continuous continuous variable divided into contiguous, non-overlapping numerical ranges called "bins". Unlike bar charts, adjacent bars in a histogram physically touch each other (no gaps) to signify a continuous numerical domain.</p>
+                <p><strong>Uses:</strong> Identifying the underlying probability distribution shape (e.g., Normal/Gaussian, Skewed Right, Skewed Left, Bimodal) and detecting variance concentration.</p>
+
+                <h4 class="sub-sub-heading">C. Scatter Plot</h4>
+                <p><strong>Definition:</strong> A two-dimensional plot displaying individual data points positioned along a horizontal (X) and vertical (Y) Cartesian axis to examine the potential relationship between two continuous variables.</p>
+                <p><strong>Uses & Relationships:</strong> Essential for determining linear or non-linear correlation, direction (positive/negative), strength of association, and identifying bivariate spatial outliers (e.g., plotting Advertising Spend vs. Product Revenue).</p>
+
+                <h4 class="sub-sub-heading">D. Box Plot (Box-and-Whisker Plot)</h4>
+                <p><strong>Definition:</strong> A standardized graphical summary displaying a continuous dataset's five-number summary: Minimum, First Quartile (Q1/25th percentile), Median (Q2/50th percentile), Third Quartile (Q3/75th percentile), and Maximum.</p>
+                <div class="formula-card">
+                    Interquartile Range (IQR) = Q3 - Q1<br>
+                    Lower Boundary (Outlier Cutoff) = Q1 - 1.5 * IQR<br>
+                    Upper Boundary (Outlier Cutoff) = Q3 + 1.5 * IQR
+                </div>
+                <p><strong>Outlier Detection Role:</strong> Points extending beyond the calculated upper and lower whisker boundaries are plotted as individual points, marking them as statistical outliers.</p>
+
+                <h4 class="sub-sub-heading">E. Line Graph</h4>
+                <p><strong>Definition:</strong> A plot displaying data points connected by straight line segments, typically used to track sequential changes over continuous time intervals.</p>
+                <p><strong>Time-Based Analysis:</strong> Ideal for longitudinal datasets, trend forecasting, evaluation of seasonality, and temporal anomaly monitoring (e.g., tracking monthly server CPU load over a calendar year).</p>
+
+                <h3 class="sub-heading">3.3 Master Visualization Comparison Table</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Graph Type</th>
+                                <th>Primary Purpose</th>
+                                <th>Input Data Type</th>
+                                <th>Key Analytical Features</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Bar Chart</strong></td>
+                                <td>Compare counts/aggregates across categories</td>
+                                <td>Categorical + Numerical</td>
+                                <td>Discrete visual gaps between bars</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Histogram</strong></td>
+                                <td>Inspect distribution shape & frequency</td>
+                                <td>Continuous Numerical</td>
+                                <td>Continuous contiguous bins (no gaps)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Scatter Plot</strong></td>
+                                <td>Explore bivariate correlation & relationships</td>
+                                <td>Two Continuous Variables</td>
+                                <td>Spatial point clouds, trendline analysis</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Box Plot</strong></td>
+                                <td>Identify skewness, quartiles, & outliers</td>
+                                <td>Continuous Numerical</td>
+                                <td>1.5xIQR whisker rules for outlier identification</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Line Graph</strong></td>
+                                <td>Track temporal trends over continuous time</td>
+                                <td>Time-Series / Sequential</td>
+                                <td>Trendlines, cycle identification, seasonality</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec4" class="academic-section searchable">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-number">4</span>
+                    Application of EDA Before Formal Model Building
+                </h2>
+            </div>
+
+            <div class="exam-short-box">
+                <div class="exam-short-title">⚡ Short Exam Answer (2–5 Marks)</div>
+                <p>Performing EDA before model building prevents fitting algorithms on flawed data, avoiding misleading results. It ensures the raw data conforms to algorithmic assumptions, addresses missing records and outliers, reduces dimensionality via feature selection, and guides feature transformation—improving predictive accuracy, generalization, and computational performance.</p>
+            </div>
+
+            <div class="exam-long-box">
+                <div class="exam-long-title">📖 Detailed 10-Mark Answer Blueprint</div>
+
+                <h3 class="sub-heading">4.1 Why Data Exploration is Mandatory Before Machine Learning</h3>
+                <p>Machine Learning algorithms rely on strict mathematical formulas. For example, Ordinary Least Squares (OLS) Linear Regression assumes multivariate normality, homoscedasticity (equal variance of residuals), and an absence of multicollinearity. Decision Trees are sensitive to class imbalance, while Distance-based algorithms (K-Nearest Neighbors, SVMs) can be skewed by features on large numerical scales. Applying algorithms without EDA risks creating misleading models.</p>
+
+                <h3 class="sub-heading">4.2 Key Objectives of Pre-Modeling EDA</h3>
+                <ul>
+                    <li><strong>Understanding Distribution:</strong> Checking whether variables follow Gaussian distributions. Highly skewed variables often require logarithmic, square-root, or Box-Cox transformations before model fitting.</li>
+                    <li><strong>Detecting & Handling Missing Values:</strong> Determining if missingness is MCAR (Missing Completely at Random), MAR (Missing at Random), or MNAR (Missing Not at Random) to decide between median/mean imputation, KNN imputation, or record deletion.</li>
+                    <li><strong>Detecting Outliers:</strong> Identifying extreme data points that could distort model convergence or linear fitting coefficients.</li>
+                    <li><strong>Feature Selection & Engineering:</strong> Dropping collinear features (r > 0.85) to avoid model instability, and engineering high-impact interaction terms.</li>
+                </ul>
+
+                <h3 class="sub-heading">4.3 The Structured 5-Stage EDA Workflow</h3>
+                <div class="timeline">
+                    <div class="timeline-step">
+                        <div class="timeline-node"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Stage 1: Data Collection & Ingestion</div>
+                            <p>Importing data from databases, APIs, CSVs, or data warehouses into analytical structures (e.g., Pandas DataFrames). Initial inspection of row/column dimensions and data types.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-node"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Stage 2: Data Cleaning & Preprocessing</div>
+                            <p>Standardizing data formats, fixing structural typos, converting data types, removing duplicate rows, and treating missing values.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-node"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Stage 3: Univariate & Bivariate Exploration</div>
+                            <p>Calculating summary statistics (mean, median, standard deviation) and plotting visual distributions (histograms, box plots, scatter plots).</p>
+                        </div>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-node"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Stage 4: Feature Analysis & Engineering</div>
+                            <p>Computing correlation matrices, detecting multicollinearity, transforming non-normal features, and encoding categorical variables.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-node"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Stage 5: Final Model Preparation</div>
+                            <p>Splitting cleaned data into Training/Testing sets, applying feature scaling (StandardScaler/MinMaxScaler), and passing clean arrays to algorithms.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-title">💡 Banking Sector Credit Scoring Example</div>
+                    <p><strong>Scenario:</strong> A retail bank builds a machine learning default-prediction model for loan applicants.</p>
+                    <p><strong>Pre-Model EDA Discovery:</strong> EDA shows the "Annual Income" feature has a strong positive skew with extreme outliers (e.g., high-net-worth applicants). Feeding this directly into a Logistic Regression model distorts risk boundaries. EDA identifies this issue, leading analysts to apply a logarithmic transformation <code>log(income)</code>, normalizing the distribution and improving model accuracy by 14%.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec5" class="academic-section searchable">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-number">5</span>
+                    Identifying and Eliminating Potential Hypotheses
+                </h2>
+            </div>
+
+            <div class="exam-short-box">
+                <div class="exam-short-title">⚡ Short Exam Answer (2–5 Marks)</div>
+                <p>In data analysis, a <strong>hypothesis</strong> is an educated, testable assumption regarding relationships between business variables or data attributes. EDA helps evaluate initial hypotheses visually and statistically. It helps analysts discard incorrect assumptions early, uncover unexpected data patterns, and prevent spending time building formal models on false premises.</p>
+            </div>
+
+            <div class="exam-long-box">
+                <div class="exam-long-title">📖 Detailed 10-Mark Answer Blueprint</div>
+
+                <h3 class="sub-heading">5.1 The Role of Hypotheses and Assumptions in Analysis</h3>
+                <p>Data science projects typically begin with domain-specific business hypotheses (e.g., <em>"Customers over 50 spend more on mobile apps"</em> or <em>"Marketing campaigns on Platform A drive higher conversion rates"</em>). If analysts build formal predictive models based solely on intuition, they risk wasting resources on false assumptions. EDA acts as a pragmatic reality check to confirm or refute these initial hypotheses using data evidence before formal statistical modeling.</p>
+
+                <h3 class="sub-heading">5.2 How EDA Refutes False Assumptions & Prevents Bias</h3>
+                <p>Human intuition is vulnerable to cognitive biases, such as confirmation bias (seeking only data that supports existing beliefs). EDA addresses this by examining all variables through neutral visual and statistical tools:</p>
+                <ul>
+                    <li><strong>Evaluating Visual Separability:</strong> Using grouped box plots or scatter plots to test if distinct categories show measurable differences in target variables.</li>
+                    <li><strong>Identifying Confounding Variables:</strong> Revealing hidden third variables that create spurious correlations between two seemingly related metrics (Simpson's Paradox).</li>
+                    <li><strong>Validating Statistical Significance:</strong> Computing cross-tabulations and chi-square metrics to verify whether observed category differences reflect true population characteristics or random variation.</li>
+                </ul>
+
+                <div class="example-box">
+                    <div class="example-title">💡 E-Commerce Platform Case Study</div>
+                    <p><strong>Initial Executive Hypothesis:</strong> The product management team assumes cart abandonment occurs primarily because users dislike the mobile checkout interface.</p>
+                    <p><strong>EDA Refutation Process:</strong> Analysts plot user drop-off across device types, payment methods, and shipping costs. EDA reveals checkout drop-off rates are identical across desktop and mobile. However, a scatter plot of Abandonment Rate vs. Shipping Fee displays a steep jump whenever shipping fees exceed $10. EDA disproves the interface hypothesis and highlights the real issue: mandatory high shipping costs.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec6" class="academic-section searchable">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-number">6</span>
+                    Common Multivariate Statistical Techniques
+                </h2>
+            </div>
+
+            <div class="exam-short-box">
+                <div class="exam-short-title">⚡ Short Exam Answer (2–5 Marks)</div>
+                <p><strong>Multivariate Statistical Techniques</strong> analyze multiple variables simultaneously to understand complex interrelationships, dependencies, and underlying structures across dimensions. Key methods include <strong>Correlation Analysis</strong> (measuring association strength), <strong>Regression Analysis</strong> (predicting continuous outcomes), <strong>Principal Component Analysis / PCA</strong> (dimensionality reduction), and <strong>Cluster Analysis</strong> (grouping similar data instances).</p>
+            </div>
+
+            <div class="exam-long-box">
+                <div class="exam-long-title">📖 Detailed 10-Mark Answer Blueprint</div>
+
+                <h3 class="sub-heading">6.1 Correlation Analysis</h3>
+                <p><strong>Definition & Purpose:</strong> A technique used to evaluate the direction and linear strength of relationship between two continuous numerical variables.</p>
+                <div class="formula-card">Pearson Correlation Coefficient (r) = ∑((x - x̄)(y - ȳ)) / √[ ∑(x - x̄)² * ∑(y - ȳ)² ]</div>
+                <p><strong>Coefficient Scale Interpretation:</strong> Ranges from <code>-1.0</code> to <code>+1.0</code>.</p>
+                <ul>
+                    <li><code>r = +1.0</code>: Perfect Positive Linear Correlation (as X increases, Y increases proportionally).</li>
+                    <li><code>r = 0.0</code>: No Linear Correlation between variables.</li>
+                    <li><code>r = -1.0</code>: Perfect Negative Linear Correlation (as X increases, Y decreases proportionally).</li>
+                </ul>
+
+                <h3 class="sub-heading">6.2 Regression Analysis</h3>
+                <p><strong>Definition & Concept:</strong> A modeling technique used to estimate mathematical relationships between a dependent continuous output variable (Y) and one or more independent explanatory variables (X).</p>
+                <div class="formula-card">Simple Linear Regression Equation: Y = β₀ + β₁X + ε</div>
+                <p>Where <code>β₀</code> is the Y-intercept, <code>β₁</code> is the feature slope coefficient, and <code>ε</code> is the random error term. Applied extensively in financial forecasting, sales projections, and trend analysis.</p>
+
+                <h3 class="sub-heading">6.3 Principal Component Analysis (PCA)</h3>
+                <p><strong>Definition & Dimensionality Reduction Need:</strong> High-dimensional datasets (hundreds of features) often suffer from the <em>Curse of Dimensionality</em>, leading to high computational costs and risk of overfitting. PCA is an unsupervised transformation method that converts a set of correlated variables into a smaller set of uncorrelated linear combinations called <strong>Principal Components (PCs)</strong> while retaining maximum variance.</p>
+                <p><strong>Working Principle:</strong> Computes the dataset's Covariance Matrix, extracts Eigenvalues and Eigenvectors, sorts components by variance explained, and projects the original data onto these orthogonal axes.</p>
+
+                <h3 class="sub-heading">6.4 Cluster Analysis</h3>
+                <p><strong>Definition & Unsupervised Grouping:</strong> An unsupervised learning technique that partitions data points into distinct sub-groups (clusters) based on feature similarity. Data points within the same cluster share high homogeneity, while points in different clusters exhibit high heterogeneity.</p>
+                <p><strong>Popular Algorithms:</strong> K-Means (distance-centroid partitioning), Hierarchical Clustering (dendrogram trees), and DBSCAN (density-based clustering). Widely used for customer segmentation, image vectorization, and anomaly detection.</p>
+
+                <h3 class="sub-heading">6.5 Master Multivariate Techniques Matrix</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Technique</th>
+                                <th>Learning Paradigm</th>
+                                <th>Primary Objective</th>
+                                <th>Output Generated</th>
+                                <th>Real-World Application</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Correlation Analysis</strong></td>
+                                <td>Exploratory / Descriptive</td>
+                                <td>Measure linear association between variables</td>
+                                <td>Correlation Coefficient (r)</td>
+                                <td>Identifying redundant collinear features</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Regression Analysis</strong></td>
+                                <td>Supervised Learning</td>
+                                <td>Predict continuous numeric output from inputs</td>
+                                <td>Mathematical equation line (Y = mX + c)</td>
+                                <td>Predicting housing prices or stock performance</td>
+                            </tr>
+                            <tr>
+                                <td><strong>PCA</strong></td>
+                                <td>Unsupervised Learning</td>
+                                <td>Reduce features while retaining variance</td>
+                                <td>Orthogonal Principal Components</td>
+                                <td>Image compression, high-dim visualization</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cluster Analysis</strong></td>
+                                <td>Unsupervised Learning</td>
+                                <td>Group instances based on feature proximity</td>
+                                <td>Discrete cluster labels (Groups 0, 1, 2)</td>
+                                <td>Market segmentation, persona targeting</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec7" class="academic-section searchable">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-number">7</span>
+                    Visualization of High-Dimensional Data
+                </h2>
+            </div>
+
+            <div class="exam-short-box">
+                <div class="exam-short-title">⚡ Short Exam Answer (2–5 Marks)</div>
+                <p><strong>High-Dimensional Data</strong> refers to datasets containing a large number of variables or features (from tens to thousands) relative to observation counts. Visualizing more than three continuous dimensions simultaneously presents spatial challenges. Advanced techniques like <strong>Scatter Plot Matrices (SPLOM)</strong>, <strong>Correlation Heatmaps</strong>, and projection algorithms like <strong>PCA</strong> map these multi-dimensional structures down into 2D/3D visual space.</p>
+            </div>
+
+            <div class="exam-long-box">
+                <div class="exam-long-title">📖 Detailed 10-Mark Answer Blueprint</div>
+
+                <h3 class="sub-heading">7.1 Challenges of High-Dimensional Data</h3>
+                <p>Standard visual plots are limited to 2D paper/screens, or at most 3D spatial rotations. When datasets expand to 20, 50, or hundreds of features (e.g., genomic sequencing, text embeddings, sensor networks), visualizing relationships directly becomes challenging. High-dimensional spaces also suffer from sparsity, where distance metrics lose contrast—making dimensionality-reduction visualization tools essential.</p>
+
+                <h3 class="sub-heading">7.2 Advanced High-Dimensional Visualization Techniques</h3>
+
+                <h4 class="sub-sub-heading">A. Scatter Plot Matrix (SPLOM)</h4>
+                <p><strong>Concept & Construction:</strong> A grid arrangement of individual bivariate scatter plots organized into an N × N matrix format, where N represents the number of numerical features. Each cell in the grid displays the pairwise relationship between two specific variables.</p>
+                <p><strong>Uses:</strong> Allows data scientists to assess pairwise linear relationships, spot bivariate outliers, and compare multiple continuous variable distributions at a glance.</p>
+
+                <h4 class="sub-sub-heading">B. Correlation Heatmaps</h4>
+                <p><strong>Concept & Visual Display:</strong> A 2D visual representation of a feature correlation matrix where individual numerical correlation coefficients (r) are rendered as color-coded grid cells. Warm colors (e.g., deep red) signify strong positive correlation, neutral shades indicate near-zero correlation, and cool colors (e.g., dark blue) denote strong negative correlation.</p>
+                <p><strong>Applications:</strong> Identifying collinear feature pairs (multicollinearity) prior to model fitting, enabling quick variable pruning.</p>
+
+                <h4 class="sub-sub-heading">C. Projection via PCA (2D / 3D Projections)</h4>
+                <p><strong>Methodology:</strong> PCA compresses high-dimensional feature spaces down to 2 or 3 principal component axes (PC1, PC2, PC3) that capture the majority of original dataset variance. These components are then plotted on standard 2D or 3D scatter plots, allowing high-dimensional clusters or separations to be analyzed visually.</p>
+
+                <div class="example-box">
+                    <div class="example-title">💡 Genomic Expression Dataset Example</div>
+                    <p><strong>Scenario:</strong> A medical research dataset tracks 5,000 gene expression levels per patient to classify cancer subtypes.</p>
+                    <p><strong>High-Dim Visualization Strategy:</strong> Direct 2D plotting of 5,000 features is impossible. Analysts apply PCA to reduce the 5,000 gene attributes into 2 main Principal Components (PC1 and PC2), preserving 78% of total dataset variance. Plotting PC1 vs PC2 on a 2D scatter plot reveals clear, separated patient clusters corresponding to distinct tumor subtypes.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec8" class="academic-section searchable">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-number">8</span>
+                    Complete EDA Process Flow
+                </h2>
+            </div>
+
+            <p>The structured, end-to-end operational pipeline executed during a university-grade or enterprise Exploratory Data Analysis workflow follows a 7-stage sequential lifecycle:</p>
+
+            <div class="timeline">
+                <div class="timeline-step">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Step 1: Data Ingestion & Understanding Structure</div>
+                        <p>Importing data from source systems; reviewing dataset dimensions (rows/columns), column data types (nominal, ordinal, continuous), and initial row samples using commands like <code>head()</code>, <code>info()</code>, and <code>describe()</code>.</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Step 2: Data Cleaning & Preprocessing</div>
+                        <p>Resolving structural inconsistencies, removing duplicate entries, parsing dates, converting mixed strings to numeric types, and addressing missing data using mean/median/mode imputations or smart deletions.</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Step 3: Data Summarization (Univariate Analysis)</div>
+                        <p>Computing summary metrics for individual variables: central tendency (mean, median, mode) and dispersion (range, standard deviation, IQR) to understand baseline statistical properties.</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Step 4: Graphical Data Visualization</div>
+                        <p>Generating targeted visual plots: histograms and box plots for univariate distributions; scatter plots and bar charts for bivariate relationships; heatmaps and SPLOMs for high-dimensional views.</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Step 5: Pattern Discovery & Hypothesis Testing</div>
+                        <p>Analyzing visual plots to spot anomalies, identify cluster structures, test initial business hypotheses, and evaluate non-linear relationships across feature spaces.</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Step 6: Feature Selection & Transformation</div>
+                        <p>Dropping highly collinear or non-informative features, applying normalization/standardization scaling (e.g., Z-score scaling), and creating new engineered interaction variables.</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="timeline-node"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Step 7: Final Model Preparation & Handoff</div>
+                        <p>Exporting cleaned, engineered dataset splits into training and validation sets, ensuring compatibility with formal machine learning pipelines.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec9" class="academic-section searchable">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-number">9</span>
+                    Important 10-Mark University Examination Questions
+                </h2>
+            </div>
+            <p style="margin-bottom: 1.5rem;">Click on any question below to reveal its comprehensive 10-mark answer blueprint and core points to cover during BCA examinations.</p>
+
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>Q1. Explain Exploratory Data Analysis (EDA) and its importance in Data Science. [10 Marks]</span>
+                    <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                </div>
+                <div class="accordion-content">
+                    <p><strong>Answer Blueprint to score maximum marks:</strong></p>
+                    <ol>
+                        <li><strong>Formal Definition (2 Marks):</strong> Define EDA as an exploratory, graphical, and summary approach to dataset analysis pioneered by John Tukey in 1977. Contrast it with Confirmatory Data Analysis (CDA).</li>
+                        <li><strong>Core Objectives (2 Marks):</strong> Highlight assumption testing, outlier detection, missing value identification, and pattern discovery.</li>
+                        <li><strong>Role in Data Science Lifecycle (2 Marks):</strong> Detail how EDA connects data cleaning/ingestion with predictive modeling (refer to CRISP-DM framework).</li>
+                        <li><strong>Industry Case Example (2 Marks):</strong> Outline a practical business case (e.g., e-commerce churn or bank credit risk scoring).</li>
+                        <li><strong>Key Advantages (2 Marks):</strong> Bullet point early flaw detection, feature selection guidance, improved stakeholder communication, and prevention of algorithmic assumptions failure.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>Q2. Describe different techniques used for summarizing data. Compare Mean, Median, and Mode. [10 Marks]</span>
+                    <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                </div>
+                <div class="accordion-content">
+                    <p><strong>Answer Blueprint to score maximum marks:</strong></p>
+                    <ol>
+                        <li><strong>Data Summarization Overview (2 Marks):</strong> Explain compressing raw datasets into descriptive summary statistics.</li>
+                        <li><strong>Measures of Central Tendency (3 Marks):</strong> Provide definitions, exact mathematical formulas, and step-by-step examples for Mean, Median, and Mode.</li>
+                        <li><strong>Measures of Dispersion (3 Marks):</strong> Provide definitions and mathematical formulas for Range, Variance, and Standard Deviation.</li>
+                        <li><strong>Master Comparison Table (2 Marks):</strong> Draw a matrix comparing Mean vs Median vs Mode across mathematical definitions, outlier sensitivity, and appropriate data types.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>Q3. Explain different data visualization methods used in EDA with their specific applications. [10 Marks]</span>
+                    <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                </div>
+                <div class="accordion-content">
+                    <p><strong>Answer Blueprint to score maximum marks:</strong></p>
+                    <ol>
+                        <li><strong>Role of Visualization (2 Marks):</strong> Explain visual pattern recognition, citing Anscombe's Quartet as a foundational concept.</li>
+                        <li><strong>Detailed Graphical Techniques (5 Marks):</strong> Cover Bar Charts (categorical), Histograms (continuous distributions), Scatter Plots (bivariate correlation), Box Plots (five-number summary & 1.5xIQR outlier rule), and Line Graphs (time-series).</li>
+                        <li><strong>Comparison Matrix (3 Marks):</strong> Include a structured table showing Graph Type vs Purpose vs Input Data Types vs Analytical Features.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>Q4. Explain the role and step-by-step application of EDA before formal model building. [10 Marks]</span>
+                    <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                </div>
+                <div class="accordion-content">
+                    <p><strong>Answer Blueprint to score maximum marks:</strong></p>
+                    <ol>
+                        <li><strong>Need for Pre-Modeling Exploration (2 Marks):</strong> Explain how unexamined data causes model bias, poor generalization, and algorithmic assumption failures.</li>
+                        <li><strong>Critical Exploratory Tasks (3 Marks):</strong> Detail distribution shape checking, missing value treatment, outlier detection, and feature correlation analysis.</li>
+                        <li><strong>5-Stage Workflow (3 Marks):</strong> Draw and explain the sequential pipeline (Collection -> Cleaning -> Exploration -> Feature Analysis -> Model Prep).</li>
+                        <li><strong>Industry Application (2 Marks):</strong> Provide a real-world example (e.g., logarithmic income transformation in banking).</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>Q5. Describe common multivariate statistical techniques used in data science. [10 Marks]</span>
+                    <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                </div>
+                <div class="accordion-content">
+                    <p><strong>Answer Blueprint to score maximum marks:</strong></p>
+                    <ol>
+                        <li><strong>Correlation Analysis (2.5 Marks):</strong> Define Pearson's correlation coefficient (r), direction (+/-), magnitude, and collinearity detection.</li>
+                        <li><strong>Regression Analysis (2.5 Marks):</strong> Explain simple linear regression models (Y = β₀ + β₁X + ε) and independent vs. dependent variables.</li>
+                        <li><strong>Principal Component Analysis / PCA (2.5 Marks):</strong> Detail dimensionality reduction, variance retention, and orthogonal principal components.</li>
+                        <li><strong>Cluster Analysis (2.5 Marks):</strong> Explain unsupervised grouping, homogeneity/heterogeneity, and algorithms like K-Means.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>Q6. Discuss the methods and importance of visualizing high-dimensional data. [10 Marks]</span>
+                    <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                </div>
+                <div class="accordion-content">
+                    <p><strong>Answer Blueprint to score maximum marks:</strong></p>
+                    <ol>
+                        <li><strong>High-Dimensional Concept (2 Marks):</strong> Define high dimensionality and explain spatial visual limits (3D projection boundaries).</li>
+                        <li><strong>Visualization Methods (6 Marks):</strong> Detail Scatter Plot Matrices (SPLOM), Correlation Heatmaps, and 2D/3D PCA spatial projections.</li>
+                        <li><strong>Real-World Application (2 Marks):</strong> Outline a genomics or document classification case study where dimensional reduction enables clear cluster visualization.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec10" class="academic-section searchable">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-number">10</span>
+                    Quick Revision Notes & Exam Cheat Sheet
+                </h2>
+            </div>
+            <p>Fast review cards containing core term definitions for last-minute exam revision:</p>
+
+            <div class="revision-grid">
+                <div class="revision-card">
+                    <div class="revision-term">EDA</div>
+                    <div class="revision-def">Exploratory visual and statistical investigation of raw data characteristics prior to formal model building.</div>
+                </div>
+                <div class="revision-card">
+                    <div class="revision-term">John Tukey</div>
+                    <div class="revision-def">Pioneered EDA in 1977; championed letting data reveal patterns over forcing premature formal hypotheses.</div>
+                </div>
+                <div class="revision-card">
+                    <div class="revision-term">Data Summarization</div>
+                    <div class="revision-def">Compressing raw data into key quantitative metrics of central tendency and dispersion.</div>
+                </div>
+                <div class="revision-card">
+                    <div class="revision-term">Mean vs Median</div>
+                    <div class="revision-def">Mean is sensitive to extreme outliers; Median represents positional middle and is robust against skewness.</div>
+                </div>
+                <div class="revision-card">
+                    <div class="revision-term">Box Plot 1.5xIQR Rule</div>
+                    <div class="revision-def">Outlier thresholds calculated as <code>Q1 - 1.5*IQR</code> (Lower Boundary) and <code>Q3 + 1.5*IQR</code> (Upper Boundary).</div>
+                </div>
+                <div class="revision-card">
+                    <div class="revision-term">Correlation (r)</div>
+                    <div class="revision-def">Measures linear association between two variables, bounded strictly from -1.0 to +1.0.</div>
+                </div>
+                <div class="revision-card">
+                    <div class="revision-term">Regression Analysis</div>
+                    <div class="revision-def">Estimates functional relationships to predict a continuous output variable (Y) from inputs (X).</div>
+                </div>
+                <div class="revision-card">
+                    <div class="revision-term">PCA</div>
+                    <div class="revision-def">Unsupervised feature reduction technique that projects correlated variables onto orthogonal variance-maximizing axes.</div>
+                </div>
+                <div class="revision-card">
+                    <div class="revision-term">Cluster Analysis</div>
+                    <div class="revision-def">Unsupervised partitioning technique that groups data points by feature proximity and similarity.</div>
+                </div>
+                <div class="revision-card">
+                    <div class="revision-term">SPLOM & Heatmaps</div>
+                    <div class="revision-def">Key high-dimensional visualization tools displaying pairwise scatter grids and color-coded correlation matrices.</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p><strong>Prepared for BCA Introduction to Data Science Examination</strong></p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-muted);">Self-contained Exam Study Portal | Built using modern HTML5, CSS3, and JavaScript</p>
+    </footer>
+
+    <script>
+        function initTheme() {
+            const savedTheme = localStorage.getItem('bca_eda_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('bca_eda_theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            const iconSpan = document.getElementById('themeIcon');
+            if (iconSpan) {
+                iconSpan.textContent = theme === 'dark' ? '🌙' : '☀️';
+            }
+        }
+
+        function toggleAccordion(headerElement) {
+            const item = headerElement.parentElement;
+            const isActive = item.classList.contains('active');
+            
+            // Close all items
+            document.querySelectorAll('.accordion-item').forEach(acc => {
+                acc.classList.remove('active');
+            });
+
+            // Toggle selected item
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        }
+
+        function filterContent() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const sections = document.querySelectorAll('.searchable');
+
+            sections.forEach(section => {
+                if (query === '') {
+                    section.style.display = 'block';
+                    removeHighlights(section);
+                } else {
+                    const sectionText = section.innerText.toLowerCase();
+                    if (sectionText.includes(query)) {
+                        section.style.display = 'block';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        function removeHighlights(element) {
+            // Placeholder for search cleanup if needed
+        }
+
+        // Initialize theme on window load
+        window.onload = function() {
+            initTheme();
+        };
+    </script>
+</body>
+</html>

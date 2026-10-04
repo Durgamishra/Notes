@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 3: Getting and Cleaning Data - Complete BCA Exam Notes</title>
+    <style>
+        :root {
+            --bg-main: #0B132B;
+            --bg-card: #1C2541;
+            --bg-sidebar: #080E21;
+            --border-color: #3A506B;
+            --text-primary: #F8FAFC;
+            --text-secondary: #94A3B8;
+            --accent-cyan: #00B4D8;
+            --accent-cyan-light: #48CAE4;
+            --accent-emerald: #10B981;
+            --accent-amber: #F59E0B;
+            --accent-rose: #F43F5E;
+            --code-bg: #0F172A;
+            --shadow-color: rgba(0, 0, 0, 0.45);
+        }
+
+        .light {
+            --bg-main: #F8FAFC;
+            --bg-card: #FFFFFF;
+            --bg-sidebar: #E2E8F0;
+            --border-color: #CBD5E1;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --accent-cyan: #0284C7;
+            --accent-cyan-light: #0369A1;
+            --accent-emerald: #059669;
+            --accent-amber: #D97706;
+            --accent-rose: #E11D48;
+            --code-bg: #1E293B;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.8;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styling */
+        #sidebar {
+            width: 320px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem 1rem;
+        }
+
+        .brand-header {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--accent-cyan);
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .brand-sub {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            padding: 0.6rem 0.85rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 500;
+        }
+
+        .nav-item a:hover, .nav-item a.active {
+            background-color: var(--bg-card);
+            color: var(--accent-cyan-light);
+            border-left: 4px solid var(--accent-cyan);
+        }
+
+        /* Main Workspace Layout */
+        #main-content {
+            margin-left: 320px;
+            flex: 1;
+            padding: 2rem 3rem;
+            max-width: 1400px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 0;
+            background-color: var(--bg-main);
+            padding: 1rem 0;
+            z-index: 90;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            max-width: 650px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .theme-toggle-btn {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.65rem 1.25rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: var(--accent-cyan);
+        }
+
+        .hero-banner {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-sidebar) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 25px -5px var(--shadow-color);
+        }
+
+        .hero-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--accent-cyan-light);
+            margin-bottom: 0.75rem;
+        }
+
+        .hero-desc {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            max-width: 950px;
+        }
+
+        /* Card System */
+        .topic-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 2.25rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            scroll-margin-top: 100px;
+        }
+
+        .topic-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .topic-badge {
+            background-color: rgba(0, 180, 216, 0.15);
+            color: var(--accent-cyan);
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 180, 216, 0.3);
+            white-space: nowrap;
+        }
+
+        .topic-title {
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-cyan-light);
+            margin: 1.75rem 0 0.85rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .content-para {
+            color: var(--text-primary);
+            margin-bottom: 1.25rem;
+            font-size: 1rem;
+            line-height: 1.85;
+            text-align: justify;
+        }
+
+        /* Callout & Revision Cards */
+        .revision-box {
+            background-color: rgba(16, 185, 129, 0.08);
+            border-left: 4px solid var(--accent-emerald);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1.5rem 0;
+        }
+
+        .revision-box h4 {
+            color: var(--accent-emerald);
+            font-size: 1.05rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .callout-box {
+            background-color: rgba(245, 158, 11, 0.08);
+            border-left: 4px solid var(--accent-amber);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1.5rem 0;
+        }
+
+        .callout-box h4 {
+            color: var(--accent-amber);
+            font-size: 1.05rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .formula-box {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            padding: 1.25rem;
+            border-radius: 10px;
+            margin: 1.25rem 0;
+            font-family: "Courier New", Courier, monospace;
+            color: var(--accent-cyan-light);
+            font-size: 1.05rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* Code Block Styling */
+        .code-container {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+
+        .code-header {
+            background-color: rgba(0, 0, 0, 0.25);
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-family: monospace;
+        }
+
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            color: #FFF;
+            padding: 0.3rem 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent-cyan);
+            color: #000;
+        }
+
+        pre code {
+            display: block;
+            padding: 1.25rem;
+            overflow-x: auto;
+            color: #E2E8F0;
+            font-family: "Consolas", "Courier New", Courier, monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.92rem;
+        }
+
+        th {
+            background-color: var(--bg-sidebar);
+            color: var(--accent-cyan-light);
+            padding: 0.9rem 1.1rem;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 0.9rem 1.1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Grid */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+            margin: 1.5rem 0;
+        }
+
+        .mini-card {
+            background-color: var(--bg-sidebar);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.25rem;
+        }
+
+        .mini-card h4 {
+            color: var(--accent-cyan-light);
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        /* Accordions */
+        .accordion-item {
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            background-color: var(--bg-card);
+        }
+
+        .accordion-header {
+            width: 100%;
+            padding: 1.25rem;
+            text-align: left;
+            background-color: var(--bg-sidebar);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.98rem;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion-header:hover {
+            color: var(--accent-cyan);
+        }
+
+        .accordion-body {
+            padding: 1.5rem;
+            display: none;
+            border-top: 1px solid var(--border-color);
+            line-height: 1.85;
+        }
+
+        .accordion-body.active {
+            display: block;
+        }
+
+        footer {
+            margin-top: 3rem;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 1024px) {
+            #sidebar { width: 260px; }
+            #main-content { margin-left: 260px; padding: 1.5rem; }
+        }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            #sidebar { width: 100%; position: relative; height: auto; }
+            #main-content { margin-left: 0; padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<aside id="sidebar">
+    <div class="brand-header">
+        <span>&#128218;</span> BCA ACADEMIC PORTAL
+    </div>
+    <div class="brand-sub">Unit-3: Getting & Cleaning Data</div>
+    <nav>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="#sec-intro">&#10148; Intro & Life Cycle</a></li>
+            <li class="nav-item"><a href="#sec-web">&#10148; 1. Data from Web</a></li>
+            <li class="nav-item"><a href="#sec-api">&#10148; 2. Data from APIs</a></li>
+            <li class="nav-item"><a href="#sec-db">&#10148; 3. Data from Databases</a></li>
+            <li class="nav-item"><a href="#sec-other">&#10148; 4. Other Sources</a></li>
+            <li class="nav-item"><a href="#sec-clean-def">&#10148; 5. Data Cleaning Overview</a></li>
+            <li class="nav-item"><a href="#sec-missing">&#10148; 6. Handling Missing Data</a></li>
+            <li class="nav-item"><a href="#sec-duplicates">&#10148; 7. Duplicate Removal</a></li>
+            <li class="nav-item"><a href="#sec-formatting">&#10148; 8. Formatting & Standardisation</a></li>
+            <li class="nav-item"><a href="#sec-outliers">&#10148; 9. Handling Outliers</a></li>
+            <li class="nav-item"><a href="#sec-scaling">&#10148; 10. Data Transformation & Scaling</a></li>
+            <li class="nav-item"><a href="#sec-tidy">&#10148; 11. Making Data "Tidy"</a></li>
+            <li class="nav-item"><a href="#sec-tables">&#10148; Comparison Tables</a></li>
+            <li class="nav-item"><a href="#sec-exam">&#10148; 10-Mark Exam Blueprints</a></li>
+            <li class="nav-item"><a href="#sec-revision">&#10148; Revision Cards</a></li>
+        </ul>
+    </nav>
+</aside>
+
+<main id="main-content">
+
+    <div class="top-bar">
+        <div class="search-box">
+            <span class="search-icon">&#128269;</span>
+            <input type="text" id="searchInput" class="search-input" placeholder="Search concepts, R code, formulas, techniques (e.g., MCAR, IQR, REST, Tidy Data)...">
+        </div>
+        <button class="theme-toggle-btn" id="themeToggle">
+            <span id="themeIcon">&#9728;</span> <span id="themeText">Light Mode</span>
+        </button>
+    </div>
+
+    <div class="hero-banner">
+        <h1 class="hero-title">Unit–3: Getting and Cleaning Data</h1>
+        <p class="hero-desc">Comprehensive BCA University Exam Guide for <em>Introduction to Data Science</em>. Includes detailed theoretical paragraphs, mathematical formulas, full executable R scripts, step-by-step processes, comparison matrices, and 10-mark university question templates.</p>
+    </div>
+
+    <!-- INTRODUCTION -->
+    <section id="sec-intro" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Introduction</span>
+            <h2 class="topic-title">Data Acquisition & Sanitization in Data Science</h2>
+        </div>
+
+        <h3 class="section-title">&#128200; The Modern Data Wrangling Lifecycle</h3>
+        <p class="content-para">
+            In modern data science, raw data gathered from the real world is almost never immediately usable. Data acquisition (obtaining data) and data preprocessing (cleaning and wrangling) represent the foundational phase of any analytical pipeline. Empirical studies show that data scientists spend approximately <strong>60% to 80% of their operational project time</strong> discovering, extracting, auditing, cleaning, and transforming raw inputs before building statistical models or deploying machine learning algorithms.
+        </p>
+        <p class="content-para">
+            Raw data is harvested from disparate and heterogeneous systems—such as web scraped pages, REST APIs, enterprise relational databases (SQL), document stores (NoSQL), IoT hardware sensor logs, and proprietary file formats (Excel, CSV, SPSS). Because these data generators operate independently under varying standards, the extracted datasets inherently suffer from systemic structural and statistical imperfections. These include missing values, duplicate records, non-standard text encodings, date formatting conflicts, trailing whitespace, and extreme statistical outliers.
+        </p>
+        <p class="content-para">
+            Data cleaning systematically identifies, diagnoses, and corrects these errors. High-quality data is the fundamental prerequisite for valid statistical inference, robust analytical charts, and actionable executive decisions. The classic computing axiom <strong>"Garbage In, Garbage Out" (GIGO)</strong> summarizes this dependency: even the most sophisticated deep learning architecture or predictive regression model will yield inaccurate, biased, and misleading outputs if trained on dirty or uncalibrated data.
+        </p>
+
+        <div class="revision-box">
+            <h4>&#128204; Core Exam Takeaways: Data Quality Dimensions</h4>
+            <ul>
+                <li><strong>Accuracy:</strong> Degree to which recorded values conform to real-world true values.</li>
+                <li><strong>Completeness:</strong> Absence of missing records, null fields, or omitted observations.</li>
+                <li><strong>Consistency:</strong> Uniform formatting and structure across integrated datasets (e.g., standardizing "M"/"Male").</li>
+                <li><strong>Timeliness:</strong> How recently the data was gathered to reflect current conditions.</li>
+                <li><strong>Uniqueness:</strong> Elimination of redundant or duplicated data rows.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- TOPIC 1 -->
+    <section id="sec-web" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 1</span>
+            <h2 class="topic-title">Obtaining Data from the Web</h2>
+        </div>
+
+        <h3 class="section-title">&#127760; Web Data Extraction & Web Scraping Mechanics</h3>
+        <p class="content-para">
+            The World Wide Web serves as an expansive, unstructured data repository containing millions of public web pages, commercial catalogs, financial portals, and news archives. Obtaining data from the web involves extracting structured tabular data or unorganized text directly from HTML web documents. While some platforms provide downloadable CSV or JSON files, much of the web's valuable information is embedded in raw HTML markup, requiring automated programmatic extraction known as <strong>Web Scraping</strong> or <strong>Web Crawling</strong>.
+        </p>
+        <p class="content-para">
+            Web scraping relies on understanding the <strong>Document Object Model (DOM)</strong>—the hierarchical tree structure created by web browsers when parsing HTML markup. Scraping tools submit HTTP <code>GET</code> requests to target URLs, fetch raw HTML text, parse the DOM tree, and isolate specific content using <strong>CSS Selectors</strong> (e.g., <code>.class-name</code>, <code>#id-name</code>) or <strong>XPath Expressions</strong> (e.g., <code>//table[@class='data-table']</code>). In the R language, web scraping is primarily driven by the <code>rvest</code> and <code>httr</code> packages.
+        </p>
+
+        <h3 class="section-title">&#128194; Primary Web Data Sources</h3>
+        <div class="card-grid">
+            <div class="mini-card">
+                <h4>1. Public Repositories</h4>
+                <p>Curated, structured open data portals (e.g., Kaggle, Data.gov, World Bank Open Data) providing ready-to-use downloadable datasets in CSV or Parquet format.</p>
+            </div>
+            <div class="mini-card">
+                <h4>2. HTML Web Scraping</h4>
+                <p>Automated DOM parsing of unstructured web pages (e.g., e-commerce price catalogs, Wikipedia tables, stock market ticker pages) into structured data frames.</p>
+            </div>
+            <div class="mini-card">
+                <h4>3. Social Media & Forums</h4>
+                <p>Extracting public posts, comments, and engagement counters across forums for sentiment analysis and natural language processing (NLP).</p>
+            </div>
+        </div>
+
+        <div class="callout-box">
+            <h4>&#9888; Ethical Rules & Web Scraping Guidelines</h4>
+            <ul>
+                <li><strong>Robots.txt Protocol:</strong> Always inspect a site's <code>robots.txt</code> file (e.g., <code>domain.com/robots.txt</code>) to check disallowed paths and crawler crawling rules.</li>
+                <li><strong>Rate Limiting:</strong> Introduce time delays between requests (e.g., <code>Sys.sleep(2)</code>) to prevent overloading target web servers (Denial of Service).</li>
+                <li><strong>User-Agent Identification:</strong> Supply clear contact headers in scraping requests so site administrators can identify your script.</li>
+            </ul>
+        </div>
+
+        <div class="code-container">
+            <div class="code-header">
+                <span>R Script - Downloading Web Files & Scraping HTML Tables with rvest</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code>library(rvest)
+library(httr)
+
+# 1. Download a Remote File Directly
+file_url <- "https://raw.githubusercontent.com/datasets/gdp/master/data/gdp.csv"
+download.file(url = file_url, destfile = "gdp_data.csv", method = "curl")
+gdp_data <- read.csv("gdp_data.csv")
+
+# 2. Scraping HTML Tables from Wikipedia using rvest
+target_url <- "https://en.wikipedia.org/wiki/List_of_countries_by_GDP_(nominal)"
+
+# Fetch HTML content with custom User-Agent header
+webpage <- GET(target_url, add_headers(`User-Agent` = "BCA_DataScience_Student_Bot/1.0")) %>%
+  read_html()
+
+# Extract table elements using CSS selectors
+table_nodes <- html_nodes(webpage, css = "table.wikitable")
+
+# Convert the first HTML table into an R Data Frame
+gdp_table <- html_table(table_nodes[[1]], fill = TRUE)
+head(gdp_table)
+</code></pre>
+        </div>
+    </section>
+
+    <!-- TOPIC 2 -->
+    <section id="sec-api" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 2</span>
+            <h2 class="topic-title">Obtaining Data from APIs</h2>
+        </div>
+
+        <h3 class="section-title">&#128204; REST API Architecture & Protocol Mechanics</h3>
+        <p class="content-para">
+            An <strong>Application Programming Interface (API)</strong> is a formal software intermediary that enables distinct computer programs to exchange data programmatically over standard internet protocols. In modern data science pipelines, <strong>RESTful (Representational State Transfer) APIs</strong> serve as the preferred method for automated data collection. Unlike web scraping—which fragilely parses unstructured HTML presentational code—APIs deliver pure, highly structured data directly from server backend databases, bypassing visual layout elements entirely.
+        </p>
+        <p class="content-para">
+            REST APIs communicate over standard HTTP/HTTPS channels using defined verbs:
+        </p>
+        <ul style="margin-left: 1.5rem; margin-bottom: 1.25rem;">
+            <li><strong><code>GET</code>:</strong> Requests and retrieves data records from the server (primary verb used in data ingestion).</li>
+            <li><strong><code>POST</code>:</strong> Submits new data or query payloads to the server.</li>
+            <li><strong><code>PUT</code> / <code>PATCH</code>:</strong> Updates existing server data records.</li>
+            <li><strong><code>DELETE</code>:</strong> Removes a resource from the target database.</li>
+        </ul>
+        <p class="content-para">
+            API responses return structured payloads serialized in either <strong>JSON (JavaScript Object Notation)</strong> or <strong>XML (eXtensible Markup Language)</strong>. JSON is the dominant web standard due to its lightweight key-value pair and array format, which maps directly into programming data structures like lists and data frames.
+        </p>
+
+        <h3 class="section-title">&#128038; Step-by-Step API Ingestion Workflow</h3>
+        <ol style="margin-left: 1.5rem; margin-bottom: 1.25rem;">
+            <li style="margin-bottom: 0.5rem;"><strong>Registration & Credentials:</strong> Register on the API provider portal to acquire an API Key or OAuth 2.0 Client Credentials for authentication and rate-limit tracking.</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Request Formulation:</strong> Construct the request URL endpoint, appending query parameters (e.g., <code>?city=Bhubaneswar&units=metric</code>) and passing security keys in HTTP headers.</li>
+            <li style="margin-bottom: 0.5rem;"><strong>HTTP Dispatch:</strong> Issue the HTTP request via client libraries (such as <code>httr</code> in R or <code>requests</code> in Python).</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Status Code Inspection:</strong> Verify the HTTP status code returned by the server:
+                <ul>
+                    <li><code>200 OK</code>: Request succeeded; payload delivered.</li>
+                    <li><code>401 Unauthorized</code>: Missing or invalid API key credentials.</li>
+                    <li><code>404 Not Found</code>: Target endpoint or resource does not exist.</li>
+                    <li><code>429 Too Many Requests</code>: Rate limit exceeded.</li>
+                    <li><code>500 Internal Server Error</code>: Remote server application crashed.</li>
+                </ul>
+            </li>
+            <li style="margin-bottom: 0.5rem;"><strong>Payload Deserialization:</strong> Parse the raw JSON text response into a structured data frame using packages like <code>jsonlite</code>.</li>
+        </ol>
+
+        <div class="code-container">
+            <div class="code-header">
+                <span>R Script - Querying REST API and Deserializing JSON Data</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code>library(httr)
+library(jsonlite)
+
+# Define API URL Endpoint and Request Parameters
+base_url <- "https://api.openweathermap.org/data/2.5/weather"
+query_params <- list(
+  q = "Bhubaneswar",
+  appid = "YOUR_API_KEY_HERE",
+  units = "metric"
+)
+
+# Dispatch HTTP GET Request
+response <- GET(url = base_url, query = query_params)
+
+# Check HTTP Response Status Code
+if (status_code(response) == 200) {
+  # Parse raw text body into JSON object
+  json_content <- content(response, as = "text", encoding = "UTF-8")
+  
+  # Flatten JSON tree directly into a usable R list/data frame
+  weather_df <- fromJSON(json_content, flatten = TRUE)
+  
+  cat("City:", weather_df$name, "\nTemp:", weather_df$main$temp, "°C\n")
+} else {
+  cat("API Request Failed with Status Code:", status_code(response), "\n")
+}
+</code></pre>
+        </div>
+    </section>
+
+    <!-- TOPIC 3 -->
+    <section id="sec-db" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 3</span>
+            <h2 class="topic-title">Obtaining Data from Databases</h2>
+        </div>
+
+        <h3 class="section-title">&#128190; Enterprise Database Architectures</h3>
+        <p class="content-para">
+            Enterprise application backends, transactional logs, and commercial software systems store operational data inside centralized database management systems. Connecting directly to enterprise databases allows data scientists to extract historical records, run aggregations, and pull filtered subsets without overloading local computer memory. Databases fall into two primary structural categories:
+        </p>
+
+        <h3 class="section-title">&#128452; Relational (RDBMS) vs. NoSQL Databases</h3>
+        <p class="content-para">
+            <strong>1. Relational Databases (RDBMS):</strong> Organize data into strictly defined 2D tables consisting of columns (attributes) and rows (tuples). Relationships across tables are defined using Primary and Foreign keys. Querying is executed using <strong>Structured Query Language (SQL)</strong>, which allows data filtering, joining, and aggregation directly on the remote database server before pulling results into local memory. Common RDBMS engines include PostgreSQL, MySQL, Oracle, SQLite, and Microsoft SQL Server.
+        </p>
+        <p class="content-para">
+            <strong>2. NoSQL (Not Only SQL) Databases:</strong> Built to store unstructured, semi-structured, or high-velocity data that does not fit into fixed schema tables. Schema flexibility allows developers to ingest diverse data formats without upfront schema definition. NoSQL types include:
+        </p>
+        <ul style="margin-left: 1.5rem; margin-bottom: 1.25rem;">
+            <li><strong>Document Stores:</strong> Store hierarchical BSON/JSON documents (e.g., MongoDB).</li>
+            <li><strong>Key-Value Stores:</strong> In-memory key-indexed lookup systems (e.g., Redis).</li>
+            <li><strong>Column-Family Stores:</strong> Distributed wide-column engines (e.g., Apache Cassandra).</li>
+            <li><strong>Graph Databases:</strong> Network node-and-edge engines (e.g., Neo4j).</li>
+        </ul>
+
+        <div class="revision-box">
+            <h4>&#128204; The Database Connection Lifecycle in R</h4>
+            <ol style="margin-left: 1.5rem;">
+                <li><strong>Load Driver:</strong> Load DBI database interfaces (e.g., <code>library(DBI)</code>, <code>library(RSQLite)</code>).</li>
+                <li><strong>Connect:</strong> Open connection handle via <code>dbConnect(RSQLite::SQLite(), dbname="db.sqlite")</code>.</li>
+                <li><strong>Execute SQL:</strong> Submit SQL string using <code>dbGetQuery(conn, "SELECT ... WHERE ...")</code>.</li>
+                <li><strong>Fetch:</strong> Extract the query output directly into an R data frame.</li>
+                <li><strong>Close Handle:</strong> Always terminate the channel using <code>dbDisconnect(conn)</code> to prevent connection pool leaks.</li>
+            </ol>
+        </div>
+
+        <div class="code-container">
+            <div class="code-header">
+                <span>R Script - Executing SQL Queries on SQLite Database using DBI</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code>library(DBI)
+library(RSQLite)
+
+# 1. Establish Driver Connection to Local SQLite Database
+conn <- dbConnect(RSQLite::SQLite(), dbname = "company_warehouse.sqlite")
+
+# 2. Write Parameterized SQL Query
+sql_query <- "
+  SELECT Department, COUNT(EmployeeID) AS StaffCount, AVG(Salary) AS AvgSalary
+  FROM Employees
+  WHERE JoinYear >= 2021
+  GROUP BY Department
+  HAVING AVG(Salary) > 45000
+"
+
+# 3. Execute SQL statement and retrieve data frame directly
+result_df <- dbGetQuery(conn, sql_query)
+print(result_df)
+
+# 4. Explicitly Disconnect Handle
+dbDisconnect(conn)
+</code></pre>
+        </div>
+    </section>
+
+    <!-- TOPIC 4 -->
+    <section id="sec-other" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 4</span>
+            <h2 class="topic-title">Obtaining Data from Other Sources</h2>
+        </div>
+
+        <h3 class="section-title">&#128196; Diverse Proprietary Formats & Modern Data Streams</h3>
+        <p class="content-para">
+            Beyond web pages, REST APIs, and relational databases, data scientists frequently ingest data from flat text files, proprietary statistical software packages, hardware sensors, and columnar big-data storage formats. Selecting the correct specialized R package ensures character encoding (e.g., UTF-8) and metadata attributes are preserved during ingestion.
+        </p>
+
+        <div class="card-grid">
+            <div class="mini-card">
+                <h4>1. Flat Files (CSV, TSV, TXT)</h4>
+                <p>Plaintext delimited files parsed using fast read utilities like <code>readr::read_csv()</code> or <code>data.table::fread()</code>.</p>
+            </div>
+            <div class="mini-card">
+                <h4>2. Excel Spreadsheets (.xlsx)</h4>
+                <p>Workbooks containing multiple sheets, cell formatting, and merged headers parsed via <code>readxl::read_excel()</code>.</p>
+            </div>
+            <div class="mini-card">
+                <h4>3. Statistical Packages</h4>
+                <p>Proprietary software datasets from SPSS (<code>.sav</code>), SAS (<code>.sas7bdat</code>), and Stata (<code>.dta</code>) imported preserving value labels using <code>haven</code>.</p>
+            </div>
+            <div class="mini-card">
+                <h4>4. Big Data Formats (Parquet)</h4>
+                <p>High-performance columnar storage files (Apache Parquet/Arrow) read efficiently via <code>arrow::read_parquet()</code>.</p>
+            </div>
+            <div class="mini-card">
+                <h4>5. IoT & Hardware Sensors</h4>
+                <p>Continuous telemetry streams generated by industrial temperature sensors, GPS units, and wearable devices.</p>
+            </div>
+            <div class="mini-card">
+                <h4>6. Digital Surveys</h4>
+                <p>Structured quantitative feedback harvested automatically from online platforms like Google Forms or SurveyMonkey.</p>
+            </div>
+        </div>
+
+        <div class="code-container">
+            <div class="code-header">
+                <span>R Script - Ingesting Excel, SPSS, and Parquet Data Formats</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code>library(readxl)
+library(haven)
+library(arrow)
+
+# 1. Ingest specific sheet from Excel Workbook
+excel_data <- read_excel("financial_report.xlsx", sheet = "Q4_Metrics")
+
+# 2. Import SPSS file preserving categorical value labels
+spss_data <- read_sav("customer_survey.sav")
+
+# 3. Read compressed Columnar Apache Parquet Big Data File
+parquet_data <- read_parquet("telemetry_logs.parquet")
+</code></pre>
+        </div>
+    </section>
+
+    <!-- SECTION 5: DATA CLEANING OVERVIEW -->
+    <section id="sec-clean-def" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 5</span>
+            <h2 class="topic-title">Data Cleaning Overview</h2>
+        </div>
+
+        <h3 class="section-title">&#129529; Principles of Data Sanitization</h3>
+        <p class="content-para">
+            <strong>Data Cleaning</strong> (also known as data cleansing, scrubbing, or data wrangling) is the structured process of auditing raw datasets to detect, diagnose, and remediate corrupted, inaccurate, incomplete, duplicated, incorrectly formatted, or statistically anomalous records. Raw data collected from operational web forms or manual entries is notoriously noisy.
+        </p>
+        <p class="content-para">
+            A comprehensive data auditing workflow follows a structured lifecycle:
+        </p>
+        <ol style="margin-left: 1.5rem; margin-bottom: 1.25rem;">
+            <li style="margin-bottom: 0.5rem;"><strong>Data Auditing & Profiling:</strong> Inspecting summary statistics, data types, missing value percentages, and value distributions using functions like <code>summary()</code>, <code>str()</code>, and <code>glimpse()</code>.</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Defining Sanitization Rules:</strong> Establishing validation logic (e.g., <code>Age</code> must be between 0 and 120; <code>Email</code> must contain "@").</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Execution of Cleaning Actions:</strong> Running transformations to handle missing data, drop duplicate records, fix formatting errors, and treat outliers.</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Post-Verification:</strong> Re-auditing clean datasets to confirm that structural integrity is preserved without introducing accidental processing bias.</li>
+        </ol>
+    </section>
+
+    <!-- TOPIC 6 -->
+    <section id="sec-missing" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 6</span>
+            <h2 class="topic-title">Handling Missing Data</h2>
+        </div>
+
+        <h3 class="section-title">&#10060; Statistical Missingness Mechanisms</h3>
+        <p class="content-para">
+            Missing data occurs when no data value is stored for an observation attribute. In R, missing values are denoted by the logical constant <code>NA</code> (Not Available), whereas uncomputable mathematical operations yield <code>NaN</code> (Not a Number). Missingness can occur due to respondent non-response in surveys, equipment hardware faults, or data extraction drops. To choose the correct remediation method, data scientists evaluate three primary missingness mechanisms:
+        </p>
+        <ul style="margin-left: 1.5rem; margin-bottom: 1.25rem;">
+            <li><strong>1. Missing Completely at Random (MCAR):</strong> The probability of data being missing is completely independent of both observed variables and unobserved parameters. Missingness is purely accidental (e.g., a laboratory sample accidentally dropped on the floor).</li>
+            <li><strong>2. Missing at Random (MAR):</strong> Missingness depends systematically on observed dataset variables, but not on the missing value itself (e.g., male survey participants being statistically less likely to fill out depression questionnaire fields).</li>
+            <li><strong>3. Missing Not at Random (MNAR):</strong> Missingness depends directly on the unobserved missing value itself (e.g., high-income earners deliberately skipping income fields on tax surveys).</li>
+        </ul>
+
+        <h3 class="section-title">&#128736; Remediation Strategies & Imputation Techniques</h3>
+        <div class="card-grid">
+            <div class="mini-card">
+                <h4>Listwise Deletion</h4>
+                <p>Purging entire observation rows containing any <code>NA</code> using <code>na.omit()</code> or <code>complete.cases()</code>. Simple, but discards statistical power and introduces bias if data is not MCAR.</p>
+            </div>
+            <div class="mini-card">
+                <h4>Mean/Median Imputation</h4>
+                <p>Replacing missing numerical entries with column Mean (symmetric distributions) or Median (skewed distributions). Preserves sample size but artificially shrinks feature variance.</p>
+            </div>
+            <div class="mini-card">
+                <h4>Mode Imputation</h4>
+                <p>Replacing missing categorical text values with the most frequently occurring categorical class value in the column.</p>
+            </div>
+            <div class="mini-card">
+                <h4>Advanced Predictive Imputation</h4>
+                <p>Estimating missing values using k-Nearest Neighbors (k-NN) or Multiple Imputation by Chained Equations (MICE) based on surrounding correlated features.</p>
+            </div>
+        </div>
+
+        <div class="code-container">
+            <div class="code-header">
+                <span>R Script - Detecting & Imputing Missing Values in R</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code># Sample Data Frame with Missing Values
+df <- data.frame(
+  ID = 1:5,
+  Salary = c(50000, 60000, NA, 75000, 52000),
+  Age = c(25, NA, 30, 45, 22)
+)
+
+# 1. Identify missing entries globally
+is.na(df)
+sum(is.na(df$Salary)) # Count NAs in Salary column
+
+# 2. Strategy A: Complete Case Analysis (Listwise Deletion)
+clean_complete <- na.omit(df)
+
+# 3. Strategy B: Median Imputation for Numerical Salary
+median_salary <- median(df$Salary, na.rm = TRUE)
+df$Salary[is.na(df$Salary)] <- median_salary
+
+print(df)
+</code></pre>
+        </div>
+    </section>
+
+    <!-- TOPIC 7 -->
+    <section id="sec-duplicates" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 7</span>
+            <h2 class="topic-title">Removing Duplicate Data</h2>
+        </div>
+
+        <h3 class="section-title">&#128257; Duplicate Mechanics & Analytical Risks</h3>
+        <p class="content-para">
+            Duplicate data refers to identical or highly redundant records present within a dataset. Duplication typically occurs during bulk data extraction from multiple operational servers, repeated submission of online forms, or outer join operations performed across relational database tables.
+        </p>
+        <p class="content-para">
+            Failing to identify and purge duplicate records introduces severe errors into analytical pipelines:
+        </p>
+        <ul style="margin-left: 1.5rem; margin-bottom: 1.25rem;">
+            <li><strong>Artificially Inflated Sample Sizes:</strong> Overcounts underlying metrics (e.g., doubling total sales revenues or active user counts).</li>
+            <li><strong>Distorted Summary Statistics:</strong> Distorts statistical calculations including mean, standard deviation, and variance estimates.</li>
+            <li><strong>Model Overfitting:</strong> Machine learning algorithms trained on duplicated rows give improper weight to repeated records, compromising generalization performance on unseen test data.</li>
+        </ul>
+
+        <div class="code-container">
+            <div class="code-header">
+                <span>R Script - Detecting & Removing Duplicates using Base R and dplyr</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code>library(dplyr)
+
+# Sample Data Frame containing Duplicate Rows
+df_dup <- data.frame(
+  CustomerID = c(101, 102, 102, 103, 101),
+  Name = c("Alice", "Bob", "Bob", "Charlie", "Alice"),
+  Score = c(85, 90, 90, 95, 85)
+)
+
+# 1. Identify duplicate rows (returns logical vector)
+duplicated(df_dup)
+
+# 2. Strategy A: Deduplicate using Base R unique()
+df_unique_base <- unique(df_dup)
+
+# 3. Strategy B: Deduplicate using dplyr distinct()
+df_unique_dplyr <- df_dup %>% distinct()
+
+# 4. Deduplicate based on specific key column (e.g., CustomerID)
+df_unique_key <- df_dup %>% distinct(CustomerID, .keep_all = TRUE)
+print(df_unique_key)
+</code></pre>
+        </div>
+    </section>
+
+    <!-- TOPIC 8 -->
+    <section id="sec-formatting" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 8</span>
+            <h2 class="topic-title">Data Formatting & Standardisation</h2>
+        </div>
+
+        <h3 class="section-title">&#128221; String Parsing, Date Conversions & Type Coercion</h3>
+        <p class="content-para">
+            Inconsistent data formatting occurs when attributes meant to store uniform values are recorded using varying expressions, character encodings, text cases, or units of measurement. In multi-source integration projects, a single categorical attribute like gender might be recorded as <code>"Male"</code>, <code>"male"</code>, <code>"M"</code>, <code>"m "</code> (with whitespace), or <code>1</code>. Standardisation enforces strict structural uniform patterns across all features.
+        </p>
+        <p class="content-para">Core standardisation operations include:</p>
+        <ul style="margin-left: 1.5rem; margin-bottom: 1.25rem;">
+            <li><strong>Trimming Whitespace:</strong> Stripping hidden leading, trailing, and repeated interior spaces using <code>stringr::str_trim()</code> or <code>trimws()</code>.</li>
+            <li><strong>Text Case Normalization:</strong> Converting all text fields to lowercase or uppercase using <code>tolower()</code> or <code>toupper()</code> to enable clean grouping aggregations.</li>
+            <li><strong>Character String Stripping:</strong> Removing non-numeric symbols (e.g., stripping <code>"$"</code>, <code>"%"</code>, or <code>","</code> from currency text fields) and casting strings into numeric primitives using <code>as.numeric()</code>.</li>
+            <li><strong>ISO Date Standardisation:</strong> Parsing inconsistent string dates (e.g., mixing "12/05/2026", "2026-May-12", "12-05-26") into unified ISO 8601 Date objects (<code>YYYY-MM-DD</code>) using the <code>lubridate</code> library.</li>
+        </ul>
+
+        <div class="code-container">
+            <div class="code-header">
+                <span>R Script - String Cleaning and Date Formatting with stringr & lubridate</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code>library(stringr)
+library(lubridate)
+
+# Messy Input Data Frame
+messy_df <- data.frame(
+  Price_Text = c(" $1,200.50 ", "$450.00", " $89.99 "),
+  Gender_Raw = c(" Male", "female", "MALE "),
+  Raw_Date = c("2026-10-04", "04/10/2026", "October 4, 2026")
+)
+
+# 1. Clean String Prices -> Convert to Clean Numeric Primitives
+messy_df$Clean_Price <- messy_df$Price_Text %>%
+  str_trim() %>%                   # Strip whitespace
+  str_remove_all("[$,]") %>%       # Remove currency symbols & commas
+  as.numeric()                     # Cast to numeric primitive
+
+# 2. Standardize Categorical Text Casing
+messy_df$Clean_Gender <- messy_df$Gender_Raw %>%
+  str_trim() %>%
+  tolower()
+
+# 3. Parse Inconsistent Strings into Standard ISO Dates using lubridate
+messy_df$Clean_Date <- parse_date_time(messy_df$Raw_Date, orders = c("ymd", "dmy", "B d, Y"))
+
+print(messy_df)
+</code></pre>
+        </div>
+    </section>
+
+    <!-- TOPIC 9 -->
+    <section id="sec-outliers" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 9</span>
+            <h2 class="topic-title">Handling Outliers</h2>
+        </div>
+
+        <h3 class="section-title">&#128200; Statistical Detection Rules & Remediation</h3>
+        <p class="content-para">
+            An <strong>Outlier</strong> is an extreme statistical observation that deviates significantly from the central tendency of a feature distribution. Outliers stem from data entry errors (e.g., recording a patient's age as 250), instrument sensor miscalibrations, or genuine natural variation (e.g., extreme wealth distribution in economic datasets). Unmanaged outliers heavily distort mean calculations, inflate sample variances, and alter Ordinary Least Squares (OLS) regression coefficients.
+        </p>
+
+        <h3 class="section-title">&#128207; Parametric vs. Non-Parametric Detection Methods</h3>
+        <p class="content-para">
+            <strong>1. Interquartile Range Method (IQR - Non-Parametric):</strong> Ideal for skewed data distributions. Calculates the distance between the 25th percentile ($Q_1$) and the 75th percentile ($Q_3$).
+        </p>
+        <div class="formula-box">
+            IQR = Q3 - Q1<br>
+            Lower Bound = Q1 - 1.5 * IQR &nbsp;|&nbsp; Upper Bound = Q3 + 1.5 * IQR
+        </div>
+        <p class="content-para">
+            Any observation falling below the Lower Bound or above the Upper Bound is flagged as a statistical outlier.
+        </p>
+
+        <p class="content-para">
+            <strong>2. Z-Score Method (Parametric):</strong> Ideal for normally distributed bell-curve features. Measures how many standard deviations ($\sigma$) an individual observation ($x$) lies away from the population mean ($\mu$).
+        </p>
+        <div class="formula-box">
+            Z = (x - &#956;) / &#963;
+        </div>
+        <p class="content-para">
+            Observations with an absolute Z-score $|Z| > 3.0$ are flagged as extreme statistical outliers.
+        </p>
+
+        <h3 class="section-title">&#128736; Outlier Treatment Strategies</h3>
+        <ul style="margin-left: 1.5rem; margin-bottom: 1.25rem;">
+            <li><strong>Trimming / Truncation:</strong> Dropping outlier rows entirely from the dataset.</li>
+            <li><strong>Winsorization (Capping):</strong> Setting values beyond the upper boundary equal to the 99th percentile ($P_{99}$) value, and values below the lower boundary to the 1st percentile ($P_1$) value.</li>
+            <li><strong>Mathematical Log Transformation:</strong> Applying a natural logarithm ($\ln(x)$) to compress long-tailed right-skewed distributions.</li>
+        </ul>
+
+        <div class="code-container">
+            <div class="code-header">
+                <span>R Script - IQR & Z-Score Outlier Detection and Capping</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code># Vector containing an extreme statistical outlier (500)
+age_vector <- c(22, 25, 24, 23, 26, 28, 22, 21, 500)
+
+# 1. Non-Parametric IQR Outlier Detection
+Q1 <- quantile(age_vector, 0.25)
+Q3 <- quantile(age_vector, 0.75)
+IQR_val <- Q3 - Q1
+
+lower_bound <- Q1 - (1.5 * IQR_val)
+upper_bound <- Q3 + (1.5 * IQR_val)
+
+outliers <- age_vector[age_vector < lower_bound | age_vector > upper_bound]
+cat("Detected Outliers via IQR:", outliers, "\n")
+
+# 2. Winsorization (Capping Outliers to Upper Bound)
+clean_age <- age_vector
+clean_age[clean_age > upper_bound] <- upper_bound
+print(clean_age)
+</code></pre>
+        </div>
+    </section>
+
+    <!-- TOPIC 10 -->
+    <section id="sec-scaling" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 10</span>
+            <h2 class="topic-title">Data Transformation & Feature Scaling</h2>
+        </div>
+
+        <h3 class="section-title">&#9881; Normalization vs. Standardization Formulas</h3>
+        <p class="content-para">
+            Feature scaling converts numerical attributes measured across vastly different scales into a uniform range. For instance, combining an <code>Age</code> feature (ranging from 18 to 80) with a <code>Salary</code> feature (ranging from $20,000 to $500,000) inside distance-based algorithms (like k-NN, k-Means, or SVM) causes the high-magnitude Salary feature to completely dominate distance calculations. Feature scaling normalizes these relative magnitudes.
+        </p>
+
+        <h3 class="section-title">1. Min-Max Normalization</h3>
+        <p class="content-para">
+            Rescales all numeric feature values into a fixed range between <strong>0.0 and 1.0</strong>. Bounded min-max normalization is ideal when the algorithm requires bounded numerical inputs (e.g., neural networks), but remains sensitive to extreme outliers.
+        </p>
+        <div class="formula-box">
+            X' = (X - X_min) / (X_max - X_min)
+        </div>
+
+        <h3 class="section-title">2. Z-Score Standardization</h3>
+        <p class="content-para">
+            Rescales data to have a statistical <strong>Mean ($\mu$) equal to 0.0</strong> and a <strong>Standard Deviation ($\sigma$) equal to 1.0</strong>. Standardization handles statistical outliers better than min-max scaling and does not bound data into a rigid interval.
+        </p>
+        <div class="formula-box">
+            Z = (X - &#956;) / &#963;
+        </div>
+
+        <h3 class="section-title">3. Logarithmic Transformation</h3>
+        <p class="content-para">
+            Applies $\log_e(X)$ or $\log_{10}(X)$ to linearize exponential relationships and stabilize variance across right-skewed positive features (e.g., income metrics, population counts).
+        </p>
+
+        <div class="code-container">
+            <div class="code-header">
+                <span>R Script - Executing Min-Max Scaling and Z-Score Standardization</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code>salary_vals <- c(30000, 45000, 50000, 80000, 120000)
+
+# 1. Custom Min-Max Normalization Function [0, 1]
+min_max_scale <- function(x) {
+  return((x - min(x)) / (max(x) - min(x)))
+}
+scaled_minmax <- min_max_scale(salary_vals)
+
+# 2. Z-Score Standardization using Base R scale() function
+scaled_zscore <- scale(salary_vals) # Mean = 0, Std Dev = 1
+
+# 3. Log Transformation
+scaled_log <- log(salary_vals)
+
+df_scaled <- data.frame(Raw = salary_vals, MinMax = scaled_minmax, ZScore = as.vector(scaled_zscore), Log = scaled_log)
+print(df_scaled)
+</code></pre>
+        </div>
+    </section>
+
+    <!-- TOPIC 11 -->
+    <section id="sec-tidy" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 11</span>
+            <h2 class="topic-title">Making Data "Tidy"</h2>
+        </div>
+
+        <h3 class="section-title">&#128260; Hadley Wickham's Tidy Data Principles</h3>
+        <p class="content-para">
+            Formulated by statistician <strong>Hadley Wickham</strong>, <strong>Tidy Data</strong> provides a standardized structural framework linking the physical layout of a 2D data frame directly with its underlying statistical meaning. Structuring datasets in tidy format simplifies exploratory data analysis, plotting, and model fitting.
+        </p>
+
+        <div class="callout-box">
+            <h4>&#128220; The 3 Core Rules of Tidy Data (Exam Mandatory)</h4>
+            <ol style="margin-left: 1.5rem; line-height: 2;">
+                <li><strong>Rule 1:</strong> Each <em>variable</em> must form its own unique column.</li>
+                <li><strong>Rule 2:</strong> Each <em>observation</em> (case) must form its own unique row.</li>
+                <li><strong>Rule 3:</strong> Each <em>value</em> must occupy its own individual cell.</li>
+            </ol>
+        </div>
+
+        <h3 class="section-title">&#128736; Reshaping Verbs in tidyr</h3>
+        <p class="content-para">
+            Untidy datasets (often termed wide or messy data) frequently violate these rules—such as placing variable names (like year values "2024", "2025") as column headers. The <code>tidyr</code> package provides reshape functions to correct these issues:
+        </p>
+        <ul style="margin-left: 1.5rem; margin-bottom: 1.25rem;">
+            <li><strong><code>pivot_longer()</code>:</strong> Reshapes wide datasets into long formats by gathering column headers into a new variable column.</li>
+            <li><strong><code>pivot_wider()</code>:</strong> Reshapes long datasets into wide formats when multiple observation attributes are stacked in a single column.</li>
+            <li><strong><code>separate()</code>:</strong> Splits a single combined text column into multiple distinct variable columns based on a delimiter (e.g., splitting "City_State" into "City" and "State").</li>
+            <li><strong><code>unite()</code>:</strong> Combines values from multiple columns into a single unified column.</li>
+        </ul>
+
+        <div class="code-container">
+            <div class="code-header">
+                <span>R Script - Reshaping Messy Data into Tidy Data using tidyr</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code>library(tidyr)
+library(dplyr)
+
+# Untidy Wide Data Frame (Year variables stored in column headers)
+untidy_df <- data.frame(
+  Country = c("India", "USA"),
+  Year_2024 = c(1000, 2000),
+  Year_2025 = c(1100, 2100)
+)
+print(untidy_df)
+
+# Reshape into Tidy Format using pivot_longer()
+tidy_df <- untidy_df %>%
+  pivot_longer(
+    cols = starts_with("Year_"),
+    names_to = "Year",
+    names_prefix = "Year_",
+    values_to = "GDP_Value"
+  )
+
+print(tidy_df)
+# Output complies fully with Tidy Data Rules: Country | Year | GDP_Value
+</code></pre>
+        </div>
+    </section>
+
+    <!-- MASTER COMPARISON TABLES -->
+    <section id="sec-tables" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Comparison Matrices</span>
+            <h2 class="topic-title">Master Exam Comparison Tables</h2>
+        </div>
+
+        <h3 class="section-title">Table 1: Data Collection Methods Matrix</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Data Format</th>
+                        <th>Key Advantages</th>
+                        <th>Primary Drawbacks</th>
+                        <th>Typical Tools</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Web Scraping</strong></td>
+                        <td>Unstructured HTML DOM</td>
+                        <td>Extracts vast public data without official API permissions.</td>
+                        <td>Fragile; DOM layout changes break parser scripts.</td>
+                        <td><code>rvest</code>, <code>BeautifulSoup</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>REST APIs</strong></td>
+                        <td>Structured JSON / XML</td>
+                        <td>Clean, reliable, secure real-time data streaming.</td>
+                        <td>Rate limits; requires API authentication tokens.</td>
+                        <td><code>httr</code>, <code>jsonlite</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Databases</strong></td>
+                        <td>2D SQL Tables / NoSQL Docs</td>
+                        <td>Fast, indexed server-side aggregations and filters.</td>
+                        <td>Requires database access permissions and credentials.</td>
+                        <td><code>DBI</code>, <code>RSQLite</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Flat Files</strong></td>
+                        <td>CSV, Excel, Parquet</td>
+                        <td>Simple, portable formats for local analysis.</td>
+                        <td>Manual downloads; non-automated refresh cycles.</td>
+                        <td><code>readr</code>, <code>readxl</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="section-title">Table 2: Feature Scaling Comparison</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature Scaling Method</th>
+                        <th>Mathematical Formula</th>
+                        <th>Output Range</th>
+                        <th>Outlier Sensitivity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Min-Max Normalization</strong></td>
+                        <td><code>(X - Xmin) / (Xmax - Xmin)</code></td>
+                        <td>Strictly bounded [0.0, 1.0]</td>
+                        <td>High (Extreme outliers distort range)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Z-Score Standardization</strong></td>
+                        <td><code>(X - Mean) / StdDev</code></td>
+                        <td>Unbounded (Mean = 0, StdDev = 1)</td>
+                        <td>Moderate (Robust against statistical outliers)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Log Transformation</strong></td>
+                        <td><code>log(X)</code></td>
+                        <td>Unbounded logarithmic scale</td>
+                        <td>Low (Compresses extreme right-skewed values)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 10-MARK EXAM BLUEPRINTS -->
+    <section id="sec-exam" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Exam Answers</span>
+            <h2 class="topic-title">10-Mark University Model Answer Blueprints</h2>
+        </div>
+
+        <p class="content-para" style="margin-bottom: 1.5rem;">
+            Click any question below to expand model answer blueprints structured for 10-mark university exam questions:
+        </p>
+
+        <div class="accordion-item">
+            <button class="accordion-header">
+                <span>Q1. Discuss various methods of obtaining data in Data Science. Compare Web Scraping, APIs, and Databases. [10 Marks]</span>
+                <span>&#10133;</span>
+            </button>
+            <div class="accordion-body">
+                <p><strong>Structured 10-Mark Blueprint:</strong></p>
+                <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                    <li><strong>Introduction (2 Marks):</strong> Define data acquisition as the foundational phase of the data science lifecycle. Categorize structured, semi-structured, and unstructured data streams.</li>
+                    <li><strong>Web Scraping (2 Marks):</strong> Define HTML DOM parsing, CSS selectors, and <code>rvest</code> scripts. Discuss ethical considerations (e.g., <code>robots.txt</code>) and layout fragility.</li>
+                    <li><strong>REST APIs (2 Marks):</strong> Detail HTTP verbs (<code>GET</code>/<code>POST</code>), JSON payload deserialization, and authentication keys using <code>httr</code>/<code>jsonlite</code>.</li>
+                    <li><strong>Database Systems (2 Marks):</strong> Explain SQL queries over relational engines (RDBMS) versus NoSQL document stores using <code>DBI</code> drivers.</li>
+                    <li><strong>Comparison Table & Conclusion (2 Marks):</strong> Provide a summary matrix comparing data formats, stability, rate limits, and security across all three ingestion sources.</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <button class="accordion-header">
+                <span>Q2. Define Data Cleaning. Explain five major techniques used to handle dirty data with code examples. [10 Marks]</span>
+                <span>&#10133;</span>
+            </button>
+            <div class="accordion-body">
+                <p><strong>Structured 10-Mark Blueprint:</strong></p>
+                <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                    <li><strong>Definition & GIGO Principle (2 Marks):</strong> Define data cleansing. Explain how dirty data corrupts model performance ("Garbage In, Garbage Out").</li>
+                    <li><strong>Handling Missing Values (2 Marks):</strong> Differentiate MCAR, MAR, and MNAR mechanisms. Explain complete case deletion vs. median/mean imputation.</li>
+                    <li><strong>Duplicate Removal (1.5 Marks):</strong> Explain how redundant records bias statistical sample metrics. Show deduplication via <code>distinct()</code>.</li>
+                    <li><strong>Formatting & Standardisation (1.5 Marks):</strong> Detail string whitespace trimming, case conversions, and ISO date parsing (<code>lubridate</code>).</li>
+                    <li><strong>Handling Outliers (1.5 Marks):</strong> Explain IQR and Z-Score detection rules, along with winsorization/capping techniques.</li>
+                    <li><strong>Feature Scaling (1.5 Marks):</strong> Compare Min-Max Normalization formulas with Z-Score Standardization.</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <button class="accordion-header">
+                <span>Q3. Define Tidy Data. Explain Hadley Wickham's 3 rules and tidyr reshaping functions. [10 Marks]</span>
+                <span>&#10133;</span>
+            </button>
+            <div class="accordion-body">
+                <p><strong>Structured 10-Mark Blueprint:</strong></p>
+                <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                    <li><strong>Tidy Data Definition (2 Marks):</strong> Explain how tidy data maps 2D data frame structure directly to underlying statistical semantics.</li>
+                    <li><strong>The 3 Core Rules (3 Marks):</strong> Detail Rule 1 (Variables = Columns), Rule 2 (Observations = Rows), and Rule 3 (Values = Cells).</li>
+                    <li><strong>Untidy vs Tidy Examples (2.5 Marks):</strong> Contrast wide formats (e.g., years in headers) with clean long formats.</li>
+                    <li><strong>Reshaping Functions (2.5 Marks):</strong> Detail R code syntax for <code>pivot_longer()</code>, <code>pivot_wider()</code>, <code>separate()</code>, and <code>unite()</code>.</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- REVISION CHEAT SHEET -->
+    <section id="sec-revision" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Cheat Sheet</span>
+            <h2 class="topic-title">Quick Revision Summary Cards</h2>
+        </div>
+
+        <div class="card-grid">
+            <div class="mini-card" style="border-left: 4px solid var(--accent-cyan);">
+                <h4>Web Scraping</h4>
+                <p>Parses HTML DOM elements using CSS selectors (<code>rvest</code>). Always follow <code>robots.txt</code>.</p>
+            </div>
+            <div class="mini-card" style="border-left: 4px solid var(--accent-emerald);">
+                <h4>REST APIs</h4>
+                <p>Exchanges structured JSON/XML payloads using HTTP verbs (<code>GET</code>) and authentication tokens.</p>
+            </div>
+            <div class="mini-card" style="border-left: 4px solid var(--accent-amber);">
+                <h4>Missing Data</h4>
+                <p>Represented by <code>NA</code> in R. Remediated via Listwise Deletion or Mean/Median Imputation.</p>
+            </div>
+            <div class="mini-card" style="border-left: 4px solid var(--accent-rose);">
+                <h4>IQR Outlier Rule</h4>
+                <p>Bounds: <code>Q1 - 1.5*IQR</code> to <code>Q3 + 1.5*IQR</code>. Outliers treated via capping or trimming.</p>
+            </div>
+            <div class="mini-card" style="border-left: 4px solid var(--accent-cyan);">
+                <h4>Feature Scaling</h4>
+                <p>Min-Max scales to [0,1]. Z-Score normalizes to Mean=0 and StdDev=1.</p>
+            </div>
+            <div class="mini-card" style="border-left: 4px solid var(--accent-emerald);">
+                <h4>Tidy Data</h4>
+                <p>Variables = Columns | Observations = Rows | Values = Cells. Reshaped via <code>pivot_longer()</code>.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p><strong>BCA Introduction to Data Science Examination Study Portal</strong></p>
+        <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.85rem;">Unit–3: Getting and Cleaning Data | Comprehensive Exam Notes</p>
+    </footer>
+
+</main>
+
+<script>
+    // Theme Switcher & LocalStorage Persistence
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
+    const htmlElem = document.documentElement;
+
+    function applyTheme(theme) {
+        if (theme === 'light') {
+            htmlElem.classList.remove('dark');
+            htmlElem.classList.add('light');
+            themeIcon.innerHTML = '&#127769;';
+            themeText.innerText = 'Dark Mode';
+        } else {
+            htmlElem.classList.remove('light');
+            htmlElem.classList.add('dark');
+            themeIcon.innerHTML = '&#9728;';
+            themeText.innerText = 'Light Mode';
+        }
+        localStorage.setItem('bca_portal_theme_unit3', theme);
+    }
+
+    const savedTheme = localStorage.getItem('bca_portal_theme_unit3') || 'dark';
+    applyTheme(savedTheme);
+
+    themeToggleBtn.addEventListener('click', () => {
+        const currentTheme = htmlElem.classList.contains('dark') ? 'dark' : 'light';
+        applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+
+    // Code Copy Functionality
+    function copyCode(button) {
+        const preCode = button.parentElement.nextElementSibling.querySelector('code');
+        const textToCopy = preCode.innerText;
+
+        const tempTextArea = document.createElement('textarea');
+        tempTextArea.value = textToCopy;
+        document.body.appendChild(tempTextArea);
+        tempTextArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempTextArea);
+
+        const originalText = button.innerText;
+        button.innerText = 'Copied!';
+        button.style.backgroundColor = 'var(--accent-emerald)';
+        button.style.color = '#FFF';
+
+        setTimeout(() => {
+            button.innerText = originalText;
+            button.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+            button.style.color = '#FFF';
+        }, 2000);
+    }
+
+    // Dynamic Filter/Search Bar
+    const searchInput = document.getElementById('searchInput');
+    const topicCards = document.querySelectorAll('.topic-card');
+
+    searchInput.addEventListener('keyup', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+
+        topicCards.forEach(card => {
+            const cardText = card.innerText.toLowerCase();
+            if (cardText.includes(query)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+
+    // Accordion Control Logic
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+    accordionHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+            const body = header.nextElementSibling;
+            const icon = header.querySelector('span:last-child');
+            
+            if (body.classList.contains('active')) {
+                body.classList.remove('active');
+                icon.innerHTML = '&#10133;';
+            } else {
+                body.classList.add('active');
+                icon.innerHTML = '&#10134;';
+            }
+        });
+    });
+</script>
+</body>
+</html>

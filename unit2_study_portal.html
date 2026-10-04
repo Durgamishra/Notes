@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 2: R Programming Basics - Study Portal</title>
+    <style>
+        :root {
+            --bg-main: #0B132B;
+            --bg-card: #1C2541;
+            --bg-sidebar: #0B132B;
+            --border-color: #3A506B;
+            --text-primary: #F8FAFC;
+            --text-secondary: #94A3B8;
+            --accent-cyan: #00B4D8;
+            --accent-cyan-light: #48CAE4;
+            --accent-emerald: #10B981;
+            --accent-amber: #F59E0B;
+            --code-bg: #0F172A;
+            --shadow-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .light {
+            --bg-main: #F1F5F9;
+            --bg-card: #FFFFFF;
+            --bg-sidebar: #E2E8F0;
+            --border-color: #CBD5E1;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --accent-cyan: #0284C7;
+            --accent-cyan-light: #0369A1;
+            --accent-emerald: #059669;
+            --accent-amber: #D97706;
+            --code-bg: #1E293B;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.7;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styling */
+        #sidebar {
+            width: 320px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem 1rem;
+        }
+
+        .brand-header {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--accent-cyan);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .brand-sub {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            padding: 0.65rem 0.85rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .nav-item a:hover, .nav-item a.active {
+            background-color: var(--bg-card);
+            color: var(--accent-cyan-light);
+            border-left: 4px solid var(--accent-cyan);
+        }
+
+        /* Main Content Styling */
+        #main-content {
+            margin-left: 320px;
+            flex: 1;
+            padding: 2rem 3rem;
+            max-width: 1400px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 0;
+            background-color: var(--bg-main);
+            padding: 1rem 0;
+            z-index: 90;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .theme-toggle-btn {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.65rem 1.25rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: var(--accent-cyan);
+        }
+
+        .hero-banner {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-sidebar) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 25px -5px var(--shadow-color);
+        }
+
+        .hero-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--accent-cyan-light);
+            margin-bottom: 0.75rem;
+        }
+
+        .hero-desc {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            max-width: 900px;
+        }
+
+        .topic-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            scroll-margin-top: 100px;
+        }
+
+        .topic-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .topic-badge {
+            background-color: rgba(0, 180, 216, 0.15);
+            color: var(--accent-cyan);
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 180, 216, 0.3);
+        }
+
+        .topic-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent-cyan-light);
+            margin: 1.5rem 0 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .content-para {
+            color: var(--text-primary);
+            margin-bottom: 1.25rem;
+            font-size: 1rem;
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        /* Revision Notes Box */
+        .revision-box {
+            background-color: rgba(16, 185, 129, 0.08);
+            border-left: 4px solid var(--accent-emerald);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1.5rem 0;
+        }
+
+        .revision-box h4 {
+            color: var(--accent-emerald);
+            font-size: 1.05rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .revision-box ul {
+            padding-left: 1.25rem;
+            color: var(--text-primary);
+        }
+
+        .revision-box li {
+            margin-bottom: 0.4rem;
+        }
+
+        /* Code Block Styling */
+        .code-container {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin: 1.25rem 0;
+            overflow: hidden;
+        }
+
+        .code-header {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-family: monospace;
+        }
+
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
+            color: #FFF;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent-cyan);
+            color: #000;
+        }
+
+        pre code {
+            display: block;
+            padding: 1.25rem;
+            overflow-x: auto;
+            color: #E2E8F0;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Custom Data Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background-color: var(--bg-sidebar);
+            color: var(--accent-cyan-light);
+            padding: 0.85rem 1rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Accordion for 10-Mark Questions */
+        .accordion-item {
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            background-color: var(--bg-card);
+        }
+
+        .accordion-header {
+            width: 100%;
+            padding: 1.25rem;
+            text-align: left;
+            background-color: var(--bg-sidebar);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion-header:hover {
+            color: var(--accent-cyan);
+        }
+
+        .accordion-body {
+            padding: 1.5rem;
+            display: none;
+            border-top: 1px solid var(--border-color);
+            line-height: 1.8;
+        }
+
+        .accordion-body.active {
+            display: block;
+        }
+
+        /* Print Mode Styling */
+        @media print {
+            #sidebar, .top-bar, .theme-toggle-btn, .copy-btn {
+                display: none !important;
+            }
+            #main-content {
+                margin-left: 0 !important;
+                padding: 0 !important;
+                max-width: 100% !important;
+            }
+            .topic-card {
+                border: 1px solid #000 !important;
+                page-break-inside: avoid;
+                color: #000 !important;
+                background: #FFF !important;
+            }
+            body {
+                background: #FFF !important;
+                color: #000 !important;
+            }
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            #sidebar {
+                width: 260px;
+            }
+            #main-content {
+                margin-left: 260px;
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            #sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+            }
+            #main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<aside id="sidebar">
+    <div class="brand-header">
+        <span>&#9881;</span> BCA R-PORTAL
+    </div>
+    <div class="brand-sub">Unit-2: R Programming Basics</div>
+    <nav>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="#sec-intro">&#10148; 1. Overview of R</a></li>
+            <li class="nav-item"><a href="#sec-datatypes">&#10148; 2. Data Types & Objects</a></li>
+            <li class="nav-item"><a href="#sec-io">&#10148; 3. Reading & Writing Data</a></li>
+            <li class="nav-item"><a href="#sec-control">&#10148; 4. Control Structures</a></li>
+            <li class="nav-item"><a href="#sec-functions">&#10148; 5. Functions in R</a></li>
+            <li class="nav-item"><a href="#sec-scoping">&#10148; 6. Scope Rules</a></li>
+            <li class="nav-item"><a href="#sec-dates">&#10148; 7. Dates and Times</a></li>
+            <li class="nav-item"><a href="#sec-apply">&#10148; 8. The Apply Family</a></li>
+            <li class="nav-item"><a href="#sec-debug">&#10148; 9. Debugging Tools</a></li>
+            <li class="nav-item"><a href="#sec-simulation">&#10148; 10. Simulation in R</a></li>
+            <li class="nav-item"><a href="#sec-profiling">&#10148; 11. Code Profiling</a></li>
+            <li class="nav-item"><a href="#sec-tables">&#10148; 12. Master Comparison Tables</a></li>
+            <li class="nav-item"><a href="#sec-exam">&#10148; 13. 10-Mark Exam Questions</a></li>
+        </ul>
+    </nav>
+</aside>
+
+<main id="main-content">
+
+    <div class="top-bar">
+        <div class="search-box">
+            <span class="search-icon">&#128269;</span>
+            <input type="text" id="searchInput" class="search-input" placeholder="Search topics, functions, code snippets (e.g., lapply, scoping, read.csv)...">
+        </div>
+        <button class="theme-toggle-btn" id="themeToggle">
+            <span id="themeIcon">&#9728;</span> <span id="themeText">Light Mode</span>
+        </button>
+    </div>
+
+    <div class="hero-banner">
+        <h1 class="hero-title">Unit–2: R Programming Basics & Data Science</h1>
+        <p class="hero-desc">An exhaustive, university-level exam study portal built for BCA students. Covers core concepts, long-answer theoretical explanations, detailed code syntaxes, memory structures, comparison matrices, and 10-mark examination guides.</p>
+    </div>
+
+    <!-- SECTION 1 -->
+    <section id="sec-intro" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 1</span>
+            <h2 class="topic-title">Introduction & Overview of R</h2>
+        </div>
+        
+        <h3 class="section-title">&#128216; Historical Context & Philosophical Foundations</h3>
+        <p class="content-para">
+            R is an interpreted, high-level, functional programming language and environment dedicated to statistical computing, data analysis, graphics generation, and quantitative data science. Developed initially by <strong>Ross Ihaka</strong> and <strong>Robert Gentleman</strong> at the University of Auckland, New Zealand, in 1993, R was designed as an open-source implementation of the <strong>S programming language</strong>, which was created by John Chambers and his colleagues at Bell Laboratories in the 1970s. The name "R" reflects both the first-name initials of its original authors and its direct heritage from the S language.
+        </p>
+        <p class="content-para">
+            At its core, R is built around a functional and vectorized computing paradigm. Unlike traditional procedural or imperative languages such as C, C++, or Java, where computations are executed through explicit loops and manual pointer/index manipulation, R optimizes multi-element mathematical operations by executing operations over entire vectors natively. This approach minimizes administrative coding overhead and shifts developer focus directly toward mathematical modeling and exploratory data analysis. R is governed under the GNU General Public License (GPL) and maintained actively by the <strong>R Development Core Team</strong>, ensuring continuous updates, open security audits, and global cross-platform compatibility.
+        </p>
+
+        <h3 class="section-title">&#128187; Key Core Characteristics of R</h3>
+        <p class="content-para">
+            The enduring supremacy of R across data science domains rests upon several architectural characteristics:
+        </p>
+        <ul style="margin-left: 1.5rem; margin-bottom: 1.25rem; color: var(--text-primary);">
+            <li style="margin-bottom: 0.5rem;"><strong>Vectorized Operations:</strong> Mathematical functions operate on vectors naturally without necessitating explicit iterative loops.</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Comprehensive Package Ecosystem (CRAN):</strong> The Comprehensive R Archive Network hosts over 18,000+ packages providing extensions for machine learning, time-series forecasting, and spatial analysis.</li>
+            <li style="margin-bottom: 0.5rem;"><strong>First-Class Graphics Engine:</strong> R features built-in base graphics along with powerful advanced visualization systems like <code>ggplot2</code> (based on Leland Wilkinson's Grammar of Graphics).</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Dynamic Typing & Interpreted Execution:</strong> Variables are dynamically typed at runtime, eliminating explicit manual compile steps and enabling interactive exploration via the R Console or RStudio REPL.</li>
+        </ul>
+
+        <div class="revision-box">
+            <h4>&#128204; Quick Exam Revision Notes: Overview of R</h4>
+            <ul>
+                <li><strong>Origins:</strong> Created by Ross Ihaka & Robert Gentleman (1993), based on Bell Labs' S language.</li>
+                <li><strong>Paradigm:</strong> Functional, dynamic, interpreted, vectorized statistical programming language.</li>
+                <li><strong>Ecosystem:</strong> Managed by R Core Team; package repository known as CRAN (Comprehensive R Archive Network).</li>
+                <li><strong>Primary Strengths:</strong> Native vectorized math, superior statistical routines, publication-grade data visualizations.</li>
+            </ul>
+        </div>
+
+        <h3 class="section-title">&#128187; Basic Syntax Example</h3>
+        <div class="code-container">
+            <div class="code-header">
+                <span>R Script - Basic Calculations & Vectorization</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code># Basic Arithmetic and Vectorized Operations
+x <- c(10, 20, 30, 40, 50)  # Combine function c() creates a numeric vector
+y <- c(1, 2, 3, 4, 5)
+
+# Element-wise addition executed natively without loops
+sum_vec <- x + y
+print(sum_vec)  # Output: [1] 11 22 33 44 55
+
+# Calculating basic statistics
+mean_val <- mean(x)
+sd_val <- sd(x)
+cat("Mean:", mean_val, "| Standard Deviation:", sd_val, "\n")
+</code></pre>
+        </div>
+    </section>
+
+    <!-- SECTION 2 -->
+    <section id="sec-datatypes" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 2</span>
+            <h2 class="topic-title">R Data Types and Data Structures (Objects)</h2>
+        </div>
+
+        <h3 class="section-title">&#129513; Atomic Data Types in R</h3>
+        <p class="content-para">
+            In R, everything is an object. Unlike traditional languages that distinguish between primitive variables and complex objects, even basic scalars in R are vectors of length 1. R supports six fundamental <strong>Atomic Vector Types</strong>:
+        </p>
+        <ol style="margin-left: 1.5rem; margin-bottom: 1.25rem; color: var(--text-primary);">
+            <li style="margin-bottom: 0.5rem;"><strong>Numeric (Double):</strong> Default representation for numbers with decimals (e.g., <code>3.14</code>, <code>42.0</code>). Occupies 8 bytes of double-precision memory.</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Integer:</strong> Explicit integer values denoted by appending an <code>L</code> suffix (e.g., <code>42L</code>, <code>100L</code>). Stores whole numbers using less memory than doubles.</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Character:</strong> Text strings enclosed within single or double quotes (e.g., <code>"BCA"</code>, <code>'Data Science'</code>).</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Logical:</strong> Boolean logical constants comprising <code>TRUE</code>, <code>FALSE</code>, or missing value indicator <code>NA</code>.</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Complex:</strong> Numbers containing imaginary components (e.g., <code>3 + 2i</code>).</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Raw:</strong> Raw bytes used for binary data manipulation (e.g., <code>charToRaw("A")</code>).</li>
+        </ol>
+
+        <h3 class="section-title">&#128202; Fundamental R Data Structures</h3>
+        <p class="content-para">
+            R builds upon atomic types to construct rich data structures capable of representing complex dimensions and mixed data types:
+        </p>
+        <p class="content-para">
+            <strong>1. Vectors:</strong> One-dimensional sequences of homogeneous elements. Created using the <code>c()</code> (combine) function. If distinct types are mixed inside a vector, R executes <em>Implicit Coercion</em> following a hierarchy that preserves information: <code>Logical &rarr; Integer &rarr; Numeric &rarr; Character</code>.
+        </p>
+        <p class="content-para">
+            <strong>2. Matrices:</strong> Two-dimensional rectangular data structures containing homogeneous data elements organized into rows and columns. Created via <code>matrix(data, nrow, ncol, byrow = FALSE)</code>. By default, matrices are filled in column-major order unless <code>byrow = TRUE</code> is explicitly declared.
+        </p>
+        <p class="content-para">
+            <strong>3. Arrays:</strong> Multi-dimensional homogeneous data structures extending matrices across higher dimensions ($N > 2$). Defined using <code>array(data, dim = c(d1, d2, d3))</code>.
+        </p>
+        <p class="content-para">
+            <strong>4. Factors:</strong> Specialized data structures used to store categorical variables representing qualitative data with distinct categories called <em>levels</em>. Created using <code>factor()</code> or <code>ordered()</code> for ordinal data.
+        </p>
+        <p class="content-para">
+            <strong>5. Lists:</strong> One-dimensional <em>heterogeneous</em> containers capable of storing elements of varying data types and structures, including nested lists, vectors, matrices, and data frames. Indexed using single brackets <code>[ ]</code> (returns a sub-list) or double brackets <code>[[ ]]</code> (extracts raw content).
+        </p>
+        <p class="content-para">
+            <strong>6. Data Frames:</strong> The primary 2D tabular structure used in data science. Data frames are heterogeneous, list-like objects where each column represents a variable of uniform type and length, while each row represents a distinct observation.
+        </p>
+
+        <div class="revision-box">
+            <h4>&#128204; Quick Exam Revision Notes: Data Structures</h4>
+            <ul>
+                <li><strong>Coercion Rule:</strong> Logical &rarr; Integer &rarr; Numeric &rarr; Character (Least flexible to most flexible).</li>
+                <li><strong>Homogeneous Structures:</strong> Vector (1D), Matrix (2D), Array (ND) &mdash; elements must be of identical type.</li>
+                <li><strong>Heterogeneous Structures:</strong> List (1D), Data Frame (2D) &mdash; can store mixed types within distinct components.</li>
+                <li><strong>Matrix Filling:</strong> Default is Column-Major. Use <code>byrow = TRUE</code> to change to Row-Major.</li>
+            </ul>
+        </div>
+
+        <div class="code-container">
+            <div class="code-header">
+                <span>R Script - Creation & Manipulation of Objects</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code># 1. Vectors & Implicit Coercion
+mix_vec <- c(TRUE, 10L, 3.14, "Data") 
+print(mix_vec) # Coerced entirely to Character: "TRUE" "10" "3.14" "Data"
+
+# 2. Matrix Creation
+mat <- matrix(1:6, nrow = 2, ncol = 3, byrow = TRUE)
+print(mat)
+
+# 3. Factor Creation
+gender <- factor(c("Male", "Female", "Female", "Male"))
+print(levels(gender)) # "Female" "Male"
+
+# 4. List Creation
+my_list <- list(ID = 101, Name = "Alice", Scores = c(90, 85, 92))
+print(my_list$Scores[2]) # Accessing list contents: 85
+
+# 5. Data Frame Creation
+df <- data.frame(
+  StudentID = c(1, 2, 3),
+  Name = c("Amit", "Priya", "Rahul"),
+  GPA = c(3.8, 3.9, 3.5)
+)
+str(df) # Display structure of data frame
+summary(df) # Display summary statistical metrics
+</code></pre>
+        </div>
+    </section>
+
+    <!-- SECTION 3 -->
+    <section id="sec-io" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 3</span>
+            <h2 class="topic-title">Reading and Writing Data in R</h2>
+        </div>
+
+        <h3 class="section-title">&#128194; Data I/O Pipeline Architecture</h3>
+        <p class="content-para">
+            Data acquisition and export represent fundamental starting points in the data science lifecycle. R provides robust functions for reading external tabular files (CSVs, text files, delimited text) into memory as data frames, as well as exporting processed objects back to disk or binary serialization representations.
+        </p>
+        <p class="content-para">
+            Understanding working directories is essential for file management. The function <code>getwd()</code> retrieves the active working directory, while <code>setwd("path")</code> sets a new working path. For external flat files, base R relies on the <code>read.table()</code> parent function and specialized wrappers like <code>read.csv()</code> and <code>read.delim()</code>.
+        </p>
+
+        <h3 class="section-title">&#9881; Key Parameters in Tabular Data Import</h3>
+        <ul style="margin-left: 1.5rem; margin-bottom: 1.25rem; color: var(--text-primary);">
+            <li style="margin-bottom: 0.5rem;"><code>file</code>: Relative or absolute file path string.</li>
+            <li style="margin-bottom: 0.5rem;"><code>header</code>: Logical scalar (<code>TRUE</code>/<code>FALSE</code>) indicating whether the first row contains field names.</li>
+            <li style="margin-bottom: 0.5rem;"><code>sep</code>: Character specifying field separator (e.g., <code>","</code> for CSV, <code>"\t"</code> for TSV, <code>""</code> for white space).</li>
+            <li style="margin-bottom: 0.5rem;"><code>stringsAsFactors</code>: Logical flag indicating whether string variables should automatically convert to factors (Default in R 4.0+ is <code>FALSE</code>).</li>
+            <li style="margin-bottom: 0.5rem;"><code>na.strings</code>: Character vector specifying values to interpret as missing values (e.g., <code>c("NA", "N/A", "-999", "")</code>).</li>
+        </ul>
+
+        <div class="revision-box">
+            <h4>&#128204; Quick Exam Revision Notes: Data I/O</h4>
+            <ul>
+                <li><strong>Directory Management:</strong> <code>getwd()</code> checks active directory; <code>setwd()</code> alters directory.</li>
+                <li><strong>CSV Imports:</strong> <code>read.csv()</code> uses comma separator and sets header=TRUE by default.</li>
+                <li><strong>TSV/Text Imports:</strong> <code>read.table()</code> uses space separator; <code>read.delim()</code> uses tab separator (<code>\t</code>).</li>
+                <li><strong>Binary R Data:</strong> <code>saveRDS(obj, "file.rds")</code> / <code>readRDS("file.rds")</code> for single objects; <code>save()</code> / <code>load()</code> for workspace sessions.</li>
+            </ul>
+        </div>
+
+        <div class="code-container">
+            <div class="code-header">
+                <span>R Script - Complete Data Import/Export Syntax</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code># Set Working Directory
+# setwd("C:/Users/Student/Documents/R_Work")
+
+# 1. Reading CSV File with explicit parameters
+student_data <- read.csv(
+  file = "students.csv",
+  header = TRUE,
+  sep = ",",
+  na.strings = c("NA", "", "NULL"),
+  stringsAsFactors = FALSE
+)
+
+# Inspect imported data
+head(student_data, n = 5) # View first 5 rows
+
+# 2. Writing Modified Data back to CSV
+write.csv(student_data, file = "students_cleaned.csv", row.names = FALSE)
+
+# 3. Fast Native Binary Serialization (RDS)
+saveRDS(student_data, file = "student_data.rds")
+restored_data <- readRDS(file = "student_data.rds")
+</code></pre>
+        </div>
+    </section>
+
+    <!-- SECTION 4 -->
+    <section id="sec-control" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 4</span>
+            <h2 class="topic-title">Control Structures in R</h2>
+        </div>
+
+        <h3 class="section-title">&#128608; Execution Flow Management</h3>
+        <p class="content-para">
+            Control structures dictate execution flow within R scripts, enabling conditional decision-making, conditional branching, and repetitive execution loops. Because R is fundamentally vectorized, imperative loops are often replaced by vector operations or apply family utilities; however, traditional control structures remain vital for program logic control.
+        </p>
+
+        <h3 class="section-title">&#128256; Conditional Branching & Iteration Constructs</h3>
+        <p class="content-para">
+            <strong>Decision Making:</strong> R provides standard <code>if</code>, <code>if-else</code>, and multi-branch <code>if-else if-else</code> blocks. Additionally, R provides a unique vectorized conditional function called <code>ifelse(test, yes, no)</code>, which evaluates an entire vector of conditions at once and returns a vector of corresponding outputs.
+        </p>
+        <p class="content-para">
+            <strong>Iteration Loops:</strong>
+        </p>
+        <ul style="margin-left: 1.5rem; margin-bottom: 1.25rem; color: var(--text-primary);">
+            <li style="margin-bottom: 0.5rem;"><strong><code>for</code> Loop:</strong> Iterates over a sequence vector or list of fixed length.</li>
+            <li style="margin-bottom: 0.5rem;"><strong><code>while</code> Loop:</strong> Executes statements continuously as long as a evaluated boolean test condition evaluates to <code>TRUE</code>.</li>
+            <li style="margin-bottom: 0.5rem;"><strong><code>repeat</code> Loop:</strong> Executes an infinite loop that continues until explicitly terminated using a <code>break</code> statement.</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Loop Control Controls:</strong> <code>break</code> exits loop execution entirely; <code>next</code> skips the current iteration and jumps directly to the next loop iteration.</li>
+        </ul>
+
+        <div class="revision-box">
+            <h4>&#128204; Quick Exam Revision Notes: Control Structures</h4>
+            <ul>
+                <li><strong>Vectorized Conditional:</strong> <code>ifelse(condition, value_if_true, value_if_false)</code> evaluates vector operations in one line.</li>
+                <li><strong>Loop Types:</strong> <code>for</code> (fixed iteration count), <code>while</code> (entry-conditioned), <code>repeat</code> (infinite until break).</li>
+                <li><strong>Control Words:</strong> <code>break</code> terminates loop; <code>next</code> skips current cycle iteration.</li>
+            </ul>
+        </div>
+
+        <div class="code-container">
+            <div class="code-header">
+                <span>R Script - Control Structures and Vectorized ifelse</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code># 1. Vectorized Conditional ifelse()
+marks <- c(45, 88, 32, 95, 67)
+results <- ifelse(marks >= 50, "PASS", "FAIL")
+print(results) # "FAIL" "PASS" "FAIL" "PASS" "PASS"
+
+# 2. For Loop with Next and Break
+cat("Processing numbers:\n")
+for(i in 1:10) {
+  if(i %% 2 == 0) {
+    next # Skip even numbers
+  }
+  if(i > 7) {
+    break # Terminate loop if number exceeds 7
+  }
+  cat("Odd Value:", i, "\n")
+}
+
+# 3. While Loop Example
+count <- 1
+while(count <= 3) {
+  cat("While Count:", count, "\n")
+  count <- count + 1
+}
+</code></pre>
+        </div>
+    </section>
+
+    <!-- SECTION 5 -->
+    <section id="sec-functions" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 5</span>
+            <h2 class="topic-title">Functions in R</h2>
+        </div>
+
+        <h3 class="section-title">&#129302; Modular Computing & First-Class Functions</h3>
+        <p class="content-para">
+            In R, functions are treated as <strong>First-Class Objects</strong> (or first-class citizens). This means functions can be assigned to variables, passed as arguments into other functions, stored inside lists, and returned from function execution calls. Functions promote code reusability, modularity, readability, and encapsulation.
+        </p>
+        <p class="content-para">
+            R includes hundreds of <strong>Built-in Functions</strong> for mathematical calculations (<code>sqrt()</code>, <code>abs()</code>), statistical aggregations (<code>mean()</code>, <code>sd()</code>, <code>median()</code>), string manipulations (<code>paste()</code>, <code>substr()</code>, <code>sprintf()</code>), and structural inspection (<code>length()</code>, <code>dim()</code>, <code>str()</code>).
+        </p>
+
+        <h3 class="section-title">&#9997; Anatomy of User-Defined Functions & Lazy Evaluation</h3>
+        <p class="content-para">
+            A function is declared using the keyword <code>function</code> with a defined set of arguments, body code enclosed in curly braces, and an optional <code>return()</code> statement. If no explicit return call is given, R automatically returns the evaluated result of the final statement executed within the function body.
+        </p>
+        <p class="content-para">
+            <strong>Lazy Evaluation:</strong> R evaluates function arguments only when they are first accessed during execution, not when the function is initially invoked. This lazy evaluation paradigm saves computational resources when handling heavy data arguments.
+        </p>
+
+        <div class="revision-box">
+            <h4>&#128204; Quick Exam Revision Notes: Functions</h4>
+            <ul>
+                <li><strong>First-Class Status:</strong> Functions are objects that can be assigned, passed as inputs, or returned.</li>
+                <li><strong>Implicit Return:</strong> R returns the last evaluated expression if <code>return()</code> is omitted.</li>
+                <li><strong>Lazy Evaluation:</strong> Argument expression values are computed only when evaluated inside function execution flow.</li>
+                <li><strong>Default Arguments:</strong> Function parameters can be assigned fallback default values in declaration.</li>
+            </ul>
+        </div>
+
+        <div class="code-container">
+            <div class="code-header">
+                <span>R Script - User-Defined Functions and Default Values</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code># User Defined Function for Calculating Summary Statistics
+calculate_stats <- function(vec, scale_factor = 1.0, verbose = TRUE) {
+  # Lazy Evaluation: scale_factor is evaluated here
+  scaled_vec <- vec * scale_factor
+  m_val <- mean(scaled_vec)
+  s_val <- sd(scaled_vec)
+  
+  if(verbose) {
+    cat("Mean:", m_val, "| SD:", s_val, "\n")
+  }
+  
+  # Return multiple output metrics as a named list
+  return(list(mean = m_val, stdev = s_val, processed_data = scaled_vec))
+}
+
+# Invoking Function
+data_points <- c(12, 15, 18, 22, 30)
+res <- calculate_stats(vec = data_points, scale_factor = 2)
+print(res$mean)
+</code></pre>
+        </div>
+    </section>
+
+    <!-- SECTION 6 -->
+    <section id="sec-scoping" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 6</span>
+            <h2 class="topic-title">Scope Rules in R (Scoping Rules)</h2>
+        </div>
+
+        <h3 class="section-title">&#128269; Lexical Scoping vs Dynamic Scoping</h3>
+        <p class="content-para">
+            Scoping rules determine how R binds free variables within a function call to physical memory values. R employs <strong>Lexical Scoping</strong> (also known as static scoping), which dictates that free variable values are resolved based on the environment in which the function was <em>defined or created</em>, rather than the environment from which the function is <em>called</em> (dynamic scoping).
+        </p>
+
+        <h3 class="section-title">&#127970; The Environment Hierarchy & Search Path</h3>
+        <p class="content-para">
+            An <strong>Environment</strong> in R is a collection of symbol-value pairs, bound together in a hierarchical tree topology where every environment possesses a designated parent environment (except the Empty Environment).
+        </p>
+        <p class="content-para">
+            When R attempts to resolve a symbol or variable inside a function body, it follows a strict search path:
+        </p>
+        <ol style="margin-left: 1.5rem; margin-bottom: 1.25rem; color: var(--text-primary);">
+            <li style="margin-bottom: 0.5rem;"><strong>Local Environment:</strong> Search variables created inside the executing function frame.</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Enclosing Environment:</strong> Search the environment where the function was declared.</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Global Environment (<code>.GlobalEnv</code>):</strong> Search user workspace variables.</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Package Environments:</strong> Search attached external package namespaces listed in <code>search()</code>.</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Base Environment:</strong> Search core system functions and symbols.</li>
+        </ol>
+        <p class="content-para">
+            <strong>Super-Assignment Operator (<code>&lt;&lt;-</code>):</strong> Standard assignment (<code>&lt;-</code> or <code>=</code>) binds or updates variables within the current local environment frame. In contrast, the super-assignment operator (<code>&lt;&lt;-</code>) bypasses the local environment and searches upward through parent environments to modify or define global variables directly from within local function execution scopes.
+        </p>
+
+        <div class="revision-box">
+            <h4>&#128204; Quick Exam Revision Notes: Scope Rules</h4>
+            <ul>
+                <li><strong>Lexical Scoping:</strong> Symbol lookup relies on function *definition* location environment.</li>
+                <li><strong>Search Path Sequence:</strong> Local &rarr; Enclosing &rarr; Global Environment &rarr; Package Namespaces &rarr; Base.</li>
+                <li><strong>Super Assignment (<code>&lt;&lt;-</code>):</strong> Reassigns or creates variables in enclosing/global environments from within local scopes.</li>
+                <li><strong>Command Check:</strong> Execute <code>search()</code> to inspect active package environment lookup orders.</li>
+            </ul>
+        </div>
+
+        <div class="code-container">
+            <div class="code-header">
+                <span>R Script - Lexical Scoping and Super-Assignment</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code># Global Scope Variable
+x <- 100 
+
+make_power_func <- function(exp) {
+  # Lexical scoping: 'exp' is bound in this enclosing environment
+  power_func <- function(base) {
+    return(base ^ exp) # 'exp' resolved from enclosing environment
+  }
+  return(power_func)
+}
+
+square <- make_power_func(2)
+cube <- make_power_func(3)
+
+print(square(4)) # Output: 16
+print(cube(4))   # Output: 64
+
+# Demonstrating Super-Assignment Operator <<-
+global_counter <- 0
+
+increment_counter <- function() {
+  global_counter <<- global_counter + 1 # Modifies global environment variable
+}
+
+increment_counter()
+print(global_counter) # Output: 1
+</code></pre>
+        </div>
+    </section>
+
+    <!-- SECTION 7 -->
+    <section id="sec-dates" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 7</span>
+            <h2 class="topic-title">Dates and Times in R</h2>
+        </div>
+
+        <h3 class="section-title">&#128197; Time Representation Architecture</h3>
+        <p class="content-para">
+            Time-series modeling and temporal log data processing require specialized handling in data science routines. Base R handles dates and times using dedicated object classes:
+        </p>
+        <p class="content-para">
+            <strong>1. Date Class:</strong> Used for calendar dates without timestamp components. Internally, R stores <code>Date</code> objects as integer values representing the total number of days elapsed since <strong>1970-01-01</strong> (the UNIX epoch reference point). Dates prior to 1970 are stored as negative integer offsets.
+        </p>
+        <p class="content-para">
+            <strong>2. POSIXct Class:</strong> Stores date-time information internally as continuous signed double-precision floating-point numbers representing seconds elapsed since 1970-01-01 GMT. Highly efficient for storage inside large data frames.
+        </p>
+        <p class="content-para">
+            <strong>3. POSIXlt Class:</strong> Stores date-time values internally as structured, named lists containing individual components such as seconds (<code>sec</code>), minutes (<code>min</code>), hours (<code>hour</code>), day of month (<code>mday</code>), month (<code>mon</code>, 0-indexed), and year (<code>year</code>, years since 1900).
+        </p>
+
+        <h3 class="section-title">&#9200; Key Formatting & Arithmetic Functions</h3>
+        <ul style="margin-left: 1.5rem; margin-bottom: 1.25rem; color: var(--text-primary);">
+            <li style="margin-bottom: 0.5rem;"><code>Sys.Date()</code> & <code>Sys.time()</code>: Retrieve active system date and time stamps.</li>
+            <li style="margin-bottom: 0.5rem;"><code>as.Date(x, format)</code>: Converts character strings to calendar <code>Date</code> objects.</li>
+            <li style="margin-bottom: 0.5rem;"><code>strptime(x, format)</code>: Converts raw character strings into structured <code>POSIXlt</code> objects.</li>
+            <li style="margin-bottom: 0.5rem;"><code>strftime(x, format)</code>: Formats date-time objects into customized character representations.</li>
+            <li style="margin-bottom: 0.5rem;"><code>difftime(time1, time2, units)</code>: Calculates precise time intervals across units (seconds, minutes, hours, days, weeks).</li>
+        </ul>
+
+        <div class="revision-box">
+            <h4>&#128204; Quick Exam Revision Notes: Dates and Times</h4>
+            <ul>
+                <li><strong>Epoch Reference:</strong> Base epoch reference date is 1970-01-01 across R date classes.</li>
+                <li><strong>Date Class:</strong> Stores integer count of days since epoch.</li>
+                <li><strong>POSIXct vs POSIXlt:</strong> <code>POSIXct</code> stores seconds count; <code>POSIXlt</code> stores list components (sec, min, hour, etc.).</li>
+                <li><strong>Interval Math:</strong> Use <code>difftime()</code> for exact time interval measurements between dates.</li>
+            </ul>
+        </div>
+
+        <div class="code-container">
+            <div class="code-header">
+                <span>R Script - Date Parsing, Formats, and Calculations</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code># 1. Date Class Operations
+date_str <- "2026-10-03"
+my_date <- as.Date(date_str)
+print(class(my_date))      # "Date"
+print(as.numeric(my_date)) # Days elapsed since 1970-01-01
+
+# Custom String Date Parsing
+dob <- as.Date("15/08/1947", format = "%d/%m/%Y")
+print(dob)
+
+# 2. POSIXct and POSIXlt Operations
+now_time <- Sys.time() # POSIXct
+time_struct <- as.POSIXlt(now_time) # POSIXlt
+
+cat("Current Hour:", time_struct$hour, "| Month:", time_struct$mon + 1, "\n")
+
+# 3. Date Arithmetic & Time Difference
+time_diff <- difftime(Sys.Date(), dob, units = "days")
+print(time_diff)
+</code></pre>
+        </div>
+    </section>
+
+    <!-- SECTION 8 -->
+    <section id="sec-apply" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 8</span>
+            <h2 class="topic-title">Loop Functions in R (The Apply Family)</h2>
+        </div>
+
+        <h3 class="section-title">&#128034; Functional Iteration vs Imperative Loops</h3>
+        <p class="content-para">
+            In R, traditional imperative loops like <code>for</code> and <code>while</code> can introduce speed bottlenecks when executing complex iterative computations over massive vectors or data frames. R addresses this using the <strong>Apply Family of Functions</strong>. These built-in high-order functions apply a specified function iteratively across subsets of data matrices, arrays, lists, or data frames using optimized C code under the hood.
+        </p>
+
+        <h3 class="section-title">&#128260; Member Functions of the Apply Family</h3>
+        <p class="content-para">
+            <strong>1. <code>apply(X, MARGIN, FUN, ...)</code>:</strong> Evaluates a given function across rows or columns of matrices or arrays. The parameter <code>MARGIN = 1</code> applies computations row-wise, <code>MARGIN = 2</code> applies computations column-wise, and <code>MARGIN = c(1, 2)</code> operates across both dimensions simultaneously.
+        </p>
+        <p class="content-para">
+            <strong>2. <code>lapply(X, FUN, ...)</code>:</strong> Applies a specified function to every element of a vector or list and returns a new <strong>List</strong> of identical length.
+        </p>
+        <p class="content-para">
+            <strong>3. <code>sapply(X, FUN, ..., simplify = TRUE)</code>:</strong> A user-friendly wrapper over <code>lapply</code> that attempts to <em>simplify</em> the output structure. If all elements returned are scalars, <code>sapply</code> converts the final output into an atomic vector; if outputs are vectors of uniform length, it returns a matrix.
+        </p>
+        <p class="content-para">
+            <strong>4. <code>tapply(X, INDEX, FUN, ...)</code>:</strong> Applies functions over ragged subsets or subgroups of a vector, grouped by categorical factors defined in the <code>INDEX</code> argument.
+        </p>
+
+        <div class="revision-box">
+            <h4>&#128204; Quick Exam Revision Notes: Apply Family</h4>
+            <ul>
+                <li><strong><code>apply</code>:</strong> Designed for matrices/arrays. Margin 1 = Rows, Margin 2 = Columns.</li>
+                <li><strong><code>lapply</code>:</strong> Returns a List output for vectors or lists.</li>
+                <li><strong><code>sapply</code>:</strong> Simplified version of <code>lapply</code> returning vectors or matrices when possible.</li>
+                <li><strong><code>tapply</code>:</strong> Group-based aggregations using factor category indexes.</li>
+            </ul>
+        </div>
+
+        <div class="code-container">
+            <div class="code-header">
+                <span>R Script - Complete Apply Family Syntax</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code># Sample Matrix
+mat <- matrix(1:12, nrow = 3, ncol = 4)
+
+# 1. apply(): Calculate column sums (MARGIN = 2)
+col_sums <- apply(mat, MARGIN = 2, FUN = sum)
+print(col_sums) # Output: 6 15 24 33
+
+# 2. lapply() vs sapply()
+str_list <- list(a = 1:5, b = c(10, 20, 30))
+
+l_res <- lapply(str_list, mean) # Returns list
+s_res <- sapply(str_list, mean) # Returns simplified named vector
+
+print(l_res)
+print(s_res)
+
+# 3. tapply(): Categorical Group Aggregations
+salaries <- c(50000, 60000, 80000, 120000, 95000)
+dept <- factor(c("HR", "HR", "IT", "IT", "IT"))
+
+avg_salary_by_dept <- tapply(salaries, dept, mean)
+print(avg_salary_by_dept)
+</code></pre>
+        </div>
+    </section>
+
+    <!-- SECTION 9 -->
+    <section id="sec-debug" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 9</span>
+            <h2 class="topic-title">Debugging Tools in R</h2>
+        </div>
+
+        <h3 class="section-title">&#128027; Error Taxonomy & Handling Strategies</h3>
+        <p class="content-para">
+            Debugging involves diagnosing, isolating, and resolving errors within source code. R classifies runtime occurrences into three primary tiers:
+        </p>
+        <ul style="margin-left: 1.5rem; margin-bottom: 1.25rem; color: var(--text-primary);">
+            <li style="margin-bottom: 0.5rem;"><strong>Fatal Errors:</strong> Unrecoverable failures triggered by syntax flaws or missing symbols that immediately abort function execution.</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Warnings:</strong> Non-fatal alert notifications indicating unexpected conditions; execution continues without terminating.</li>
+            <li style="margin-bottom: 0.5rem;"><strong>Messages:</strong> Informational status outputs that do not impact code execution.</li>
+        </ul>
+
+        <h3 class="section-title">&#128269; Built-in Diagnostic Functions</h3>
+        <p class="content-para">
+            R includes interactive diagnostic tools that allow programmers to step through execution, pause execution environments, and inspect runtime call stacks:
+        </p>
+        <p class="content-para">
+            <strong>1. <code>traceback()</code>:</strong> Prints the call stack immediately after an unhandled error occurs, showing the sequence of function calls that led to the crash.
+        </p>
+        <p class="content-para">
+            <strong>2. <code>debug(fun)</code> & <code>undebug(fun)</code>:</strong> Flags a target function for step-by-step interactive debugging. When invoked, R pauses execution upon entering the function, enabling line-by-line inspection. Use <code>undebug()</code> to clear the debug flag.
+        </p>
+        <p class="content-para">
+            <strong>3. <code>browser()</code>:</strong> Suspends function execution dynamically at a specific code line, opening an interactive command prompt directly inside the function's local environment frame.
+        </p>
+        <p class="content-para">
+            <strong>4. Defensive Exception Handling with <code>tryCatch()</code>:</strong> Enables graceful error handling by trapping runtime errors and warnings using dedicated error handlers.
+        </p>
+
+        <div class="revision-box">
+            <h4>&#128204; Quick Exam Revision Notes: Debugging</h4>
+            <ul>
+                <li><strong><code>traceback()</code>:</strong> Inspects call stack history after function crashes.</li>
+                <li><strong><code>debug()</code>:</strong> Activates line-by-line interactive execution mode inside target functions.</li>
+                <li><strong><code>browser()</code>:</strong> Inserts manual programmatic breakpoints directly inside local function code.</li>
+                <li><strong><code>tryCatch()</code>:</strong> Evaluates expressions safely with explicit error/warning recovery handling.</li>
+            </ul>
+        </div>
+
+        <div class="code-container">
+            <div class="code-header">
+                <span>R Script - Interactive Debugging and Defensive tryCatch</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code># 1. Defensive Programming using tryCatch()
+safe_divide <- function(a, b) {
+  result <- tryCatch(
+    {
+      # Code block to attempt
+      if(b == 0) stop("Custom Exception: Division by Zero Attempted!")
+      a / b
+    },
+    error = function(e) {
+      cat("Trapped Error:", e$message, "\n")
+      return(NA) # Return NA default value on failure
+    },
+    warning = function(w) {
+      cat("Trapped Warning:", w$message, "\n")
+      return(NULL)
+    }
+  )
+  return(result)
+}
+
+res1 <- safe_divide(10, 2) # Returns 5
+res2 <- safe_divide(10, 0) # Traps error safely and returns NA
+print(res2)
+</code></pre>
+        </div>
+    </section>
+
+    <!-- SECTION 10 -->
+    <section id="sec-simulation" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 10</span>
+            <h2 class="topic-title">Simulation in R</h2>
+        </div>
+
+        <h3 class="section-title">&#127922; Stochastic Modeling & Probability Distributions</h3>
+        <p class="content-para">
+            Simulation is the process of using mathematical and computational models to imitate real-world stochastic operations. R is widely used for Monte Carlo simulations, statistical sampling, and probabilistic modeling.
+        </p>
+        <p class="content-para">
+            R provides a standardized naming convention for probability distributions, using four distinct prefixes combined with distribution abbreviations (e.g., <code>norm</code>, <code>unif</code>, <code>binom</code>, <code>pois</code>):
+        </p>
+        <ul style="margin-left: 1.5rem; margin-bottom: 1.25rem; color: var(--text-primary);">
+            <li style="margin-bottom: 0.5rem;"><strong><code>d</code> Prefix (Density):</strong> Computes the Probability Density Function (PDF) or Probability Mass Function (PMF) (e.g., <code>dnorm()</code>).</li>
+            <li style="margin-bottom: 0.5rem;"><strong><code>p</code> Prefix (Probability):</strong> Computes the Cumulative Distribution Function (CDF) (e.g., <code>pnorm()</code>).</li>
+            <li style="margin-bottom: 0.5rem;"><strong><code>q</code> Prefix (Quantile):</strong> Computes inverse cumulative distribution quantiles (e.g., <code>qnorm()</code>).</li>
+            <li style="margin-bottom: 0.5rem;"><strong><code>r</code> Prefix (Random):</strong> Generates pseudo-random variables from the specified distribution (e.g., <code>rnorm()</code>).</li>
+        </ul>
+
+        <h3 class="section-title">&#128257; Random Sampling & Reproducibility</h3>
+        <p class="content-para">
+            The <code>sample(x, size, replace = FALSE)</code> function draws random samples from a vector, either with or without replacement.
+        </p>
+        <p class="content-para">
+            <strong>Reproducibility via <code>set.seed(seed_value)</code>:</strong> Because computer-generated random numbers are generated using deterministic Pseudo-Random Number Generation (PRNG) algorithms, setting an explicit random seed using <code>set.seed()</code> guarantees identical, reproducible random output across executions.
+        </p>
+
+        <div class="revision-box">
+            <h4>&#128204; Quick Exam Revision Notes: Simulation</h4>
+            <ul>
+                <li><strong>Distribution Prefixes:</strong> <code>d</code> (Density), <code>p</code> (CDF), <code>q</code> (Quantile), <code>r</code> (Random Variate).</li>
+                <li><strong>Distributions:</strong> <code>norm</code> (Normal), <code>unif</code> (Uniform), <code>binom</code> (Binomial), <code>pois</code> (Poisson).</li>
+                <li><strong>Sampling:</strong> <code>sample()</code> extracts randomized subsets; set <code>replace = TRUE</code> for replacement.</li>
+                <li><strong>Reproducibility:</strong> <code>set.seed(integer)</code> ensures identical random number output streams.</li>
+            </ul>
+        </div>
+
+        <div class="code-container">
+            <div class="code-header">
+                <span>R Script - Pseudo-Random Generation and Seed Control</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code># 1. Setting Seed for Exact Reproducibility
+set.seed(123)
+
+# 2. Generating Normal Distribution Random Variables
+# Generate 5 random numbers from Normal Dist (mean = 0, sd = 1)
+norm_vals <- rnorm(n = 5, mean = 0, sd = 1)
+print(norm_vals)
+
+# 3. Random Sampling with and without Replacement
+urn <- c("Red", "Blue", "Green", "Yellow", "White")
+sample_without <- sample(urn, size = 3, replace = FALSE)
+sample_with    <- sample(urn, size = 10, replace = TRUE)
+
+print(sample_without)
+print(sample_with)
+</code></pre>
+        </div>
+    </section>
+
+    <!-- SECTION 11 -->
+    <section id="sec-profiling" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 11</span>
+            <h2 class="topic-title">Code Profiling in R</h2>
+        </div>
+
+        <h3 class="section-title">&#9889; Performance Bottlenecks & Efficiency Analysis</h3>
+        <p class="content-para">
+            Code Profiling is the process of measuring execution time, memory allocation, and CPU usage across program statements to identify performance bottlenecks and optimize runtime behavior. In data science workloads handling large data frames, inefficient R code can cause processing delays. Profiling helps isolate these performance issues.
+        </p>
+
+        <h3 class="section-title">&#128338; Benchmarking & Profiling Tools</h3>
+        <p class="content-para">
+            <strong>1. <code>system.time(expr)</code>:</strong> Measures the total time required to execute a given R expression. It outputs three distinct time metrics:
+        </p>
+        <ul style="margin-left: 1.5rem; margin-bottom: 1.25rem; color: var(--text-primary);">
+            <li style="margin-bottom: 0.5rem;"><em>User Time:</em> CPU time spent executing the actual R expression code.</li>
+            <li style="margin-bottom: 0.5rem;"><em>System Time:</em> CPU time spent executing operating system requests (e.g., disk I/O, memory allocations).</li>
+            <li style="margin-bottom: 0.5rem;"><em>Elapsed Time:</em> Total wall-clock time experienced by the user.</li>
+        </ul>
+        <p class="content-para">
+            <strong>2. <code>Rprof()</code> & <code>summaryRprof()</code>:</strong> <code>Rprof()</code> starts a built-in sampling profiler that periodically records the active execution call stack (default sampling interval is every 0.02 seconds). Calling <code>Rprof(NULL)</code> stops profiling, and <code>summaryRprof()</code> processes the log files to generate runtime summaries.
+        </p>
+        <p class="content-para">
+            <strong>Optimization Best Practices:</strong> Avoid dynamically growing vectors inside loops (which forces repeated memory reallocations). Instead, pre-allocate full vector or matrix memory upfront, favor vectorized mathematical operations over loops, and utilize optimized apply functions or compiled C/C++ packages like <code>Rcpp</code>.
+        </p>
+
+        <div class="revision-box">
+            <h4>&#128204; Quick Exam Revision Notes: Code Profiling</h4>
+            <ul>
+                <li><strong><code>system.time()</code>:</strong> Returns User Time, System Time, and Wall-Clock Elapsed Time.</li>
+                <li><strong><code>Rprof()</code>:</strong> Sampling profiler that tracks call stack history at specified time intervals.</li>
+                <li><strong>Memory Allocation:</strong> Always pre-allocate vector memory; dynamic resizing causes severe slowdowns.</li>
+                <li><strong>Vectorization:</strong> Replace imperative loops with vectorized calls to maximize C-level execution speed.</li>
+            </ul>
+        </div>
+
+        <div class="code-container">
+            <div class="code-header">
+                <span>R Script - System Time Benchmarking and Memory Allocation</span>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+            <pre><code># 1. Benchmarking dynamic growth vs Pre-allocation
+size <- 100000
+
+# Bad Practice: Dynamic Memory Expansion
+time_dynamic <- system.time({
+  vec_bad <- numeric()
+  for(i in 1:size) {
+    vec_bad[i] <- i * 2 # Repeated memory reallocation
+  }
+})
+
+# Best Practice: Pre-allocated Memory Structure
+time_prealloc <- system.time({
+  vec_good <- numeric(size) # Memory allocated upfront
+  for(i in 1:size) {
+    vec_good[i] <- i * 2
+  }
+})
+
+cat("Dynamic Growth Time:", time_dynamic["elapsed"], "s\n")
+cat("Pre-allocated Memory Time:", time_prealloc["elapsed"], "s\n")
+</code></pre>
+        </div>
+    </section>
+
+    <!-- SECTION 12 -->
+    <section id="sec-tables" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 12</span>
+            <h2 class="topic-title">Master Conceptual Comparison Tables</h2>
+        </div>
+
+        <h3 class="section-title">Table 1: R Data Structures Matrix</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Object Name</th>
+                        <th>Dimensions</th>
+                        <th>Homogeneous / Heterogeneous</th>
+                        <th>Creation Function</th>
+                        <th>Exam Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Vector</strong></td>
+                        <td>1D</td>
+                        <td>Homogeneous</td>
+                        <td><code>c()</code></td>
+                        <td>Storing sequences of single data types.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Matrix</strong></td>
+                        <td>2D</td>
+                        <td>Homogeneous</td>
+                        <td><code>matrix()</code></td>
+                        <td>Linear algebra and mathematical computations.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>List</strong></td>
+                        <td>1D</td>
+                        <td>Heterogeneous</td>
+                        <td><code>list()</code></td>
+                        <td>Storing complex, multi-type nested outputs.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data Frame</strong></td>
+                        <td>2D</td>
+                        <td>Heterogeneous</td>
+                        <td><code>data.frame()</code></td>
+                        <td>Tabular dataset manipulation and analysis.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="section-title">Table 2: Built-in vs User-Defined Functions</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Built-in Functions</th>
+                        <th>User-Defined Functions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Origin</strong></td>
+                        <td>Pre-packaged within base R installation.</td>
+                        <td>Created custom by software developers.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance</strong></td>
+                        <td>Optimized natively in compiled C/Fortran routines.</td>
+                        <td>Executes through interpreted R runtime.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Example Syntax</strong></td>
+                        <td><code>mean(x)</code>, <code>sd(x)</code>, <code>sqrt(x)</code></td>
+                        <td><code>my_func <- function(a) { a + 10 }</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="section-title">Table 3: Local Variables vs Global Variables</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Attribute</th>
+                        <th>Local Variable</th>
+                        <th>Global Variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Scope</strong></td>
+                        <td>Visible only within declaring function execution frame.</td>
+                        <td>Accessible across entire workspace environments.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Lifespan</strong></td>
+                        <td>Created on invocation; destroyed upon exit.</td>
+                        <td>Persists until explicit cleanup or session end.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Assignment</strong></td>
+                        <td>Standard Assignment <code>&lt;-</code></td>
+                        <td>Super-Assignment <code>&lt;&lt;-</code> (from function)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="section-title">Table 4: Debugging vs Code Profiling</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dimension</th>
+                        <th>Debugging Tools</th>
+                        <th>Code Profiling Tools</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Primary Goal</strong></td>
+                        <td>Locate and fix logic, syntax, or runtime errors.</td>
+                        <td>Measure and optimize execution speed and memory usage.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Key Functions</strong></td>
+                        <td><code>traceback()</code>, <code>debug()</code>, <code>browser()</code></td>
+                        <td><code>system.time()</code>, <code>Rprof()</code>, <code>summaryRprof()</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- SECTION 13 -->
+    <section id="sec-exam" class="topic-card">
+        <div class="topic-header">
+            <span class="topic-badge">Topic 13</span>
+            <h2 class="topic-title">10-Mark Exam Preparation Accordions</h2>
+        </div>
+
+        <p class="content-para" style="margin-bottom: 1.5rem;">
+            Click on any university question below to expand the full long-answer template designed for maximum marks in BCA exams:
+        </p>
+
+        <div class="accordion-item">
+            <button class="accordion-header">
+                <span>Q1. Explain the different data structures available in R with syntax, examples, and memory homogeneity. [10 Marks]</span>
+                <span>&#10133;</span>
+            </button>
+            <div class="accordion-body">
+                <p><strong>Structured 10-Mark Answer Outline:</strong></p>
+                <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                    <li><strong>Introduction:</strong> Define R objects and contrast homogeneous vs heterogeneous structures.</li>
+                    <li><strong>Vectors (1D Homogeneous):</strong> Explain creation using <code>c()</code>, atomic types, and implicit coercion rules.</li>
+                    <li><strong>Matrices & Arrays (2D & ND Homogeneous):</strong> Explain column-major filling, dimensions, and matrix multiplication using <code>%*%</code>.</li>
+                    <li><strong>Lists (1D Heterogeneous):</strong> Explain indexing via <code>[ ]</code> vs <code>[[ ]]</code> and nested data capabilities.</li>
+                    <li><strong>Data Frames (2D Heterogeneous):</strong> Explain tabular structures, column lengths, and methods like <code>str()</code> and <code>summary()</code>.</li>
+                    <li><strong>Comparison Summary Table:</strong> Include a summary matrix showing Dimensions, Homogeneity, and Functions.</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <button class="accordion-header">
+                <span>Q2. What is Lexical Scoping in R? Contrast local vs global environments and detail the search path mechanism. [10 Marks]</span>
+                <span>&#10133;</span>
+            </button>
+            <div class="accordion-body">
+                <p><strong>Structured 10-Mark Answer Outline:</strong></p>
+                <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                    <li><strong>Definition of Lexical Scoping:</strong> Explain how symbol resolution relies on where a function was *defined* rather than *called*.</li>
+                    <li><strong>Environment Hierarchy:</strong> Detail the structure of Local, Enclosing, Global, Package, and Base environments.</li>
+                    <li><strong>Symbol Search Path:</strong> Illustrate how R looks up unbound free variables using the <code>search()</code> list.</li>
+                    <li><strong>Super-Assignment Operator:</strong> Provide a complete code example using <code>&lt;&lt;-</code> to modify global variables from within function scopes.</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <button class="accordion-header">
+                <span>Q3. Detail the Apply family of functions in R. Differentiate apply, lapply, sapply, and tapply with code examples. [10 Marks]</span>
+                <span>&#10133;</span>
+            </button>
+            <div class="accordion-body">
+                <p><strong>Structured 10-Mark Answer Outline:</strong></p>
+                <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                    <li><strong>Introduction:</strong> Contrast functional iteration with traditional <code>for</code> loops in terms of execution speed and readability.</li>
+                    <li><strong><code>apply()</code> Function:</strong> Explain the <code>MARGIN</code> argument (1 = Rows, 2 = Columns) with code examples over a matrix.</li>
+                    <li><strong><code>lapply()</code> vs <code>sapply()</code>:</strong> Contrast list outputs with simplified vector or matrix outputs.</li>
+                    <li><strong><code>tapply()</code> Function:</strong> Detail ragged subgroup aggregation using categorical factor indexes.</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <button class="accordion-header">
+                <span>Q4. Discuss debugging and code profiling in R. Explain traceback, debug, system.time, and Rprof. [10 Marks]</span>
+                <span>&#10133;</span>
+            </button>
+            <div class="accordion-body">
+                <p><strong>Structured 10-Mark Answer Outline:</strong></p>
+                <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                    <li><strong>Taxonomy of Runtime Errors:</strong> Differentiate Fatal Errors, Warnings, and Informational Messages.</li>
+                    <li><strong>Interactive Debugging Tools:</strong> Explain <code>traceback()</code> call stack analysis, <code>debug()</code> line stepping, and <code>browser()</code> manual breakpoints.</li>
+                    <li><strong>Defensive Programming:</strong> Detail exception handling using <code>tryCatch()</code> constructs.</li>
+                    <li><strong>Code Profiling:</strong> Differentiate User, System, and Elapsed time in <code>system.time()</code>, and explain <code>Rprof()</code> sampling analysis.</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script>
+    // Theme Toggle Functionality
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
+    const htmlElem = document.documentElement;
+
+    function applyTheme(theme) {
+        if (theme === 'light') {
+            htmlElem.classList.remove('dark');
+            htmlElem.classList.add('light');
+            themeIcon.innerHTML = '&#127769;';
+            themeText.innerText = 'Dark Mode';
+        } else {
+            htmlElem.classList.remove('light');
+            htmlElem.classList.add('dark');
+            themeIcon.innerHTML = '&#9728;';
+            themeText.innerText = 'Light Mode';
+        }
+        localStorage.setItem('portal_theme', theme);
+    }
+
+    const savedTheme = localStorage.getItem('portal_theme') || 'dark';
+    applyTheme(savedTheme);
+
+    themeToggleBtn.addEventListener('click', () => {
+        const currentTheme = htmlElem.classList.contains('dark') ? 'dark' : 'light';
+        applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+
+    // Copy to Clipboard Utility
+    function copyCode(button) {
+        const preCode = button.parentElement.nextElementSibling.querySelector('code');
+        const textToCopy = preCode.innerText;
+
+        const tempTextArea = document.createElement('textarea');
+        tempTextArea.value = textToCopy;
+        document.body.appendChild(tempTextArea);
+        tempTextArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempTextArea);
+
+        const originalText = button.innerText;
+        button.innerText = 'Copied!';
+        button.style.backgroundColor = 'var(--accent-emerald)';
+        button.style.color = '#FFF';
+
+        setTimeout(() => {
+            button.innerText = originalText;
+            button.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+            button.style.color = '#FFF';
+        }, 2000);
+    }
+
+    // Dynamic Topic Filter Bar
+    const searchInput = document.getElementById('searchInput');
+    const topicCards = document.querySelectorAll('.topic-card');
+
+    searchInput.addEventListener('keyup', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+
+        topicCards.forEach(card => {
+            const cardText = card.innerText.toLowerCase();
+            if (cardText.includes(query)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+
+    // Accordion Interaction
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+    accordionHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+            const body = header.nextElementSibling;
+            const icon = header.querySelector('span:last-child');
+            
+            if (body.classList.contains('active')) {
+                body.classList.remove('active');
+                icon.innerHTML = '&#10133;';
+            } else {
+                body.classList.add('active');
+                icon.innerHTML = '&#10134;';
+            }
+        });
+    });
+</script>
+</body>
+</html>
