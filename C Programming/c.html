@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C Programming Notes | BCA Examination Study Portal</title>
+    <meta name="description" content="Complete C Programming Study Notes and University Exam Preparation Portal for BCA Students. Covering Units I to IV with code examples, theory, and quick revision.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           1. CSS VARIABLES & THEME SETUP
+           ========================================================================== */
+        :root {
+            /* Light Theme Palette */
+            --bg-primary-light: #f8fafc;
+            --bg-secondary-light: #ffffff;
+            --bg-card-light: #ffffff;
+            --text-primary-light: #0f172a;
+            --text-secondary-light: #475569;
+            --border-light: #e2e8f0;
+            --shadow-light: 0 10px 30px -5px rgba(15, 23, 42, 0.08);
+            --code-bg-light: #1e293b;
+
+            /* Dark Theme Palette (Default Premium Dark) */
+            --bg-primary-dark: #090d16;
+            --bg-secondary-dark: #0f172a;
+            --bg-card-dark: #131c31;
+            --text-primary-dark: #f8fafc;
+            --text-secondary-dark: #94a3b8;
+            --border-dark: #1e293b;
+            --shadow-dark: 0 10px 35px -5px rgba(0, 0, 0, 0.5);
+            --code-bg-dark: #0b0f19;
+
+            /* Brand Accent Colors */
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --primary-glow: rgba(59, 130, 246, 0.25);
+            --accent-cyan: #06b6d4;
+            --accent-emerald: #10b981;
+            --accent-purple: #8b5cf6;
+            --accent-amber: #f59e0b;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-full: 9999px;
+            --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            --max-width: 1240px;
+            --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'Fira Code', monospace;
+        }
+
+        /* Dynamic Theme Mapping */
+        [data-theme="dark"] {
+            --bg-primary: var(--bg-primary-dark);
+            --bg-secondary: var(--bg-secondary-dark);
+            --bg-card: var(--bg-card-dark);
+            --text-primary: var(--text-primary-dark);
+            --text-secondary: var(--text-secondary-dark);
+            --border-color: var(--border-dark);
+            --box-shadow: var(--shadow-dark);
+            --code-bg: var(--code-bg-dark);
+            --nav-bg: rgba(9, 13, 22, 0.85);
+            --card-border: rgba(255, 255, 255, 0.07);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: var(--bg-primary-light);
+            --bg-secondary: var(--bg-secondary-light);
+            --bg-card: var(--bg-card-light);
+            --text-primary: var(--text-primary-light);
+            --text-secondary: var(--text-secondary-light);
+            --border-color: var(--border-light);
+            --box-shadow: var(--shadow-light);
+            --code-bg: var(--code-bg-light);
+            --nav-bg: rgba(255, 255, 255, 0.85);
+            --card-border: rgba(0, 0, 0, 0.06);
+        }
+
+        /* ==========================================================================
+           2. RESET & BASE STYLES
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Typography Helpers */
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.9rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border-radius: var(--radius-full);
+            margin-bottom: 1rem;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 3.5rem auto;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #a855f7 50%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ==========================================================================
+           3. NAVIGATION BAR
+           ========================================================================== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 800;
+            font-size: 1.25rem;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, var(--primary), var(--accent-purple));
+            color: #ffffff;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 1.25rem;
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            width: 42px;
+            height: 42px;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--primary);
+            transform: rotate(15deg);
+        }
+
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* ==========================================================================
+           4. HERO SECTION
+           ========================================================================== */
+        .hero {
+            padding: 9rem 0 5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle Background Glows */
+        .hero-glow {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, rgba(0,0,0,0) 70%);
+            top: -100px;
+            left: -100px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .hero-glow-2 {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(139,92,246,0.12) 0%, rgba(0,0,0,0) 70%);
+            bottom: 0px;
+            right: 0px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 3.5rem;
+            align-items: center;
+        }
+
+        .hero-title {
+            font-size: 3.25rem;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1.25rem;
+        }
+
+        .hero-description {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 580px;
+            line-height: 1.7;
+        }
+
+        .hero-features-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .hero-feature-item span {
+            color: var(--accent-emerald);
+        }
+
+        .hero-buttons {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.85rem 1.8rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: var(--radius-md);
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #2563eb);
+            color: #ffffff;
+            box-shadow: 0 4px 20px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Code Window Visual */
+        .code-window-container {
+            position: relative;
+        }
+
+        .code-window {
+            background: var(--code-bg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--card-border);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            font-family: var(--font-mono);
+            position: relative;
+            z-index: 2;
+        }
+
+        .code-window-header {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.8rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .window-dots {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ef4444; }
+        .dot-yellow { background: #f59e0b; }
+        .dot-green { background: #10b981; }
+
+        .window-title {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .code-body {
+            padding: 1.5rem;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: #e2e8f0;
+            overflow-x: auto;
+        }
+
+        .code-keyword { color: #f43f5e; font-weight: 600; }
+        .code-directive { color: #a855f7; }
+        .code-func { color: #3b82f6; }
+        .code-str { color: #10b981; }
+        .code-num { color: #f59e0b; }
+        .code-comment { color: #64748b; font-style: italic; }
+
+        /* Floating Code Elements */
+        .floating-symbol {
+            position: absolute;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            color: var(--primary);
+            opacity: 0.25;
+            z-index: 1;
+            user-select: none;
+            animation: float 6s ease-in-out infinite alternate;
+        }
+
+        .symbol-1 { top: -20px; left: -20px; font-size: 2rem; animation-delay: 0s; }
+        .symbol-2 { top: 40%; right: -30px; font-size: 1.8rem; animation-delay: 1.5s; color: var(--accent-purple); }
+        .symbol-3 { bottom: -20px; left: 20%; font-size: 1.5rem; animation-delay: 3s; color: var(--accent-cyan); }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-15px) rotate(10deg); }
+        }
+
+        /* ==========================================================================
+           5. UNIT SELECTION SECTION (MAIN CARDS)
+           ========================================================================== */
+        .units-section {
+            padding: 6rem 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .units-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .unit-card {
+            background: var(--bg-card);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 2.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .unit-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            transition: var(--transition);
+        }
+
+        .unit-card-1::before { background: linear-gradient(90deg, #3b82f6, #06b6d4); }
+        .unit-card-2::before { background: linear-gradient(90deg, #10b981, #3b82f6); }
+        .unit-card-3::before { background: linear-gradient(90deg, #8b5cf6, #ec4899); }
+        .unit-card-4::before { background: linear-gradient(90deg, #f59e0b, #ef4444); }
+
+        .unit-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--box-shadow);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .unit-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+
+        .unit-badge {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 0.3rem 0.8rem;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--primary);
+        }
+
+        .unit-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+        }
+
+        .icon-1 { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+        .icon-2 { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .icon-3 { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+        .icon-4 { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+
+        .unit-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .unit-description {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .topic-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tag {
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.25rem 0.65rem;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .unit-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .open-btn {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .unit-card:hover .open-btn {
+            gap: 0.8rem;
+        }
+
+        /* ==========================================================================
+           6. WHAT YOU'LL LEARN
+           ========================================================================== */
+        .learn-section {
+            padding: 6rem 0;
+        }
+
+        .learn-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.75rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            padding: 1.75rem;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .feature-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ==========================================================================
+           7. EXAM PREPARATION SECTION
+           ========================================================================== */
+        .exam-section {
+            padding: 6rem 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .exam-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.75rem;
+            margin-bottom: 3rem;
+        }
+
+        .exam-card {
+            background: var(--bg-card);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .exam-badge {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+        }
+
+        .exam-card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .exam-card-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .exam-cta-wrapper {
+            text-align: center;
+        }
+
+        /* ==========================================================================
+           8. QUICK REVISION SECTION
+           ========================================================================== */
+        .revision-section {
+            padding: 6rem 0;
+        }
+
+        .revision-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-card);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            margin-top: 2rem;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .flow-step {
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .flow-node {
+            width: 54px;
+            height: 54px;
+            background: var(--bg-primary);
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.75rem auto;
+            font-weight: 800;
+            font-size: 0.9rem;
+            color: var(--primary);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .flow-node.target {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .flow-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .flow-arrow {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        /* ==========================================================================
+           9. CALL TO ACTION SECTION
+           ========================================================================== */
+        .cta-section {
+            padding: 5rem 0 6rem 0;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: var(--radius-lg);
+            padding: 4rem 2rem;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .cta-desc {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+        }
+
+        /* ==========================================================================
+           10. FOOTER
+           ========================================================================== */
+        .footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 4rem 0 2rem 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand p {
+            margin-top: 0.75rem;
+            max-width: 320px;
+            line-height: 1.6;
+        }
+
+        .footer-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.2rem;
+            font-size: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .footer-links a {
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.85rem;
+        }
+
+        /* ==========================================================================
+           11. RESPONSIVE DESIGN (MEDIA QUERIES)
+           ========================================================================== */
+        @media (max-width: 1024px) {
+            .hero-title { font-size: 2.75rem; }
+            .hero-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .code-window-container { max-width: 600px; margin: 0 auto; }
+            .learn-grid { grid-template-columns: repeat(2, 1fr); }
+            .exam-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 72px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 72px);
+                background: var(--bg-primary);
+                flex-direction: column;
+                justify-content: center;
+                gap: 2rem;
+                transition: var(--transition);
+                border-top: 1px solid var(--border-color);
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .hamburger { display: block; }
+            
+            .hero { padding-top: 7rem; }
+            .hero-title { font-size: 2.25rem; }
+            .units-grid { grid-template-columns: 1fr; }
+            .learn-grid { grid-template-columns: 1fr; }
+            .exam-grid { grid-template-columns: 1fr; }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .revision-flow {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================================================
+       1. NAVIGATION BAR
+       ========================================================================== -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo" aria-label="C Programming Notes Home">
+                <div class="logo-icon">C</div>
+                <span>C Programming Notes</span>
+            </a>
+
+            <div class="nav-links" id="navLinks">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#units" class="nav-link">Units</a>
+                <a href="#exam-prep" class="nav-link">Exam Prep</a>
+                <a href="#revision" class="nav-link">Revision</a>
+            </div>
+
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+                    ☰
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==========================================================================
+       2. HERO SECTION
+       ========================================================================== -->
+    <section class="hero" id="home">
+        <div class="hero-glow"></div>
+        <div class="hero-glow-2"></div>
+        
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <div class="section-badge">BCA • C PROGRAMMING • EXAM PREPARATION</div>
+                <h1 class="hero-title">
+                    Master C Programming <span class="gradient-text">Unit by Unit</span>
+                </h1>
+                <div class="hero-subtitle">Complete C Programming Notes for BCA University Examination</div>
+                <p class="hero-description">
+                    A comprehensive, exam-oriented study portal engineered specifically for computer application students. Master foundational theory, important programs, diagrams, and quick-revision modules.
+                </p>
+
+                <div class="hero-features-list">
+                    <div class="hero-feature-item"><span>✓</span> Detailed Theory</div>
+                    <div class="hero-feature-item"><span>✓</span> Exam Answers</div>
+                    <div class="hero-feature-item"><span>✓</span> Important Programs</div>
+                    <div class="hero-feature-item"><span>✓</span> Diagrams & Tables</div>
+                    <div class="hero-feature-item"><span>✓</span> Concept Revision</div>
+                    <div class="hero-feature-item"><span>✓</span> 100% Free Access</div>
+                </div>
+
+                <div class="hero-buttons">
+                    <a href="#units" class="btn btn-primary">
+                        Explore Units <span>↓</span>
+                    </a>
+                    <a href="Unit1.html" class="btn btn-secondary">
+                        Start Learning <span>→</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Hero Code Editor Visual -->
+            <div class="code-window-container">
+                <span class="floating-symbol symbol-1">{ }</span>
+                <span class="floating-symbol symbol-2">#include</span>
+                <span class="floating-symbol symbol-3">&amp; *</span>
+
+                <div class="code-window">
+                    <div class="code-window-header">
+                        <div class="window-dots">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                        </div>
+                        <div class="window-title">main.c — C Programming Notes</div>
+                    </div>
+                    <div class="code-body">
+                        <pre><code><span class="code-directive">#include</span> <span class="code-str">&lt;stdio.h&gt;</span>
+
+<span class="code-comment">// BCA Exam Preparation Code</span>
+<span class="code-keyword">int</span> <span class="code-func">main</span>() {
+    <span class="code-func">printf</span>(<span class="code-str">"Hello, BCA Students!\n"</span>);
+    <span class="code-func">printf</span>(<span class="code-str">"Ready to ace C Exams?\n"</span>);
+    
+    <span class="code-keyword">return</span> <span class="code-num">0</span>;
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       3. UNIT SELECTION SECTION
+       ========================================================================== -->
+    <section class="units-section" id="units">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Core Curriculum</div>
+                <h2 class="section-title">Explore C Programming Units</h2>
+                <p class="section-subtitle">Choose a unit to access structured notes, code examples, and university exam preparation content.</p>
+            </div>
+
+            <div class="units-grid">
+                <!-- UNIT 1 -->
+                <a href="Unit1.html" class="unit-card unit-card-1">
+                    <div>
+                        <div class="unit-card-header">
+                            <span class="unit-badge">UNIT I</span>
+                            <div class="unit-icon icon-1">💻</div>
+                        </div>
+                        <h3 class="unit-title">Introduction to C Programming</h3>
+                        <p class="unit-description">
+                            Introduce programming fundamentals and the C language, including data types, variables, operators, expressions, input/output, compilation and preprocessing.
+                        </p>
+                        <div class="topic-tags">
+                            <span class="tag">Basics</span>
+                            <span class="tag">Data Types</span>
+                            <span class="tag">Variables</span>
+                            <span class="tag">Operators</span>
+                            <span class="tag">I/O Statements</span>
+                            <span class="tag">Precedence</span>
+                        </div>
+                    </div>
+                    <div class="unit-card-footer">
+                        <span class="open-btn">Open Unit I <span class="arrow">→</span></span>
+                    </div>
+                </a>
+
+                <!-- UNIT 2 -->
+                <a href="Unit2.html" class="unit-card unit-card-2">
+                    <div>
+                        <div class="unit-card-header">
+                            <span class="unit-badge">UNIT II</span>
+                            <div class="unit-icon icon-2">🔄</div>
+                        </div>
+                        <h3 class="unit-title">Decision Control, Loops &amp; Arrays</h3>
+                        <p class="unit-description">
+                            Learn decision-making statements, loops, control statements, arrays, character arrays and strings with exam-focused code examples.
+                        </p>
+                        <div class="topic-tags">
+                            <span class="tag">If / Else</span>
+                            <span class="tag">Switch</span>
+                            <span class="tag">Loops</span>
+                            <span class="tag">Break/Continue</span>
+                            <span class="tag">1D &amp; 2D Arrays</span>
+                            <span class="tag">Strings</span>
+                        </div>
+                    </div>
+                    <div class="unit-card-footer">
+                        <span class="open-btn">Open Unit II <span class="arrow">→</span></span>
+                    </div>
+                </a>
+
+                <!-- UNIT 3 -->
+                <a href="Unit3.html" class="unit-card unit-card-3">
+                    <div>
+                        <div class="unit-card-header">
+                            <span class="unit-badge">UNIT III</span>
+                            <div class="unit-icon icon-3">🎯</div>
+                        </div>
+                        <h3 class="unit-title">Pointers, Functions &amp; Storage Classes</h3>
+                        <p class="unit-description">
+                            Understand pointers, pointer arithmetic, functions, recursion, dynamic memory management, string handling and storage classes.
+                        </p>
+                        <div class="topic-tags">
+                            <span class="tag">Pointers</span>
+                            <span class="tag">Pointer Arithmetic</span>
+                            <span class="tag">Functions</span>
+                            <span class="tag">Recursion</span>
+                            <span class="tag">DMA (malloc)</span>
+                            <span class="tag">Storage Classes</span>
+                        </div>
+                    </div>
+                    <div class="unit-card-footer">
+                        <span class="open-btn">Open Unit III <span class="arrow">→</span></span>
+                    </div>
+                </a>
+
+                <!-- UNIT 4 -->
+                <a href="Unit4.html" class="unit-card unit-card-4">
+                    <div>
+                        <div class="unit-card-header">
+                            <span class="unit-badge">UNIT IV</span>
+                            <div class="unit-icon icon-4">📁</div>
+                        </div>
+                        <h3 class="unit-title">Structures, Unions &amp; File Handling</h3>
+                        <p class="unit-description">
+                            Master structures, unions, file management, sequential and random access files and command-line arguments for advanced problem solving.
+                        </p>
+                        <div class="topic-tags">
+                            <span class="tag">Structures</span>
+                            <span class="tag">Unions</span>
+                            <span class="tag">File I/O</span>
+                            <span class="tag">Random Access</span>
+                            <span class="tag">Bit-Fields</span>
+                            <span class="tag">CLI Arguments</span>
+                        </div>
+                    </div>
+                    <div class="unit-card-footer">
+                        <span class="open-btn">Open Unit IV <span class="arrow">→</span></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       4. WHAT YOU'LL LEARN
+       ========================================================================== -->
+    <section class="learn-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Features</div>
+                <h2 class="section-title">What You'll Learn</h2>
+                <p class="section-subtitle">Designed to help you build strong fundamentals and perform exceptionally well in university exams.</p>
+            </div>
+
+            <div class="learn-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📘</div>
+                    <h3 class="feature-title">Detailed Theory</h3>
+                    <p class="feature-desc">Understand core concepts through clear, structured, and exam-oriented theoretical explanations.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💻</div>
+                    <h3 class="feature-title">C Programs</h3>
+                    <p class="feature-desc">Practice important C programs frequently requested in laboratory and university theory exams.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3 class="feature-title">Exam Answers</h3>
+                    <p class="feature-desc">Prepare precise short-answer and comprehensive long-answer solutions effectively.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Diagrams &amp; Tables</h3>
+                    <p class="feature-desc">Grasp complex topics quickly using clean visual diagrams, memory layouts, and comparison tables.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">Important Questions</h3>
+                    <p class="feature-desc">Focus on high-weightage topics curated specifically for BCA semester examinations.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Quick Revision</h3>
+                    <p class="feature-desc">Revise key definitions, syntax rules, and program logic rapidly right before exam day.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       5. EXAM PREPARATION SECTION
+       ========================================================================== -->
+    <section class="exam-section" id="exam-prep">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Exam Success Strategy</div>
+                <h2 class="section-title">Prepare for Your University Exam</h2>
+                <p class="section-subtitle">Targeted preparation structured directly according to university question pattern formats.</p>
+            </div>
+
+            <div class="exam-grid">
+                <div class="exam-card">
+                    <div class="exam-badge">SHORT ANSWER MODULE</div>
+                    <h3 class="exam-card-title">2–5 Mark Questions</h3>
+                    <p class="exam-card-desc">Concise definitions, key terminology, syntax rules, and brief code snippet outputs for quick scoring.</p>
+                </div>
+
+                <div class="exam-card">
+                    <div class="exam-badge">LONG ANSWER MODULE</div>
+                    <h3 class="exam-card-title">5–10 Mark Questions</h3>
+                    <p class="exam-card-desc">In-depth theoretical explanations paired with step-by-step algorithms, memory diagrams, and complete programs.</p>
+                </div>
+
+                <div class="exam-card">
+                    <div class="exam-badge">PRACTICAL MODULE</div>
+                    <h3 class="exam-card-title">Important Programs</h3>
+                    <p class="exam-card-desc">Hand-picked C programs covering array manipulations, string handling, recursion, pointers, and file operations.</p>
+                </div>
+            </div>
+
+            <div class="exam-cta-wrapper">
+                <a href="#units" class="btn btn-primary">Start Exam Preparation <span>↑</span></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       6. QUICK REVISION SECTION
+       ========================================================================== -->
+    <section class="revision-section" id="revision">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Last Minute Prep</div>
+                <h2 class="section-title">Quick Revision Workflow</h2>
+                <p class="section-subtitle">Follow this recommended reading path to complete full course revision efficiently in minimum time.</p>
+            </div>
+
+            <div class="revision-flow">
+                <div class="flow-step">
+                    <div class="flow-node">01</div>
+                    <div class="flow-label">UNIT I</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-node">02</div>
+                    <div class="flow-label">UNIT II</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-node">03</div>
+                    <div class="flow-label">UNIT III</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-node">04</div>
+                    <div class="flow-label">UNIT IV</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-node target">🎯</div>
+                    <div class="flow-label">EXAM READY</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       7. CALL TO ACTION SECTION
+       ========================================================================== -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-box">
+                <h2 class="cta-title">Ready to Master C Programming?</h2>
+                <p class="cta-desc">Start with Unit I and progress through all four units with detailed notes, examples, programs, and exam-focused explanations.</p>
+                <a href="Unit1.html" class="btn btn-primary">Start Learning C →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       8. FOOTER
+       ========================================================================== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <div class="logo-icon">C</div>
+                        <span>C Programming Notes</span>
+                    </a>
+                    <p>Complete BCA C Programming Study Portal designed to help university students excel in theoretical and practical examinations.</p>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Quick Links</h4>
+                    <div class="footer-links">
+                        <a href="index.html">Home</a>
+                        <a href="#units">All Units</a>
+                        <a href="#exam-prep">Exam Prep</a>
+                        <a href="#revision">Quick Revision</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Course Units</h4>
+                    <div class="footer-links">
+                        <a href="Unit1.html">Unit I: Basics &amp; I/O</a>
+                        <a href="Unit2.html">Unit II: Control &amp; Arrays</a>
+                        <a href="Unit3.html">Unit III: Pointers &amp; Functions</a>
+                        <a href="Unit4.html">Unit IV: Structures &amp; Files</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                Made for BCA Students • C Programming Examination Study Portal
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==========================================================================
+       9. JAVASCRIPT LOGIC
+       ========================================================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Theme Toggle Element Handling
+            const themeToggleBtn = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            const htmlElement = document.documentElement;
+
+            // 1. Check Local Storage or System Preference for Dark Mode
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                htmlElement.setAttribute('data-theme', savedTheme);
+                updateIcon(savedTheme);
+            } else {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const defaultTheme = prefersDark ? 'dark' : 'light';
+                htmlElement.setAttribute('data-theme', defaultTheme);
+                updateIcon(defaultTheme);
+            }
+
+            // Theme Toggle Click Handler
+            themeToggleBtn.addEventListener('click', () => {
+                const currentTheme = htmlElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                
+                htmlElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateIcon(newTheme);
+            });
+
+            function updateIcon(theme) {
+                themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+            }
+
+            // 2. Responsive Hamburger Menu Toggle
+            const hamburgerBtn = document.getElementById('hamburger');
+            const navLinks = document.getElementById('navLinks');
+
+            hamburgerBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+
+            // Close mobile menu on clicking a link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                });
+            });
+
+            // 3. Dynamic Active Navigation Link Highlighting on Scroll
+            const sections = document.querySelectorAll('section[id]');
+            
+            window.addEventListener('scroll', () => {
+                const scrollY = window.pageYOffset;
+
+                sections.forEach(current => {
+                    const sectionHeight = current.offsetHeight;
+                    const sectionTop = current.offsetTop - 100;
+                    const sectionId = current.getAttribute('id');
+
+                    if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+                        document.querySelectorAll('.nav-link').forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${sectionId}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
