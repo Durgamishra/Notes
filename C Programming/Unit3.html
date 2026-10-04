@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit III: C Programming - University Examination Study Material</title>
+    <style>
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-sidebar: #0f172a;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-sidebar: #94a3b8;
+            --text-sidebar-active: #38bdf8;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --border: #e2e8f0;
+            --code-bg: #0f172a;
+            --code-text: #f8fafc;
+            --box-note: #eff6ff;
+            --box-note-border: #2563eb;
+            --box-warn: #fef2f2;
+            --box-warn-border: #ef4444;
+            --box-exam: #f0fdf4;
+            --box-exam-border: #16a34a;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --radius: 8px;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-sidebar: #020617;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-sidebar: #64748b;
+            --text-sidebar-active: #38bdf8;
+            --accent: #3b82f6;
+            --accent-hover: #60a5fa;
+            --border: #334155;
+            --code-bg: #020617;
+            --code-text: #e2e8f0;
+            --box-note: #1e3a8a;
+            --box-note-border: #60a5fa;
+            --box-warn: #450a0a;
+            --box-warn-border: #f87171;
+            --box-exam: #064e3b;
+            --box-exam-border: #4ade80;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Reading Progress Bar */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #2563eb, #38bdf8);
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s ease;
+        }
+
+        /* Top Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-box input {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            width: 250px;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            border: none;
+            background-color: var(--accent);
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* Main Container */
+        .container {
+            display: flex;
+            flex: 1;
+        }
+
+        /* Sidebar Navigation */
+        nav {
+            width: 300px;
+            background-color: var(--bg-sidebar);
+            color: var(--text-sidebar);
+            padding: 1.5rem 1rem;
+            height: calc(100vh - 65px);
+            position: sticky;
+            top: 65px;
+            overflow-y: auto;
+        }
+
+        nav h3 {
+            color: #f8fafc;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 1.5rem 0 0.5rem 0.5rem;
+        }
+
+        nav ul {
+            list-style: none;
+        }
+
+        nav a {
+            display: block;
+            padding: 0.4rem 0.75rem;
+            color: var(--text-sidebar);
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        nav a:hover, nav a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-sidebar-active);
+        }
+
+        /* Content Area */
+        main {
+            flex: 1;
+            padding: 2.5rem 3rem;
+            max-width: 1200px;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 80px;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            margin: 2rem 0 1rem 0;
+            color: var(--text-primary);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.75rem 0;
+            color: var(--text-primary);
+        }
+
+        p {
+            margin-bottom: 1.25rem;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        ul, ol {
+            margin-bottom: 1.25rem;
+            padding-left: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Boxes */
+        .box {
+            padding: 1.25rem;
+            border-radius: var(--radius);
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+        }
+
+        .box-note {
+            background-color: var(--box-note);
+            border-color: var(--box-note-border);
+        }
+
+        .box-warn {
+            background-color: var(--box-warn);
+            border-color: var(--box-warn-border);
+        }
+
+        .box-exam {
+            background-color: var(--box-exam);
+            border-color: var(--box-exam-border);
+        }
+
+        .box-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Code Blocks */
+        .code-container {
+            position: relative;
+            margin: 1.5rem 0;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1.25rem;
+            border-radius: var(--radius);
+            overflow-x: auto;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .copy-btn:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Diagrams */
+        .diagram {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .memory-row {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .memory-box {
+            border: 2px solid var(--accent);
+            padding: 1rem;
+            border-radius: var(--radius);
+            text-align: center;
+            min-width: 120px;
+            background-color: var(--bg-primary);
+        }
+
+        .memory-box .address {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .memory-box .val {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .pointer-arrow {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background-color: var(--bg-secondary);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: var(--accent);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: var(--bg-primary);
+        }
+
+        /* Exam Answers */
+        .exam-answer {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .exam-answer-title {
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Back to top button */
+        #back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 1.25rem;
+            box-shadow: var(--shadow);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            nav {
+                width: 100%;
+                height: auto;
+                position: relative;
+                top: 0;
+            }
+            main {
+                padding: 1.5rem;
+            }
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .search-box input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+
+    <header>
+        <div class="header-title">BCA UNIT III: C PROGRAMMING STUDY PORTAL</div>
+        <div class="header-controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search topics, syntax, code..." onkeyup="filterContent()">
+            </div>
+            <button class="btn" onclick="toggleTheme()" id="themeBtn">Dark Mode</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav id="sidebar">
+            <h3>1. POINTERS</h3>
+            <ul>
+                <li><a href="#mem-basics">Memory Basics & Addresses</a></li>
+                <li><a href="#pointer-concept">Concept of Pointer</a></li>
+                <li><a href="#pointer-decl">Declaration & Initialization</a></li>
+                <li><a href="#pointer-deref">Accessing & Dereferencing</a></li>
+                <li><a href="#null-pointer">NULL Pointer</a></li>
+                <li><a href="#wild-pointer">Wild Pointer</a></li>
+                <li><a href="#dangling-pointer">Dangling Pointer</a></li>
+                <li><a href="#void-pointer">Generic Pointer (void *)</a></li>
+                <li><a href="#pointer-expr">Pointer Expressions</a></li>
+                <li><a href="#pointer-arithmetic">Pointer Arithmetic</a></li>
+                <li><a href="#pointer-array">Pointers and Arrays</a></li>
+                <li><a href="#array-pointers">Array of Pointers</a></li>
+                <li><a href="#pointer-strings">Strings using Pointers</a></li>
+            </ul>
+
+            <h3>2. FUNCTIONS</h3>
+            <ul>
+                <li><a href="#func-basics">Function Basics & Structure</a></li>
+                <li><a href="#func-types">Types of Functions</a></li>
+                <li><a href="#func-decl-def-call">Declaration, Definition & Call</a></li>
+                <li><a href="#recursion">Recursive Function</a></li>
+                <li><a href="#dma">Dynamic Memory Management</a></li>
+                <li><a href="#string-funcs">String Handling Functions</a></li>
+            </ul>
+
+            <h3>3. STORAGE CLASSES</h3>
+            <ul>
+                <li><a href="#storage-basics">Storage Class Concepts</a></li>
+                <li><a href="#storage-auto">auto Storage Class</a></li>
+                <li><a href="#storage-register">register Storage Class</a></li>
+                <li><a href="#storage-static">static Storage Class</a></li>
+                <li><a href="#storage-extern">extern Storage Class</a></li>
+                <li><a href="#scope-rules">Scope Rules & Linkage</a></li>
+                <li><a href="#decl-vs-def">Declaration vs Definition</a></li>
+            </ul>
+
+            <h3>REVISION & EXAM SUITE</h3>
+            <ul>
+                <li><a href="#comparison-tables">Master Comparison Tables</a></li>
+                <li><a href="#c-programs">27 Important C Programs</a></li>
+                <li><a href="#exam-questions">University Exam Q&A Suite</a></li>
+                <li><a href="#definitions">Definitions to Memorize</a></li>
+                <li><a href="#one-day-revision">One Day Revision Cheat Sheet</a></li>
+                <li><a href="#pre-exam-checklist">30-Minute Pre-Exam Checklist</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <!-- SECTION 1: POINTERS -->
+            <section id="mem-basics">
+                <h1>1. POINTERS: MEMORY BASICS</h1>
+                
+                <h2>What is a Memory Address?</h2>
+                <p>To fully understand pointers, one must first understand how computer memory (RAM) is structured. Computer memory is organized as a sequential array of small storage units called <strong>bytes</strong>. Each byte in memory has a unique numerical identifier known as its <strong>Memory Address</strong>.</p>
+                <p>When you declare a variable in C, the compiler allocates a specific number of contiguous bytes in memory based on the variable's data type. For instance, on a standard 32-bit/64-bit architecture, an <code>int</code> typically occupies 4 bytes, a <code>char</code> occupies 1 byte, and a <code>double</code> occupies 8 bytes.</p>
+
+                <div class="diagram">
+                    <div class="memory-row">
+                        <div class="memory-box">
+                            <div>Variable: <strong>x</strong></div>
+                            <div class="val">10</div>
+                            <div class="address">Address: 0x7ffd1000</div>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary);">Conceptual Representation: Variable <code>x</code> holding value 10 stored at memory address <code>0x7ffd1000</code>.</p>
+                </div>
+
+                <p>Three essential attributes are associated with every variable:</p>
+                <ul>
+                    <li><strong>Name of the Variable:</strong> An identifier used in code to refer to the value (e.g., <code>x</code>).</li>
+                    <li><strong>Value of the Variable:</strong> The actual data stored inside the memory cell (e.g., <code>10</code>).</li>
+                    <li><strong>Address of the Variable:</strong> The physical/virtual RAM location where the first byte of data starts (e.g., <code>1000</code> or <code>0x7ffd1000</code>).</li>
+                </ul>
+
+                <div class="box box-note">
+                    <div class="box-title">Important Academic Concept</div>
+                    <p>Addresses are generated dynamically by the Operating System during execution. Therefore, memory addresses change from one run of a program to another. However, inside a single execution run, a variable's address remains fixed.</p>
+                </div>
+            </section>
+
+            <section id="pointer-concept">
+                <h1>CONCEPT OF POINTER</h1>
+                <p>A <strong>Pointer</strong> is a special variable in C that does not store a normal data value (like an integer or character); instead, it stores the <strong>memory address</strong> of another variable.</p>
+
+                <h2>Why are Pointers Needed?</h2>
+                <p>Pointers are one of the most powerful features of C programming. They are essential because they allow:</p>
+                <ul>
+                    <li>Direct manipulation of computer memory locations.</li>
+                    <li>Dynamic memory allocation (heap management using <code>malloc</code>, <code>calloc</code>).</li>
+                    <li>Efficient handling of large arrays, structures, and strings without making copies.</li>
+                    <li>Implementation of dynamic data structures such as linked lists, stacks, queues, and trees.</li>
+                    <li>Call-by-reference mechanics in functions to allow returning multiple values or modifying caller variables.</li>
+                </ul>
+
+                <h2>Operators Used with Pointers</h2>
+                <ol>
+                    <li><strong>Address-of Operator (<code>&</code>):</strong> A unary operator that returns the memory address of its operand.</li>
+                    <li><strong>Dereference / Indirection Operator (<code>*</code>):</strong> A unary operator that accesses or manipulates the value stored at the memory location contained inside the pointer.</li>
+                </ol>
+
+                <div class="diagram">
+                    <div class="memory-row">
+                        <div class="memory-box">
+                            <div>Variable: <strong>x</strong></div>
+                            <div class="val">10</div>
+                            <div class="address">Address: 1000</div>
+                        </div>
+                        <div class="pointer-arrow">&larr; points to &mdash;</div>
+                        <div class="memory-box">
+                            <div>Pointer: <strong>p</strong></div>
+                            <div class="val">1000</div>
+                            <div class="address">Address: 2000</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exam-answer">
+                    <div class="exam-answer-title">BRIEF EXAM ANSWER (5 MARKS): Concept of Pointer</div>
+                    <p><strong>Definition:</strong> A pointer is a variable that stores the memory address of another variable of a specific data type.</p>
+                    <p><strong>Explanation:</strong> In C, variables are stored in memory addresses. The address-of operator (<code>&</code>) extracts a variable's memory address, while the dereference operator (<code>*</code>) accesses the value stored at that address. Pointers enable call-by-reference, dynamic memory allocation, and efficient array traversal.</p>
+                    <p><strong>Example:</strong></p>
+                    <pre><code>int x = 10;
+int *p = &x; // p holds address 1000
+printf("%d", *p); // prints 10</code></pre>
+                </div>
+
+                <div class="exam-answer">
+                    <div class="exam-answer-title">LONG EXAM ANSWER (10 MARKS): Complete Pointer Fundamentals</div>
+                    <p><strong>Introduction:</strong> In C, memory management is performed directly. A pointer is a derived data type designed to hold the memory address of another variable.</p>
+                    <p><strong>Core Components:</strong></p>
+                    <ul>
+                        <li><strong>Pointer Declaration:</strong> Uses the syntax <code>data_type *pointer_name;</code></li>
+                        <li><strong>Address Assignment:</strong> Uses the address-of operator <code>p = &x;</code></li>
+                        <li><strong>Dereferencing:</strong> Uses the dereference operator <code>*p</code> to read or write value at address <code>p</code>.</li>
+                    </ul>
+                    <p><strong>Working Mechanism:</strong> Assume variable <code>int a = 25</code> is allocated at memory location <code>5000</code>. When we execute <code>int *ptr = &a;</code>, the value stored inside <code>ptr</code> becomes <code>5000</code>. When <code>*ptr</code> is evaluated, the CPU looks up memory address <code>5000</code> and retrieves the value <code>25</code>.</p>
+                    <p><strong>Advantages of Pointers:</strong></p>
+                    <ol>
+                        <li>Enables call-by-reference function parameter passing.</li>
+                        <li>Allows efficient dynamic memory allocation at runtime.</li>
+                        <li>Reduces program execution time by avoiding variable copying.</li>
+                        <li>Facilitates building complex data structures like linked lists and binary trees.</li>
+                    </ol>
+                    <p><strong>Conclusion:</strong> Pointers provide high-level C code with near assembly-level memory access, making C exceptionally fast and suitable for system programming.</p>
+                </div>
+            </section>
+
+            <section id="pointer-decl">
+                <h1>POINTER DECLARATION & INITIALIZATION</h1>
+
+                <h2>Declaring Pointer Variables</h2>
+                <p>Before using a pointer, it must be declared. The syntax specifies what type of variable the pointer will point to.</p>
+                <p><strong>Syntax:</strong> <code>data_type *pointer_name;</code></p>
+                
+                <div class="code-container">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>int *ip;    // Pointer to an integer
+char *cp;   // Pointer to a character
+float *fp;  // Pointer to a floating-point number
+double *dp; // Pointer to a double-precision float</code></pre>
+                </div>
+
+                <div class="box box-note">
+                    <div class="box-title">Crucial Concept: Size of a Pointer</div>
+                    <p>Regardless of the base data type (<code>char</code>, <code>int</code>, <code>float</code>, <code>double</code>), all pointers in a given system architecture have the <strong>exact same size</strong> because they all store memory addresses! On a 32-bit system, every pointer is 4 bytes; on a 64-bit system, every pointer is 8 bytes.</p>
+                </div>
+
+                <h2>Initialization of Pointer Variables</h2>
+                <p>Initialization is the process of assigning the memory address of an existing variable to a declared pointer variable.</p>
+
+                <div class="code-container">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>int quantity = 100;
+int *ptr;          // Declaration
+ptr = &quantity;   // Initialization (assigning address of quantity to ptr)
+
+// Combined Declaration and Initialization:
+int *ptr2 = &quantity;</code></pre>
+                </div>
+
+                <div class="box box-warn">
+                    <div class="box-title">Common Mistake: Assigning Arbitrary Addresses</div>
+                    <p>Never assign an arbitrary integer constant directly to a pointer variable (e.g., <code>int *p = 1000;</code>). This attempts to point to absolute memory location 1000, which usually belongs to the Operating System or another protected process, causing immediate program termination via Segmentation Fault!</p>
+                </div>
+            </section>
+
+            <section id="pointer-deref">
+                <h1>ACCESSING & DEREFERENCING POINTERS</h1>
+                <p>Once a pointer is initialized with a variable's address, you can access or modify that variable's value through the pointer using the dereference operator (<code>*</code>).</p>
+
+                <h2>Example Code Demonstration</h2>
+                <div class="code-container">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    int x = 20;
+    int *p = &x;
+
+    printf("Value of x directly: %d\n", x);          // Output: 20
+    printf("Address of x (&x): %p\n", (void*)&x);    // Output: Address like 0x7ffe...
+    printf("Value stored in p: %p\n", (void*)p);      // Output: Same address as &x
+    printf("Value pointed to by p (*p): %d\n", *p);  // Output: 20
+
+    // Modifying value of x through pointer p
+    *p = 50; 
+    printf("New value of x after *p = 50: %d\n", x); // Output: 50
+
+    return 0;
+}</code></pre>
+                </div>
+
+                <h3>Step-by-Step Explanation:</h3>
+                <ol>
+                    <li><code>int x = 20;</code> allocates 4 bytes in RAM, places 20 inside, and associates identifier <code>x</code>.</li>
+                    <li><code>int *p = &x;</code> allocates memory for pointer <code>p</code> and stores the address of <code>x</code> inside <code>p</code>.</li>
+                    <li><code>*p</code> tells the compiler: "Go to the address stored in <code>p</code> and fetch the integer value stored there."</li>
+                    <li><code>*p = 50;</code> tells the compiler: "Go to the address stored in <code>p</code> and replace whatever is inside with 50."</li>
+                </ol>
+            </section>
+
+            <section id="null-pointer">
+                <h1>NULL POINTER</h1>
+                <h2>Definition</h2>
+                <p>A <strong>NULL Pointer</strong> is a pointer that points to nothing (or memory address zero). It is a standard macro defined in header files like <code>&lt;stdio.h&gt;</code>, <code>&lt;stddef.h&gt;</code>, and <code>&lt;stdlib.h&gt;</code> as <code>((void *)0)</code>.</p>
+
+                <h2>Purpose</h2>
+                <ul>
+                    <li>To initialize a pointer variable when it has not been assigned any valid memory address yet.</li>
+                    <li>To check whether dynamic memory allocation functions (like <code>malloc</code>) succeeded or failed.</li>
+                    <li>To indicate the end of dynamic data structures such as Linked Lists (e.g., <code>head->next = NULL;</code>).</li>
+                </ul>
+
+                <h2>Code Example</h2>
+                <div class="code-container">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    int *ptr = NULL; // Initialized to NULL
+
+    if (ptr != NULL) {
+        printf("Value at ptr: %d\n", *ptr);
+    } else {
+        printf("Pointer is NULL. Cannot dereference safely!\n");
+    }
+
+    return 0;
+}</code></pre>
+                </div>
+
+                <div class="box box-warn">
+                    <div class="box-title">Critical Safety Rule</div>
+                    <p>Attempting to dereference a NULL pointer (e.g., <code>printf("%d", *ptr);</code> when <code>ptr == NULL</code>) causes an immediate <strong>Segmentation Fault</strong> (Crash).</p>
+                </div>
+            </section>
+
+            <section id="wild-pointer">
+                <h1>WILD POINTER</h1>
+                <h2>Definition</h2>
+                <p>A <strong>Wild Pointer</strong> is an uninitialized pointer variable that contains garbage memory address values.</p>
+
+                <h2>Why is it Dangerous?</h2>
+                <p>Because an uninitialized pointer contains random garbage data, it points to an arbitrary, unpredictable address in memory. If you attempt to dereference a wild pointer and write to it, you may corrupt critical program data or cause a crash.</p>
+
+                <h2>Example & Prevention</h2>
+                <div class="code-container">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>int main() {
+    int *p; // WILD POINTER! Uninitialized, contains garbage address.
+    
+    // *p = 100; // EXTREMELY DANGEROUS! Memory corruption risk.
+
+    // Prevention: Always initialize to NULL or a valid address immediately!
+    int *safe_p = NULL; 
+}</code></pre>
+                </div>
+            </section>
+
+            <section id="dangling-pointer">
+                <h1>DANGLING POINTER</h1>
+                <h2>Definition</h2>
+                <p>A <strong>Dangling Pointer</strong> is a pointer that continues to point to a memory location that has already been deallocated, freed, or destroyed.</p>
+
+                <h2>How Dangling Pointers Occur</h2>
+                <ol>
+                    <li><strong>Deallocating memory without resetting pointer:</strong> Freeing dynamic memory using <code>free(ptr)</code> without setting <code>ptr = NULL;</code>.</li>
+                    <li><strong>Returning address of local variable:</strong> Returning the address of an automatic local variable from a function. When the function finishes execution, its stack frame is destroyed, rendering the address invalid.</li>
+                </ol>
+
+                <h2>Example of Dangling Pointer</h2>
+                <div class="code-container">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int* getLocalAddress() {
+    int temp = 50;
+    return &temp; // DANGER: Returning address of local variable!
+}
+
+int main() {
+    // Cause 1: Function returning local variable address
+    int *ptr = getLocalAddress(); // ptr is now a Dangling Pointer!
+
+    // Cause 2: Deallocated dynamic memory
+    int *dyn_ptr = (int*) malloc(sizeof(int));
+    *dyn_ptr = 100;
+    free(dyn_ptr); // Memory freed!
+    // dyn_ptr is now a Dangling Pointer!
+
+    // Prevention:
+    dyn_ptr = NULL; // Safe!
+    return 0;
+}</code></pre>
+                </div>
+            </section>
+
+            <section id="void-pointer">
+                <h1>GENERIC POINTER (void *)</h1>
+                <h2>Definition</h2>
+                <p>A <strong>Generic Pointer</strong> (or <code>void *</code>) is a special pointer type in C that can hold the memory address of any variable, regardless of its data type (<code>int</code>, <code>float</code>, <code>char</code>, or custom structs).</p>
+
+                <h2>Key Characteristics</h2>
+                <ul>
+                    <li>Can accept any address without explicit type casting: <code>void *ptr = &x;</code></li>
+                    <li><strong>Cannot be dereferenced directly!</strong> Standard C does not know the size of data pointed to by <code>void *</code>. It must be explicitly typecast first.</li>
+                    <li><strong>Pointer arithmetic cannot be directly performed</strong> on <code>void *</code> in strict standard ANSI C.</li>
+                </ul>
+
+                <h2>Code Example</h2>
+                <div class="code-container">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    int a = 10;
+    float b = 3.14f;
+    void *ptr; // Generic pointer
+
+    ptr = &a; // Stores int address
+    // printf("%d", *ptr); // ERROR! Direct dereferencing prohibited.
+    printf("Int value: %d\n", *( (int*)ptr ) ); // Correct using Typecast!
+
+    ptr = &b; // Stores float address
+    printf("Float value: %.2f\n", *( (float*)ptr ) ); // Correct using Typecast!
+
+    return 0;
+}</code></pre>
+                </div>
+            </section>
+
+            <section id="pointer-expr">
+                <h1>POINTER EXPRESSIONS</h1>
+                <p>Pointer expressions combine pointer variables, addresses, arithmetic operators, and dereferencing operators. Understanding precedence is critical for university examinations.</p>
+
+                <h2>Operator Precedence Comparison</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Expression</th>
+                            <th>Execution Order / Meaning</th>
+                            <th>Resulting Behavior</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>*p++</code></td>
+                            <td>Dereference <code>p</code> first, then increment pointer <code>p</code> address.</td>
+                            <td>Returns value at original address, then <code>p</code> moves to next memory cell.</td>
+                        </tr>
+                        <tr>
+                            <td><code>*++p</code></td>
+                            <td>Increment pointer <code>p</code> address first, then dereference.</td>
+                            <td>Advances address first, then returns value at new location.</td>
+                        </tr>
+                        <tr>
+                            <td><code>(*p)++</code></td>
+                            <td>Dereference <code>p</code> first, then increment the value stored at that location.</td>
+                            <td>Increments the actual integer/data value; address of <code>p</code> stays unchanged.</td>
+                        </tr>
+                        <tr>
+                            <td><code>++*p</code></td>
+                            <td>Pre-increments the value stored at address <code>p</code>.</td>
+                            <td>Adds 1 to value stored at address first; address stays unchanged.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="pointer-arithmetic">
+                <h1>POINTER ARITHMETIC</h1>
+                <p>Pointer arithmetic differs fundamentally from ordinary arithmetic. When you add or subtract an integer to/from a pointer, the pointer address advances or retreats by a factor scaled by the size of the data type it points to!</p>
+
+                <div class="box box-note">
+                    <div class="box-title">Pointer Arithmetic Formula</div>
+                    <p><code>New_Address = Current_Address + (N * sizeof(data_type))</code></p>
+                </div>
+
+                <h2>Valid Pointer Operations</h2>
+                <ul>
+                    <li>Adding an integer to a pointer: <code>p + 2</code></li>
+                    <li>Subtracting an integer from a pointer: <code>p - 1</code></li>
+                    <li>Incrementing / Decrementing a pointer: <code>p++</code>, <code>p--</code></li>
+                    <li>Subtracting two pointers pointing to elements of the <strong>same array</strong>: <code>p2 - p1</code> (returns element count, not byte count).</li>
+                    <li>Comparing two pointers using relational operators (<code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>).</li>
+                </ul>
+
+                <h2>Invalid Pointer Operations</h2>
+                <ul>
+                    <li>Adding two pointers together (<code>p1 + p2</code> &rarr; <strong>ILLEGAL!</strong>).</li>
+                    <li>Multiplying or Dividing pointers (<code>p1 * p2</code>, <code>p1 / 2</code> &rarr; <strong>ILLEGAL!</strong>).</li>
+                    <li>Bitwise operations on pointers (<code>p1 & p2</code> &rarr; <strong>ILLEGAL!</strong>).</li>
+                </ul>
+            </section>
+
+            <section id="pointer-array">
+                <h1>POINTER REPRESENTATION OF ARRAY</h1>
+                <p>In C, the name of an array acts as a <strong>constant pointer</strong> pointing to the memory address of its first element (index 0). Thus, <code>arr</code> is equivalent to <code>&arr[0]</code>.</p>
+
+                <h2>Equivalence Rule</h2>
+                <p>For any array <code>arr</code> and index <code>i</code>:</p>
+                <div class="box box-exam">
+                    <p style="text-align: center; font-size: 1.25rem; font-weight: bold;"><code>arr[i] &equiv; *(arr + i)</code></p>
+                    <p style="text-align: center; font-size: 1.25rem; font-weight: bold;"><code>&arr[i] &equiv; (arr + i)</code></p>
+                </div>
+
+                <div class="code-container">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    int arr[3] = {10, 20, 30};
+    int *p = arr; // Same as p = &arr[0]
+
+    for (int i = 0; i < 3; i++) {
+        printf("Index %d: arr[%d] = %d, *(p + %d) = %d\n", i, i, arr[i], i, *(p + i));
+    }
+    return 0;
+}</code></pre>
+                </div>
+            </section>
+
+            <section id="array-pointers">
+                <h1>ARRAY OF POINTERS</h1>
+                <h2>Definition</h2>
+                <p>An <strong>Array of Pointers</strong> is an array whose individual elements are pointer variables that store memory addresses of other variables or arrays.</p>
+
+                <h2>Declaration</h2>
+                <p><code>data_type *array_name[size];</code></p>
+                <p>Example: <code>int *ptr[5];</code> declares an array of 5 integer pointers.</p>
+
+                <h2>Code Example</h2>
+                <div class="code-container">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    int a = 10, b = 20, c = 30;
+    int *arr[3] = {&a, &b, &c}; // Array storing addresses
+
+    for(int i = 0; i < 3; i++) {
+        printf("Value %d: %d\n", i + 1, *arr[i]); // Dereferencing individual pointers
+    }
+    return 0;
+}</code></pre>
+                </div>
+            </section>
+
+            <section id="pointer-strings">
+                <h1>ACCESSING STRINGS USING POINTERS</h1>
+                <p>In C, a string is a null-terminated (<code>'\0'</code>) sequence of characters stored in contiguous memory. A character pointer (<code>char *</code>) can be used to navigate through a string efficiently.</p>
+
+                <div class="code-container">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    char str[] = "UNIVERSITY";
+    char *ptr = str; // Points to first char 'U'
+
+    printf("Traversing string using pointer: ");
+    while (*ptr != '\0') {
+        printf("%c ", *ptr);
+        ptr++; // Advance pointer to next character
+    }
+    printf("\n");
+    return 0;
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- SECTION 2: FUNCTIONS -->
+            <section id="func-basics">
+                <h1>2. FUNCTIONS</h1>
+                <h2>What is a Function?</h2>
+                <p>A <strong>Function</strong> is a self-contained block of code designed to perform a specific task. Functions divide a large program into smaller, modular components, adhering to the software engineering principle of "Divide and Conquer".</p>
+
+                <h2>Why Functions are Used</h2>
+                <ul>
+                    <li><strong>Code Reusability:</strong> Write once, invoke multiple times without rewriting code.</li>
+                    <li><strong>Modularity:</strong> Breaks complex tasks into manageable sub-problems.</li>
+                    <li><strong>Debugging Ease:</strong> Isolates errors inside specific function scopes.</li>
+                    <li><strong>Readability & Maintainability:</strong> Makes code cleaner and structured.</li>
+                </ul>
+            </section>
+
+            <section id="func-types">
+                <h1>TYPES OF FUNCTIONS</h1>
+                <h2>1. Library Functions</h2>
+                <p>Pre-defined built-in functions provided by C standard header files (e.g., <code>printf()</code>, <code>scanf()</code> in <code>&lt;stdio.h&gt;</code>, <code>strlen()</code> in <code>&lt;string.h&gt;</code>, <code>sqrt()</code> in <code>&lt;math.h&gt;</code>).</p>
+
+                <h2>2. User-Defined Functions (UDF)</h2>
+                <p>Functions created by programmers to solve specific user requirements.</p>
+
+                <h3>Four Categories of User-Defined Functions based on Arguments & Return Values:</h3>
+                <ol>
+                    <li><strong>No Arguments, No Return Value:</strong> Functions that perform self-contained I/O operations without accepting caller inputs or returning values.</li>
+                    <li><strong>Arguments Passed, No Return Value:</strong> Functions that receive caller data but print or process results internally without returning.</li>
+                    <li><strong>No Arguments Passed, Returns a Value:</strong> Functions that collect input internally and compute a return value for the caller.</li>
+                    <li><strong>Arguments Passed, Returns a Value:</strong> The ideal functional programming pattern; accepts inputs, computes, and returns the result.</li>
+                </ol>
+            </section>
+
+            <section id="func-decl-def-call">
+                <h1>FUNCTION DECLARATION, DEFINITION & CALL</h1>
+                <p>Working with functions involves three major elements:</p>
+
+                <h2>1. Function Declaration (Prototype)</h2>
+                <p>Informs the compiler about the function name, parameter types, and return type before it is invoked.</p>
+                <p><strong>Syntax:</strong> <code>return_type function_name(type1, type2);</code></p>
+                <p>Example: <code>int addNumbers(int, int);</code></p>
+
+                <h2>2. Function Definition</h2>
+                <p>Contains the actual body of executable statements executed when the function is called.</p>
+                <div class="code-container">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>int addNumbers(int a, int b) {
+    int sum = a + b;
+    return sum; // Return statement
+}</code></pre>
+                </div>
+
+                <h2>3. Function Call</h2>
+                <p>Transfers control from caller (e.g., <code>main()</code>) to the called function.</p>
+                <p>Example: <code>int result = addNumbers(10, 20);</code></p>
+
+                <div class="diagram">
+                    <p style="font-weight:bold;">Function Execution Control Flow</p>
+                    <div style="text-align: center;">
+                        <code>main()</code> &rarr; <i>(Calls function)</i> &rarr; <code>addNumbers() Execution</code> &rarr; <i>(Return statement)</i> &rarr; Back to <code>main()</code>
+                    </div>
+                </div>
+            </section>
+
+            <section id="recursion">
+                <h1>RECURSIVE FUNCTIONS</h1>
+                <h2>Definition</h2>
+                <p>A <strong>Recursive Function</strong> is a function that calls itself directly or indirectly to solve a problem by breaking it down into smaller sub-problems of the same type.</p>
+
+                <h2>Essential Components of Recursion</h2>
+                <ol>
+                    <li><strong>Base Condition:</strong> A terminating condition that stops recursion. Without a base condition, the function calls itself infinitely, exhausting stack memory and causing <strong>Stack Overflow</strong>.</li>
+                    <li><strong>Recursive Step:</strong> The statement where the function invokes itself with updated, smaller arguments moving closer to the base condition.</li>
+                </ol>
+
+                <div class="code-container">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>#include &lt;stdio.h&gt;
+
+// Recursive Factorial Function
+long factorial(int n) {
+    if (n <= 1) return 1; // BASE CONDITION
+    return n * factorial(n - 1); // RECURSIVE STEP
+}
+
+int main() {
+    printf("Factorial of 4 = %ld\n", factorial(4)); // Output: 24
+    return 0;
+}</code></pre>
+                </div>
+
+                <h3>Call Stack Execution Trace for <code>factorial(4)</code>:</h3>
+                <ul>
+                    <li><code>factorial(4)</code> &rarr; <code>4 * factorial(3)</code></li>
+                    <li><code>factorial(3)</code> &rarr; <code>3 * factorial(2)</code></li>
+                    <li><code>factorial(2)</code> &rarr; <code>2 * factorial(1)</code></li>
+                    <li><code>factorial(1)</code> &rarr; returns <code>1</code> (Base Case Hit!)</li>
+                    <li>Unwinding: 2 * 1 = 2 &rarr; 3 * 2 = 6 &rarr; 4 * 6 = 24.</li>
+                </ul>
+            </section>
+
+            <section id="dma">
+                <h1>DYNAMIC MEMORY MANAGEMENT</h1>
+                <p>Static memory allocation fixes variable sizes at compile time (stored in Stack/Data segments). <strong>Dynamic Memory Allocation (DMA)</strong> allocates memory at runtime from the <strong>Heap Segment</strong> as required by the program.</p>
+
+                <h2>Header File Required</h2>
+                <p><code>#include &lt;stdlib.h&gt;</code></p>
+
+                <h2>Core Dynamic Memory Functions</h2>
+
+                <h3>1. malloc() - Memory Allocation</h3>
+                <ul>
+                    <li>Allocates a single contiguous block of memory of requested byte size.</li>
+                    <li>Contains <strong>garbage values</strong> initially.</li>
+                    <li>Returns <code>void *</code> address on success, or <code>NULL</code> on failure.</li>
+                    <li><strong>Syntax:</strong> <code>ptr = (cast_type*) malloc(byte_size);</code></li>
+                </ul>
+
+                <h3>2. calloc() - Contiguous Allocation</h3>
+                <ul>
+                    <li>Allocates multiple blocks of memory.</li>
+                    <li><strong>Initializes all bytes automatically to ZERO!</strong></li>
+                    <li><strong>Syntax:</strong> <code>ptr = (cast_type*) calloc(num_elements, element_size);</code></li>
+                </ul>
+
+                <h3>3. realloc() - Re-allocation</h3>
+                <ul>
+                    <li>Resizes previously allocated dynamic memory without losing existing data.</li>
+                    <li><strong>Syntax:</strong> <code>ptr = (cast_type*) realloc(ptr, new_byte_size);</code></li>
+                </ul>
+
+                <h3>4. free() - Memory Deallocation</h3>
+                <ul>
+                    <li>Releases dynamically allocated heap memory back to the OS to prevent <strong>Memory Leaks</strong>.</li>
+                    <li><strong>Syntax:</strong> <code>free(ptr); ptr = NULL;</code></li>
+                </ul>
+            </section>
+
+            <section id="string-funcs">
+                <h1>STRING HANDLING FUNCTIONS (&lt;string.h&gt;)</h1>
+                
+                <h2>1. strlen(str)</h2>
+                <p>Calculates and returns the length of a string excluding the null terminator <code>'\0'</code>.</p>
+                <p><strong>Example:</strong> <code>strlen("Hello")</code> returns <code>5</code>.</p>
+
+                <h2>2. strcmp(str1, str2)</h2>
+                <p>Compares two strings lexicographically character by character based on ASCII values.</p>
+                <ul>
+                    <li>Returns <code>0</code> if <code>str1 == str2</code>.</li>
+                    <li>Returns <code>&lt; 0</code> if <code>str1 &lt; str2</code> ASCII-wise.</li>
+                    <li>Returns <code>&gt; 0</code> if <code>str1 &gt; str2</code> ASCII-wise.</li>
+                </ul>
+
+                <h2>3. strcpy(dest, src)</h2>
+                <p>Copies source string <code>src</code> (including null character) into destination array <code>dest</code>.</p>
+
+                <h2>4. strncpy(dest, src, n)</h2>
+                <p>Copies at most <code>n</code> characters from <code>src</code> to <code>dest</code>. Safer than <code>strcpy</code> because it guards against buffer overflow.</p>
+
+                <h2>5. strcat(dest, src)</h2>
+                <p>Appends (concatenates) source string <code>src</code> to the end of destination string <code>dest</code>.</p>
+
+                <h2>6. strstr(main_str, sub_str)</h2>
+                <p>Searches for first occurrence of substring <code>sub_str</code> inside <code>main_str</code>. Returns pointer to first matching character, or <code>NULL</code> if not found.</p>
+            </section>
+
+            <!-- SECTION 3: STORAGE CLASSES -->
+            <section id="storage-basics">
+                <h1>3. STORAGE CLASSES</h1>
+                <p>A <strong>Storage Class</strong> in C defines four essential attributes of a variable:</p>
+                <ol>
+                    <li><strong>Storage Location:</strong> Where the variable is stored (RAM CPU Stack, RAM Heap, Data Segment, or CPU Register).</li>
+                    <li><strong>Initial Default Value:</strong> Garbage value or Zero (0).</li>
+                    <li><strong>Scope:</strong> Visibility region of variable (Block scope, Function scope, File/Global scope).</li>
+                    <li><strong>Lifetime (Storage Duration):</strong> How long the variable retains its existence and value in memory.</li>
+                </ol>
+            </section>
+
+            <section id="storage-auto">
+                <h1>auto STORAGE CLASS</h1>
+                <ul>
+                    <li><strong>Keyword:</strong> <code>auto</code></li>
+                    <li><strong>Default Storage:</strong> CPU RAM Memory (Stack).</li>
+                    <li><strong>Default Initial Value:</strong> Garbage Value.</li>
+                    <li><strong>Scope:</strong> Local / Block Scope (visible only within declaring block <code>{ }</code>).</li>
+                    <li><strong>Lifetime:</strong> Till execution control remains inside declaring block.</li>
+                </ul>
+            </section>
+
+            <section id="storage-register">
+                <h1>register STORAGE CLASS</h1>
+                <ul>
+                    <li><strong>Keyword:</strong> <code>register</code></li>
+                    <li><strong>Default Storage:</strong> CPU Registers (High-speed hardware memory inside CPU microprocessor).</li>
+                    <li><strong>Default Initial Value:</strong> Garbage Value.</li>
+                    <li><strong>Scope:</strong> Local to block.</li>
+                    <li><strong>Lifetime:</strong> Till block execution finishes.</li>
+                </ul>
+                <div class="box box-warn">
+                    <div class="box-title">Important Rule for register Variables</div>
+                    <p>You <strong>CANNOT use the address-of operator (<code>&</code>)</strong> on a register variable (e.g., <code>&reg_var</code> is ILLEGAL!), because CPU registers do not reside in RAM and do not have RAM memory addresses!</p>
+                </div>
+            </section>
+
+            <section id="storage-static">
+                <h1>static STORAGE CLASS</h1>
+                <ul>
+                    <li><strong>Keyword:</strong> <code>static</code></li>
+                    <li><strong>Default Storage:</strong> RAM Data Segment.</li>
+                    <li><strong>Default Initial Value:</strong> <strong>Zero (0)</strong>.</li>
+                    <li><strong>Scope:</strong> Local to block (for static local) OR File scope (for static global).</li>
+                    <li><strong>Lifetime:</strong> Entire program execution lifetime! Retains values between function calls.</li>
+                </ul>
+
+                <div class="code-container">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>#include &lt;stdio.h&gt;
+
+void countCalls() {
+    static int count = 0; // Initialized ONLY ONCE at program startup!
+    count++;
+    printf("Function called %d time(s)\n", count);
+}
+
+int main() {
+    countCalls(); // Output: 1
+    countCalls(); // Output: 2
+    countCalls(); // Output: 3
+    return 0;
+}</code></pre>
+                </div>
+            </section>
+
+            <section id="storage-extern">
+                <h1>extern STORAGE CLASS</h1>
+                <ul>
+                    <li><strong>Keyword:</strong> <code>extern</code></li>
+                    <li><strong>Default Storage:</strong> RAM Data Segment.</li>
+                    <li><strong>Default Initial Value:</strong> <strong>Zero (0)</strong>.</li>
+                    <li><strong>Scope:</strong> Global / File Scope across multiple C translation unit source files.</li>
+                    <li><strong>Lifetime:</strong> Entire program execution duration.</li>
+                </ul>
+            </section>
+
+            <section id="scope-rules">
+                <h1>SCOPE RULES & LINKAGE</h1>
+                <h2>1. Block Scope</h2>
+                <p>Variables declared inside braces <code>{ }</code> are accessible only within those braces.</p>
+
+                <h2>2. File Scope (Global Scope)</h2>
+                <p>Variables declared outside all functions are visible to all functions below their declaration in that file.</p>
+
+                <h2>Variable Shadowing</h2>
+                <p>When a local variable shares the exact same name as a global variable, the local variable <strong>shadows</strong> (overrides) the global variable within its local block scope.</p>
+            </section>
+
+            <section id="decl-vs-def">
+                <h1>DECLARATION vs DEFINITION</h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Attribute</th>
+                            <th>Declaration</th>
+                            <th>Definition</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Meaning</strong></td>
+                            <td>Informs compiler about name, type, and signature. No memory is allocated.</td>
+                            <td>Allocates actual memory space and provides implementation.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Memory Allocation</strong></td>
+                            <td><strong>0 Bytes allocated.</strong></td>
+                            <td>Allocates required bytes (e.g., 4 bytes for <code>int</code>).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Occurrences</strong></td>
+                            <td>Can occur multiple times in a program.</td>
+                            <td>Must occur <strong>EXACTLY ONCE</strong> (One Definition Rule).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Example</strong></td>
+                            <td><code>extern int x;</code> <br> <code>int add(int, int);</code></td>
+                            <td><code>int x = 10;</code> <br> <code>int add(int a, int b){ return a+b; }</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- COMPARISON TABLES -->
+            <section id="comparison-tables">
+                <h1>MASTER COMPARISON TABLES</h1>
+
+                <h2>1. Storage Class Master Comparison Table</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Storage Class</th>
+                            <th>Storage Location</th>
+                            <th>Initial Default Value</th>
+                            <th>Scope</th>
+                            <th>Lifetime</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>auto</code></td>
+                            <td>RAM Stack</td>
+                            <td>Garbage</td>
+                            <td>Local / Block</td>
+                            <td>Block execution duration</td>
+                        </tr>
+                        <tr>
+                            <td><code>register</code></td>
+                            <td>CPU Register</td>
+                            <td>Garbage</td>
+                            <td>Local / Block</td>
+                            <td>Block execution duration</td>
+                        </tr>
+                        <tr>
+                            <td><code>static</code></td>
+                            <td>RAM Data Segment</td>
+                            <td>Zero (0)</td>
+                            <td>Local to block / File</td>
+                            <td>Entire program lifetime</td>
+                        </tr>
+                        <tr>
+                            <td><code>extern</code></td>
+                            <td>RAM Data Segment</td>
+                            <td>Zero (0)</td>
+                            <td>Global across files</td>
+                            <td>Entire program lifetime</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>2. Dynamic Memory Functions: malloc() vs calloc()</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>malloc()</th>
+                            <th>calloc()</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Blocks Allocated</strong></td>
+                            <td>Allocates 1 single contiguous chunk.</td>
+                            <td>Allocates multiple blocks.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Arguments</strong></td>
+                            <td>1 argument: <code>sizeof(bytes)</code></td>
+                            <td>2 arguments: <code>(num_elements, element_size)</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Initialization</strong></td>
+                            <td>Contains <strong>Garbage Values</strong>.</td>
+                            <td>Initializes all bytes to <strong>Zero (0)</strong>.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Speed</strong></td>
+                            <td>Slightly faster.</td>
+                            <td>Slightly slower due to zeroing memory.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2>3. Pointers: NULL vs Wild vs Dangling Pointers</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Attribute</th>
+                            <th>NULL Pointer</th>
+                            <th>Wild Pointer</th>
+                            <th>Dangling Pointer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Definition</strong></td>
+                            <td>Points explicitly to address 0 / nothing.</td>
+                            <td>Uninitialized pointer holding garbage address.</td>
+                            <td>Points to memory that has been freed/destroyed.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Safety</strong></td>
+                            <td>Safe if checked using <code>if(p != NULL)</code>.</td>
+                            <td>Extremely Dangerous!</td>
+                            <td>Extremely Dangerous!</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fix</strong></td>
+                            <td>Already intentional state.</td>
+                            <td>Initialize immediately: <code>int *p = NULL;</code></td>
+                            <td>Assign <code>p = NULL;</code> immediately after freeing memory.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- 27 C PROGRAMS -->
+            <section id="c-programs">
+                <h1>27 IMPORTANT C PROGRAMS</h1>
+
+                <h2>Program 1: Swap Two Numbers Using Pointers (Call-by-Reference)</h2>
+                <div class="code-container">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>#include &lt;stdio.h&gt;
+
+// Function prototype taking integer pointers
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int main() {
+    int x = 10, y = 20;
+    printf("Before Swap: x = %d, y = %d\n", x, y);
+    
+    // Passing memory addresses
+    swap(&x, &y);
+    
+    printf("After Swap:  x = %d, y = %d\n", x, y);
+    return 0;
+}</code></pre>
+                </div>
+
+                <h2>Program 2: Find Sum of Array Elements Using Pointer Arithmetic</h2>
+                <div class="code-container">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    int arr[5] = {10, 20, 30, 40, 50};
+    int *ptr = arr; // Points to arr[0]
+    int sum = 0;
+
+    for(int i = 0; i < 5; i++) {
+        sum += *ptr; // Add value at current pointer location
+        ptr++;       // Move pointer to next element
+    }
+
+    printf("Sum of Array Elements = %d\n", sum); // Output: 150
+    return 0;
+}</code></pre>
+                </div>
+
+                <h2>Program 3: Dynamic Array Allocation using malloc()</h2>
+                <div class="code-container">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main() {
+    int n = 5;
+    int *arr = (int*) malloc(n * sizeof(int));
+
+    if (arr == NULL) {
+        printf("Memory Allocation Failed!\n");
+        return 1;
+    }
+
+    // Populate array
+    for (int i = 0; i < n; i++) {
+        arr[i] = (i + 1) * 10;
+    }
+
+    printf("Dynamically Allocated Array: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    free(arr);   // Free heap memory
+    arr = NULL;  // Avoid dangling pointer
+    return 0;
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- EXAM QUESTIONS -->
+            <section id="exam-questions">
+                <h1>UNIVERSITY EXAMINATION Q&A SUITE</h1>
+
+                <h2>1/2 Mark Quick Questions</h2>
+                <ol>
+                    <li><strong>What operator is used to get the address of a variable?</strong><br>Answer: Address-of operator (<code>&</code>).</li>
+                    <li><strong>What is the size of a pointer on a 64-bit system?</strong><br>Answer: 8 bytes.</li>
+                    <li><strong>Which header file defines malloc() and free()?</strong><br>Answer: <code>&lt;stdlib.h&gt;</code>.</li>
+                    <li><strong>What value is assigned by default to a static local variable?</strong><br>Answer: Zero (0).</li>
+                </ol>
+
+                <h2>3/5 Mark Medium Questions</h2>
+                <div class="exam-answer">
+                    <div class="exam-answer-title">Q: Differentiate between Call by Value and Call by Reference.</div>
+                    <p><strong>Call by Value:</strong> Copies actual argument values to formal parameters. Changes inside the called function do not affect caller variables.</p>
+                    <p><strong>Call by Reference:</strong> Passes memory addresses of arguments using pointers. Changes inside the function directly modify caller variables.</p>
+                </div>
+
+                <h2>8/10 Mark University Questions</h2>
+                <div class="exam-answer">
+                    <div class="exam-answer-title">LONG QUESTION: Explain Dynamic Memory Allocation in C with detailed syntax and code examples.</div>
+                    <p><strong>Introduction:</strong> Dynamic memory allocation allows programs to request memory from the OS Heap at runtime when exact memory size cannot be predetermined at compile time.</p>
+                    <p><strong>Detailed Functions:</strong></p>
+                    <ul>
+                        <li><strong><code>malloc(size)</code>:</strong> Allocates raw uninitialized memory block. Returns <code>void*</code>.</li>
+                        <li><strong><code>calloc(num, size)</code>:</strong> Allocates zero-initialized array memory.</li>
+                        <li><strong><code>realloc(ptr, new_size)</code>:</strong> Dynamically adjusts memory block size.</li>
+                        <li><strong><code>free(ptr)</code>:</strong> Deallocates heap space to eliminate memory leaks.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- DEFINITIONS TO MEMORIZE -->
+            <section id="definitions">
+                <h1>DEFINITIONS TO MEMORIZE FOR EXAM</h1>
+                <div class="box box-exam">
+                    <p><strong>Pointer:</strong> A derived variable that stores the memory address of another variable.</p>
+                    <p><strong>Dereferencing:</strong> Accessing or modifying data stored at the memory location contained in a pointer using <code>*</code>.</p>
+                    <p><strong>Recursion:</strong> A programming technique where a function calls itself until a base terminating condition is satisfied.</p>
+                    <p><strong>Memory Leak:</strong> A resource bug occurring when dynamically allocated heap memory is not released via <code>free()</code> before losing its reference.</p>
+                </div>
+            </section>
+
+            <!-- ONE DAY REVISION -->
+            <section id="one-day-revision">
+                <h1>ONE DAY REVISION CHEAT SHEET</h1>
+                <ul>
+                    <li><code>int *p = &x;</code> &rarr; <code>p</code> stores address, <code>*p</code> accesses value.</li>
+                    <li><code>arr[i]</code> is identical to <code>*(arr + i)</code>.</li>
+                    <li><code>malloc</code> leaves garbage; <code>calloc</code> initializes to ZERO.</li>
+                    <li><code>static</code> variables retain values across function invocations.</li>
+                    <li><code>register</code> variables cannot have address extracted via <code>&</code>.</li>
+                </ul>
+            </section>
+
+            <!-- PRE-EXAM CHECKLIST -->
+            <section id="pre-exam-checklist">
+                <h1>30-MINUTE PRE-EXAM CHECKLIST</h1>
+                <p>Ensure you can write these on answer sheets without mistakes:</p>
+                <ul>
+                    <li>[ ] Pointer declaration and dereferencing syntax.</li>
+                    <li>[ ] Swap program using Call-by-Reference pointers.</li>
+                    <li>[ ] Recursive Factorial program with base condition.</li>
+                    <li>[ ] Dynamic memory array allocation using <code>malloc()</code> and checking for <code>NULL</code>.</li>
+                    <li>[ ] Storage class comparison table (<code>auto</code>, <code>register</code>, <code>static</code>, <code>extern</code>).</li>
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <button id="back-to-top" class="btn" onclick="scrollToTop()">&uarr;</button>
+
+    <script>
+        // Reading Progress Bar
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+
+            // Back to top button visibility
+            let topBtn = document.getElementById("back-to-top");
+            if (winScroll > 300) {
+                topBtn.style.display = "block";
+            } else {
+                topBtn.style.display = "none";
+            }
+
+            // Update Active Sidebar Link based on Scroll
+            let sections = document.querySelectorAll("section");
+            let navLinks = document.querySelectorAll("nav a");
+            
+            sections.forEach(sec => {
+                let top = window.scrollY;
+                let offset = sec.offsetTop - 100;
+                let secHeight = sec.offsetHeight;
+                let id = sec.getAttribute("id");
+
+                if (top >= offset && top < offset + secHeight) {
+                    navLinks.forEach(link => {
+                        link.classList.remove("active");
+                        if (link.getAttribute("href") === "#" + id) {
+                            link.classList.add("active");
+                        }
+                    });
+                }
+            });
+        };
+
+        // Scroll to Top
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Dark / Light Theme Toggle with localStorage
+        function toggleTheme() {
+            let currentTheme = document.documentElement.getAttribute("data-theme");
+            let newTheme = currentTheme === "dark" ? "light" : "dark";
+            document.documentElement.setAttribute("data-theme", newTheme);
+            localStorage.setItem("theme", newTheme);
+            document.getElementById("themeBtn").innerText = newTheme === "dark" ? "Light Mode" : "Dark Mode";
+        }
+
+        // Restore Theme Preference
+        window.onload = function() {
+            let savedTheme = localStorage.getItem("theme") || "light";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+            document.getElementById("themeBtn").innerText = savedTheme === "dark" ? "Light Mode" : "Dark Mode";
+        };
+
+        // Real-time Content Filter / Search Engine
+        function filterContent() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let mainContent = document.getElementById('content');
+            let headings = document.querySelectorAll('main h1, main h2, main h3, main p, main li');
+
+            headings.forEach(item => {
+                let text = item.innerText.toLowerCase();
+                if (input !== "" && text.includes(input)) {
+                    item.style.backgroundColor = "rgba(255, 255, 0, 0.2)";
+                } else {
+                    item.style.backgroundColor = "transparent";
+                }
+            });
+        }
+
+        // Copy Code Snippet Functionality
+        function copyCode(button) {
+            let pre = button.nextElementSibling;
+            let code = pre.innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                button.innerText = "Copied!";
+                setTimeout(() => {
+                    button.innerText = "Copy";
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

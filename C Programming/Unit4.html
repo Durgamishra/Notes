@@ -1,0 +1,2404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit IV: C Programming - Textbook & Exam Study Portal</title>
+    <style>
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --accent-primary: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-light: #eff6ff;
+            --border-color: #e2e8f0;
+            --code-bg: #0f172a;
+            --code-text: #f8fafc;
+            --exam-box-bg: #fffbeb;
+            --exam-box-border: #f59e0b;
+            --tip-box-bg: #f0fdf4;
+            --tip-box-border: #22c55e;
+            --warn-box-bg: #fef2f2;
+            --warn-box-border: #ef4444;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --sidebar-width: 300px;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --accent-primary: #3b82f6;
+            --accent-hover: #60a5fa;
+            --accent-light: #1e3a8a;
+            --border-color: #334155;
+            --code-bg: #020617;
+            --code-text: #f1f5f9;
+            --exam-box-bg: #2d2006;
+            --exam-box-border: #d97706;
+            --tip-box-bg: #052e16;
+            --tip-box-border: #16a34a;
+            --warn-box-bg: #450a0a;
+            --warn-box-border: #dc2626;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Top Progress Bar */
+        #progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: transparent;
+            z-index: 1000;
+        }
+
+        #progress-bar {
+            height: 100%;
+            background: var(--accent-primary);
+            width: 0%;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Header Navigation */
+        header {
+            position: fixed;
+            top: 5px;
+            left: 0;
+            right: 0;
+            height: 65px;
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 900;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 0.5rem 1rem 0.5rem 2.2rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            width: 220px;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            width: 300px;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        .search-box::before {
+            content: "🔍";
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        .theme-toggle-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle-btn:hover {
+            background-color: var(--border-color);
+        }
+
+        /* Layout */
+        .layout-container {
+            display: flex;
+            margin-top: 70px;
+            min-height: calc(100vh - 70px);
+        }
+
+        /* Sidebar Navigation */
+        sidebar {
+            width: var(--sidebar-width);
+            position: fixed;
+            top: 70px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+            padding: 1.5rem 1rem;
+            z-index: 800;
+        }
+
+        .nav-group-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin: 1.5rem 0 0.5rem 0.75rem;
+            font-weight: 700;
+        }
+
+        .nav-group-title:first-child {
+            margin-top: 0;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .nav-link.active {
+            background-color: var(--accent-light);
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        /* Main Content Area */
+        main {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: 2.5rem 3rem;
+            max-width: 1200px;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 90px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-primary);
+            border-bottom: 3px solid var(--accent-primary);
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem 0;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.4rem;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.8rem 0;
+            color: var(--text-primary);
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            margin: 1.2rem 0 0.5rem 0;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-bottom: 1.2rem;
+            padding-left: 2rem;
+            color: var(--text-secondary);
+        }
+
+        li {
+            margin-bottom: 0.4rem;
+        }
+
+        /* Cards & Highlight Boxes */
+        .card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .exam-box {
+            background-color: var(--exam-box-bg);
+            border-left: 5px solid var(--exam-box-border);
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .exam-box h4 {
+            color: var(--exam-box-border);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tip-box {
+            background-color: var(--tip-box-bg);
+            border-left: 5px solid var(--tip-box-border);
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .tip-box h4 {
+            color: var(--tip-box-border);
+            margin-top: 0;
+        }
+
+        .warn-box {
+            background-color: var(--warn-box-bg);
+            border-left: 5px solid var(--warn-box-border);
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warn-box h4 {
+            color: var(--warn-box-border);
+            margin-top: 0;
+        }
+
+        /* Code Blocks */
+        .code-container {
+            position: relative;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .code-header {
+            background-color: #1e293b;
+            color: #94a3b8;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: monospace;
+        }
+
+        .copy-btn {
+            background: #334155;
+            border: none;
+            color: #f8fafc;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #475569;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1.25rem;
+            overflow-x: auto;
+            font-family: "Consolas", "Courier New", monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: "Consolas", "Courier New", monospace;
+            background-color: var(--bg-tertiary);
+            color: var(--accent-primary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* Output Box */
+        .output-box {
+            background-color: #000000;
+            color: #00ff00;
+            font-family: "Courier New", monospace;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            border: 1px solid #333;
+        }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        th, td {
+            padding: 0.9rem 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: var(--accent-light);
+        }
+
+        /* Pure HTML/CSS Visual Diagrams */
+        .diagram-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            background-color: var(--bg-tertiary);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px dashed var(--border-color);
+            margin: 1.5rem 0;
+        }
+
+        .diagram-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .diagram-box {
+            background-color: var(--bg-secondary);
+            border: 2px solid var(--accent-primary);
+            border-radius: 8px;
+            padding: 0.75rem 1.25rem;
+            text-align: center;
+            min-width: 120px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .diagram-box.highlight {
+            background-color: var(--accent-primary);
+            color: white;
+        }
+
+        .diagram-arrow {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-primary);
+        }
+
+        .diagram-pointer {
+            border: 2px dashed #f59e0b;
+            background-color: #fffbeb;
+            color: #92400e;
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--accent-primary);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border: none;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 990;
+        }
+
+        #back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #back-to-top:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-3px);
+        }
+
+        /* Accordion Collapsible Sections */
+        .accordion-item {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            overflow: hidden;
+            background-color: var(--bg-secondary);
+        }
+
+        .accordion-header {
+            padding: 1rem 1.25rem;
+            background-color: var(--bg-secondary);
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: background-color 0.2s;
+        }
+
+        .accordion-header:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .accordion-content {
+            padding: 1.25rem;
+            display: none;
+            border-top: 1px solid var(--border-color);
+            background-color: var(--bg-primary);
+        }
+
+        .accordion-item.active .accordion-content {
+            display: block;
+        }
+
+        .accordion-item.active .accordion-header::after {
+            content: "▲";
+        }
+
+        .accordion-header::after {
+            content: "▼";
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 992px) {
+            sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            sidebar.open {
+                transform: translateX(0);
+            }
+
+            main {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+
+            .menu-toggle {
+                display: block !important;
+            }
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Scroll Progress Bar -->
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <button class="menu-toggle" id="menu-toggle">☰</button>
+            <div class="header-title">
+                📚 <span>Unit IV: C Programming Textbook & Exam Guide</span>
+            </div>
+        </div>
+        <div class="header-controls">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search topics, functions...">
+            </div>
+            <button class="theme-toggle-btn" id="theme-toggle">
+                🌙 <span id="theme-text">Dark</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="layout-container">
+        <!-- Sidebar Navigation -->
+        <sidebar id="sidebar">
+            <div class="nav-group-title">Module Syllabus</div>
+            <a href="#structures-intro" class="nav-link">01. Structures Intro</a>
+            <a href="#defining-structure" class="nav-link">02. Defining Structure</a>
+            <a href="#declaring-variables" class="nav-link">03. Declaring Variables</a>
+            <a href="#accessing-members" class="nav-link">04. Accessing Members</a>
+            <a href="#structure-initialization" class="nav-link">05. Initialization</a>
+            <a href="#nested-structures" class="nav-link">06. Nested Structures</a>
+            <a href="#self-referential" class="nav-link">07. Self-Referential</a>
+            <a href="#bit-fields" class="nav-link">08. Bit-Fields</a>
+            <a href="#arrays-of-structures" class="nav-link">09. Array of Structures</a>
+            <a href="#structures-and-functions" class="nav-link">10. Structures & Functions</a>
+
+            <div class="nav-group-title">Unions</div>
+            <a href="#unions-intro" class="nav-link">11. Union Concept</a>
+            <a href="#structure-vs-union" class="nav-link">12. Structure vs Union</a>
+            <a href="#structure-within-union" class="nav-link">13. Structure within Union</a>
+            <a href="#struct-union-qa" class="nav-link">14. Struct/Union Q&A</a>
+
+            <div class="nav-group-title">File Management</div>
+            <a href="#file-handling-intro" class="nav-link">15. File Handling Intro</a>
+            <a href="#file-and-stream" class="nav-link">16. File and Stream</a>
+            <a href="#opening-files" class="nav-link">17. Opening Files</a>
+            <a href="#file-modes" class="nav-link">18. File Opening Modes</a>
+            <a href="#closing-files" class="nav-link">19. Closing Files</a>
+            <a href="#file-operations" class="nav-link">20. File Operations</a>
+            <a href="#error-handling" class="nav-link">21. Error Handling</a>
+            <a href="#sequential-access" class="nav-link">22. Sequential Access</a>
+            <a href="#random-access" class="nav-link">23. Random Access</a>
+
+            <div class="nav-group-title">Command Line & Extras</div>
+            <a href="#command-line-args" class="nav-link">24. Command Line Arguments</a>
+            <a href="#argc-argv" class="nav-link">25. argc and argv</a>
+            <a href="#important-programs" class="nav-link">26. 16 File Handling Programs</a>
+            <a href="#comparison-tables" class="nav-link">27. Master Comparison Tables</a>
+            <a href="#exam-prep" class="nav-link">28. University Exam Prep Q&A</a>
+            <a href="#definitions" class="nav-link">29. Definitions to Memorize</a>
+            <a href="#one-day-revision" class="nav-link">30. One-Day Revision Cheat Sheet</a>
+        </sidebar>
+
+        <!-- Main Content -->
+        <main>
+
+            <!-- SECTION 1: STRUCTURES -->
+            <section id="structures-intro">
+                <h1>STRUCTURES IN C</h1>
+
+                <h3>1. Simple Definition</h3>
+                <p>A <strong>Structure</strong> in C is a user-defined composite data type that allows grouping together variables of different data types under a single unified name. Unlike arrays which store homogeneous elements (elements of the same type), structures store heterogeneous elements (elements of different types).</p>
+
+                <h3>2. Detailed Explanation</h3>
+                <p>In computer programming, real-world entities rarely consist of a single primitive data type (like a single integer or float). For instance, representing a student requires an integer for roll number, a character array (string) for name, and a floating-point number for GPA/marks. Storing these attributes in separate, disconnected variables quickly becomes unmanageable as the number of entities increases. A structure provides a template or blueprint that encapsulates related variables into a single cohesive logical entity, stored in contiguous memory locations.</p>
+
+                <h3>3. Why Structures are Needed & Problem with Separate Variables</h3>
+                <p>Consider storing information for 100 students without structures. You would need to declare 100 integer variables for roll numbers, 100 string arrays for names, and 100 float variables for marks:</p>
+                <div class="code-container">
+                    <div class="code-header"><span>C Source</span><button class="copy-btn">Copy</button></div>
+                    <pre><code>int roll1, roll2, roll3, ... roll100;
+char name1[50], name2[50], name3[50], ... name100[50];
+float marks1, marks2, marks3, ... marks100;</code></pre>
+                </div>
+                <p>This approach has catastrophic flaws: there is no logical link between <code>roll1</code>, <code>name1</code>, and <code>marks1</code>; passing student data to functions requires passing scores of independent variables; and sorting or processing records becomes virtually impossible. Structures solve this cleanly by binding these distinct attributes together.</p>
+
+                <h3>4. How Structures Work</h3>
+                <p>When a structure is declared, the C compiler allocates contiguous blocks of memory sufficient to hold all of its individual member variables. The size of the structure is at least the sum of the sizes of its members (subject to memory alignment padding rules enforced by the architecture).</p>
+
+                <h3>5. Real-World Examples</h3>
+                <ul>
+                    <li><strong>Student Entity:</strong> Roll Number (<code>int</code>), Name (<code>char[]</code>), Marks (<code>float</code>), Grade (<code>char</code>).</li>
+                    <li><strong>Employee Entity:</strong> ID (<code>int</code>), Name (<code>char[]</code>), Salary (<code>double</code>), Department (<code>char[]</code>).</li>
+                    <li><strong>Book Entity:</strong> ISBN (<code>long</code>), Title (<code>char[]</code>), Author (<code>char[]</code>), Price (<code>float</code>).</li>
+                    <li><strong>Product Entity:</strong> Product Code (<code>int</code>), Description (<code>char[]</code>), Stock Quantity (<code>int</code>), Unit Price (<code>float</code>).</li>
+                </ul>
+
+                <h3>6. Visual Memory Representation</h3>
+                <div class="diagram-container">
+                    <h4>Contiguous Memory Layout of <code>struct Student</code></h4>
+                    <div class="diagram-row">
+                        <div class="diagram-box">
+                            <strong>roll</strong><br>(int - 4 bytes)<br>Offset: 0
+                        </div>
+                        <div class="diagram-arrow">+</div>
+                        <div class="diagram-box">
+                            <strong>name[50]</strong><br>(char[50] - 50 bytes)<br>Offset: 4
+                        </div>
+                        <div class="diagram-arrow">+</div>
+                        <div class="diagram-box">
+                            <strong>marks</strong><br>(float - 4 bytes)<br>Offset: 54
+                        </div>
+                    </div>
+                </div>
+
+                <h3>7. Structure vs Ordinary Variables vs Arrays</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Ordinary Variable</th>
+                                <th>Array</th>
+                                <th>Structure</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Data Type</td>
+                                <td>Single primitive type</td>
+                                <td>Homogeneous (Same type)</td>
+                                <td>Heterogeneous (Different types)</td>
+                            </tr>
+                            <tr>
+                                <td>Capacity</td>
+                                <td>Stores exactly 1 value</td>
+                                <td>Stores multiple values</td>
+                                <td>Stores multiple values/attributes</td>
+                            </tr>
+                            <tr>
+                                <td>Access Method</td>
+                                <td>Directly by variable name</td>
+                                <td>By index/subscript <code>[i]</code></td>
+                                <td>By member operator <code>.</code> or <code>-&gt;</code></td>
+                            </tr>
+                            <tr>
+                                <td>Memory</td>
+                                <td>Single memory block</td>
+                                <td>Contiguous uniform blocks</td>
+                                <td>Contiguous non-uniform blocks</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="exam-box">
+                    <h4>BRIEF EXAM ANSWER (2–5 Marks): What is a Structure in C?</h4>
+                    <p><strong>Answer:</strong> A structure in C is a user-defined data type created using the <code>struct</code> keyword that allows grouping variables of different data types into a single unit. It is used to represent real-world entities containing multiple attributes, such as a Student or Employee.<br>
+                    <strong>Key Points:</strong><br>
+                    1. Holds heterogeneous data elements.<br>
+                    2. Members are stored in contiguous memory locations.<br>
+                    3. Members are accessed using the dot operator (<code>.</code>) for variables or structure pointer operator (<code>-&gt;</code>) for pointers.<br>
+                    <strong>Example Syntax:</strong><br>
+                    <code>struct Student { int roll; char name[20]; float marks; };</code></p>
+                </div>
+
+                <div class="exam-box">
+                    <h4>LONG EXAM ANSWER (8–10 Marks): Explain Structures in C with Need, Memory Representation, and Comparison</h4>
+                    <p><strong>Introduction:</strong> In procedural programming with C, primitive types are insufficient for real-world modeling. Structures bridge this gap by enabling user-defined custom types.</p>
+                    <p><strong>Definition:</strong> A structure is a user-defined heterogeneous data structure declared via <code>struct</code> that encapsulates multiple variables under one identifier.</p>
+                    <p><strong>Need & Advantage:</strong> Without structures, managing multi-attribute entities requires maintaining independent parallel arrays or isolated variables, creating code that is error-prone and hard to maintain. Structures group logical attributes, enabling modular code, clean function parameter passing, and structured memory layout.</p>
+                    <p><strong>Working & Memory Layout:</strong> The compiler allocates contiguous memory equal to or greater than the sum of individual members. Memory alignment padding may be inserted by compilers to align member addresses with word boundaries for performance.</p>
+                    <p><strong>Conclusion:</strong> Structures form the bedrock for advanced C programming concepts including dynamic data structures (linked lists, trees) and file storage records.</p>
+                </div>
+            </section>
+
+            <!-- DEFINING A STRUCTURE -->
+            <section id="defining-structure">
+                <h2>DEFINING A STRUCTURE</h2>
+                <h3>1. Definition & Theory</h3>
+                <p>Defining a structure creates a new data type template. It specifies the structure tag (name) and lists the member variables along with their data types. <strong>Crucially, defining a structure does NOT allocate memory.</strong> Memory is allocated only when structure variables are declared.</p>
+
+                <h3>2. Syntax</h3>
+                <div class="code-container">
+                    <div class="code-header"><span>Syntax</span><button class="copy-btn">Copy</button></div>
+                    <pre><code>struct structure_name
+{
+    data_type member1;
+    data_type member2;
+    ...
+    data_type memberN;
+};</code></pre>
+                </div>
+
+                <h3>3. Line-by-Line Breakdown Example</h3>
+                <div class="code-container">
+                    <div class="code-header"><span>C Structure Definition</span><button class="copy-btn">Copy</button></div>
+                    <pre><code>struct Student
+{
+    int roll;        // Line 1: Integer member for Roll Number
+    char name[50];   // Line 2: Character array member for Name
+    float marks;     // Line 3: Floating-point member for Marks
+};                   // Line 4: Semicolon is MANDATORY ending structure definition</code></pre>
+                </div>
+
+                <div class="warn-box">
+                    <h4>CRITICAL EXAM WARNING: The Missing Semicolon</h4>
+                    <p>A very common mistake in C university exams is forgetting the terminating semicolon (<code>;</code>) after the closing brace of a structure definition. In C, omitting this semicolon causes compilation errors, as the compiler expects variable declarations immediately following the closing brace.</p>
+                </div>
+            </section>
+
+            <!-- DECLARING STRUCTURE VARIABLES -->
+            <section id="declaring-variables">
+                <h2>DECLARING STRUCTURE VARIABLES</h2>
+                <p>Structure variables can be declared in two primary ways: after the structure definition or along with the structure definition.</p>
+
+                <h3>Method 1: Declaring After Definition (Standard Approach)</h3>
+                <div class="code-container">
+                    <div class="code-header"><span>C Source</span><button class="copy-btn">Copy</button></div>
+                    <pre><code>struct Student
+{
+    int roll;
+    char name[50];
+    float marks;
+};
+
+// Declaring variables inside main or functions
+struct Student s1, s2; // Memory allocated HERE</code></pre>
+                </div>
+
+                <h3>Method 2: Declaring Along with Structure Definition</h3>
+                <div class="code-container">
+                    <div class="code-header"><span>C Source</span><button class="copy-btn">Copy</button></div>
+                    <pre><code>struct Student
+{
+    int roll;
+    char name[50];
+    float marks;
+} s1, s2; // Variables s1 and s2 declared directly</code></pre>
+                </div>
+
+                <h3>Terminology Clarification</h3>
+                <ul>
+                    <li><strong>Structure Tag:</strong> The identifier following <code>struct</code> (e.g., <code>Student</code>).</li>
+                    <li><strong>Structure Members:</strong> The variables inside the structure (e.g., <code>roll</code>, <code>name</code>, <code>marks</code>).</li>
+                    <li><strong>Structure Variable:</strong> The instance variable that actually occupies memory (e.g., <code>s1</code>, <code>s2</code>).</li>
+                </ul>
+            </section>
+
+            <!-- ACCESSING STRUCTURE MEMBERS -->
+            <section id="accessing-members">
+                <h2>ACCESSING STRUCTURE MEMBERS</h2>
+                <p>Individual members of a structure variable are accessed using the <strong>Dot Operator (<code>.</code>)</strong>, also known as the direct member access operator. If working with a pointer to a structure, the <strong>Arrow Operator (<code>-&gt;</code>)</strong> is used.</p>
+
+                <h3>Syntax</h3>
+                <p><code>structure_variable.member_name</code></p>
+
+                <h3>Complete C Program: Input and Display Student Information</h3>
+                <div class="code-container">
+                    <div class="code-header"><span>student_info.c</span><button class="copy-btn">Copy</button></div>
+                    <pre><code>#include &lt;stdio.h&gt;
+
+struct Student
+{
+    int roll;
+    char name[50];
+    float marks;
+};
+
+int main()
+{
+    struct Student s1;
+
+    printf("Enter Roll Number: ");
+    scanf("%d", &s1.roll);
+
+    printf("Enter Name: ");
+    scanf("%s", s1.name); // Array name acts as pointer address
+
+    printf("Enter Marks: ");
+    scanf("%f", &s1.marks);
+
+    printf("\n--- STUDENT DETAILS ---\n");
+    printf("Roll Number : %d\n", s1.roll);
+    printf("Name        : %s\n", s1.name);
+    printf("Marks       : %.2f\n", s1.marks);
+
+    return 0;
+}</code></pre>
+                </div>
+
+                <h4>Expected Output</h4>
+                <div class="output-box">Enter Roll Number: 101
+Enter Name: Durga
+Enter Marks: 88.5
+
+--- STUDENT DETAILS ---
+Roll Number : 101
+Name        : Durga
+Marks       : 88.50</div>
+
+                <h4>Line-by-Line Explanation</h4>
+                <ul>
+                    <li><code>struct Student s1;</code>: Allocates memory for <code>s1</code> containing <code>roll</code>, <code>name</code>, and <code>marks</code>.</li>
+                    <li><code>scanf("%d", &s1.roll);</code>: Reads an integer directly into the memory location of <code>s1.roll</code> using the address-of operator <code>&</code> applied to the accessed member.</li>
+                    <li><code>scanf("%s", s1.name);</code>: Reads a single word into character array <code>s1.name</code>. Note: <code>&</code> is omitted because character array names decay to base pointers.</li>
+                    <li><code>printf("Roll Number : %d\n", s1.roll);</code>: Fetches the integer stored inside <code>s1.roll</code> and displays it.</li>
+                </ul>
+            </section>
+
+            <!-- STRUCTURE INITIALIZATION -->
+            <section id="structure-initialization">
+                <h2>STRUCTURE INITIALIZATION</h2>
+                <p>Structure variables can be initialized at the time of declaration, similar to primitive variables or arrays.</p>
+
+                <h3>1. Compile-Time Initialization (Standard Order)</h3>
+                <p>Values are provided in curly braces <code>{}</code> in the exact order in which members are defined inside the structure.</p>
+                <div class="code-container">
+                    <div class="code-header"><span>C Source</span><button class="copy-btn">Copy</button></div>
+                    <pre><code>struct Student s1 = {101, "Durga", 92.5};</code></pre>
+                </div>
+
+                <h3>2. Partial Initialization</h3>
+                <p>If fewer initializers are provided than there are members, the uninitialized members are automatically set to zero (for numeric types) or <code>'\0'</code> (for characters/strings).</p>
+                <div class="code-container">
+                    <div class="code-header"><span>C Source</span><button class="copy-btn">Copy</button></div>
+                    <pre><code>struct Student s2 = {102, "Prasad"}; // marks is automatically initialized to 0.0</code></pre>
+                </div>
+
+                <h3>3. Designated Initialization (C99 Standard)</h3>
+                <p>C99 introduced designated initializers, allowing members to be initialized in any arbitrary order by specifying their member names preceded by a dot.</p>
+                <div class="code-container">
+                    <div class="code-header"><span>C Source</span><button class="copy-btn">Copy</button></div>
+                    <pre><code>struct Student s3 = {.marks = 95.0, .roll = 103, .name = "Mishra"};</code></pre>
+                </div>
+            </section>
+
+            <!-- NESTED STRUCTURES -->
+            <section id="nested-structures">
+                <h2>NESTED STRUCTURES</h2>
+                <h3>1. Simple Definition</h3>
+                <p>A <strong>Nested Structure</strong> (or structure within a structure) is a structure that includes an instance of another structure as one of its members.</p>
+
+                <h3>2. Detailed Explanation & Why Used</h3>
+                <p>Real-world entities are often hierarchical. For example, a student entity has personal attributes (roll, name) and a Date of Birth (day, month, year). Rather than cluttering the <code>Student</code> structure with day, month, and year fields directly, we encapsulate date attributes inside a separate <code>Date</code> structure and nest it inside <code>Student</code>. This promotes code reuse and logical modularity.</p>
+
+                <h3>3. Diagrammatic Representation</h3>
+                <div class="diagram-container">
+                    <h4>Nested Structure Conceptual Layout</h4>
+                    <div class="diagram-box highlight" style="width: 80%;">
+                        <strong>struct Student s1</strong>
+                        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1rem;">
+                            <div class="diagram-box">roll</div>
+                            <div class="diagram-box">name[50]</div>
+                            <div class="diagram-box" style="border: 2px dashed #f59e0b; background: #fffbeb; color: #000;">
+                                <strong>struct Date dob</strong>
+                                <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                                    <small>day</small> | <small>month</small> | <small>year</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>4. Complete C Program: Nested Structure</h3>
+                <div class="code-container">
+                    <div class="code-header"><span>nested_structure.c</span><button class="copy-btn">Copy</button></div>
+                    <pre><code>#include &lt;stdio.h&gt;
+
+struct Date
+{
+    int day;
+    int month;
+    int year;
+};
+
+struct Student
+{
+    int roll;
+    char name[50];
+    struct Date dob; // Nested Structure Variable
+};
+
+int main()
+{
+    struct Student s1 = {101, "Durga Prasad", {15, 8, 2003}};
+
+    printf("--- STUDENT RECORD ---\n");
+    printf("Roll Number : %d\n", s1.roll);
+    printf("Name        : %s\n", s1.name);
+    printf("DOB (D-M-Y) : %02d-%02d-%d\n", s1.dob.day, s1.dob.month, s1.dob.year);
+
+    return 0;
+}</code></pre>
+                </div>
+
+                <h4>Expected Output</h4>
+                <div class="output-box">--- STUDENT RECORD ---
+Roll Number : 101
+Name        : Durga Prasad
+DOB (D-M-Y) : 15-08-2003</div>
+
+                <h4>Member Access Syntax Note</h4>
+                <p>Nested structure members are accessed by chaining dot operators: <code>s1.dob.day</code> accesses the <code>day</code> field within the nested <code>dob</code> structure of <code>s1</code>.</p>
+            </section>
+
+            <!-- SELF-REFERENTIAL STRUCTURES -->
+            <section id="self-referential">
+                <h2>SELF-REFERENTIAL STRUCTURES</h2>
+                <h3>1. Simple Definition</h3>
+                <p>A <strong>Self-Referential Structure</strong> is a structure that contains one or more pointers pointing to an instance of the same structure type.</p>
+
+                <h3>2. Why a Structure Cannot Contain a Direct Object of Its Own Type</h3>
+                <div class="warn-box">
+                    <h4>Theoretical Exam Question: Why can't a struct contain an instance of itself?</h4>
+                    <p><strong>Answer:</strong> If a structure contained a direct object of its own type, calculating the size of the structure would result in an infinite recursive definition (Size = size of int + size of float + size of structure which contains another structure...). The C compiler cannot determine the memory footprint at compile time, causing a fatal compilation error. However, a <em>pointer</em> to the structure has a fixed, known size (typically 4 or 8 bytes depending on system architecture), regardless of what it points to. Thus, self-referential structures store pointers to themselves, not actual instances.</p>
+                </div>
+
+                <h3>3. Conceptual Visual Diagram</h3>
+                <div class="diagram-container">
+                    <div class="diagram-row">
+                        <div class="diagram-box">
+                            <strong>Node 1</strong><br>
+                            data = 10<br>
+                            next = 0x2000
+                        </div>
+                        <div class="diagram-arrow">➔</div>
+                        <div class="diagram-box">
+                            <strong>Node 2</strong><br>
+                            data = 20<br>
+                            next = NULL (0x0)
+                        </div>
+                    </div>
+                </div>
+
+                <h3>4. Syntax & Basic Code Example</h3>
+                <div class="code-container">
+                    <div class="code-header"><span>C Source</span><button class="copy-btn">Copy</button></div>
+                    <pre><code>#include &lt;stdio.h&gt;
+
+struct Node
+{
+    int data;
+    struct Node *next; // Pointer to another structure of type 'struct Node'
+};
+
+int main()
+{
+    struct Node n1, n2;
+
+    n1.data = 10;
+    n2.data = 20;
+
+    n1.next = &n2;  // n1 points to n2
+    n2.next = NULL; // End of list
+
+    printf("Node 1 Data: %d\n", n1.data);
+    printf("Node 2 Data via Node 1 Pointer: %d\n", n1.next->data);
+
+    return 0;
+}</code></pre>
+                </div>
+
+                <h3>5. Use Cases in Computer Science</h3>
+                <p>Self-referential structures are the fundamental building blocks for dynamic data structures in C, including Linked Lists, Stacks, Queues, Trees, and Graphs.</p>
+            </section>
+
+            <!-- BIT-FIELDS -->
+            <section id="bit-fields">
+                <h2>BIT-FIELDS</h2>
+                <h3>1. Simple Definition</h3>
+                <p>A <strong>Bit-Field</strong> is a structure member whose bit width is explicitly declared, allowing memory allocation down to individual bits rather than full bytes.</p>
+
+                <h3>2. Why Bit-Fields are Used</h3>
+                <p>In embedded systems, hardware device drivers, and network protocol headers, memory is severely constrained or status flags need to be represented as single binary bits (0 or 1). Standard C data types occupy at least 1 byte (8 bits). Storing 8 binary flags using 8 integer variables wastes 31 bytes per flag on 32-bit systems. Bit-fields allow packing multiple variables into a single integer word.</p>
+
+                <h3>3. Syntax</h3>
+                <div class="code-container">
+                    <div class="code-header"><span>Syntax</span><button class="copy-btn">Copy</button></div>
+                    <pre><code>struct structure_name
+{
+    unsigned int member_name : bit_width;
+};</code></pre>
+                </div>
+
+                <h3>4. Example Code</h3>
+                <div class="code-container">
+                    <div class="code-header"><span>bit_field_demo.c</span><button class="copy-btn">Copy</button></div>
+                    <pre><code>#include &lt;stdio.h&gt;
+
+// Without bit-fields: Size = 4 + 4 + 4 = 12 bytes
+struct NormalStatus
+{
+    unsigned int ready;
+    unsigned int error;
+    unsigned int code;
+};
+
+// With bit-fields: Size = 4 bytes total
+struct BitFieldStatus
+{
+    unsigned int ready : 1; // 1 bit (values 0 to 1)
+    unsigned int error : 1; // 1 bit (values 0 to 1)
+    unsigned int code  : 4; // 4 bits (values 0 to 15)
+};
+
+int main()
+{
+    printf("Size of NormalStatus   : %lu bytes\n", sizeof(struct NormalStatus));
+    printf("Size of BitFieldStatus : %lu bytes\n", sizeof(struct BitFieldStatus));
+
+    struct BitFieldStatus s = {1, 0, 12};
+    printf("Status - Ready: %d, Error: %d, Code: %d\n", s.ready, s.error, s.code);
+
+    return 0;
+}</code></pre>
+                </div>
+
+                <h4>Expected Output</h4>
+                <div class="output-box">Size of NormalStatus   : 12 bytes
+Size of BitFieldStatus : 4 bytes
+Status - Ready: 1, Error: 0, Code: 12</div>
+
+                <h3>5. Limitations of Bit-Fields</h3>
+                <ul>
+                    <li><strong>Address Operator Restriction:</strong> You CANNOT apply the address-of operator (<code>&amp;</code>) to a bit-field member because memory addresses refer to byte boundaries, not bit boundaries.</li>
+                    <li><strong>Implementation Dependent:</strong> Bit ordering (endianness: left-to-right or right-to-left) is compiler- and hardware-dependent.</li>
+                    <li>Arrays of bit-fields are not allowed.</li>
+                </ul>
+            </section>
+
+            <!-- ARRAYS OF STRUCTURES -->
+            <section id="arrays-of-structures">
+                <h2>ARRAYS OF STRUCTURES</h2>
+                <h3>1. Simple Definition & Explanation</h3>
+                <p>An <strong>Array of Structures</strong> is a contiguous collection of structure variables stored under a single array identifier. It combines array indexing with structure member access, allowing efficient management of multiple records of the same entity type (e.g., storing records for an entire class of 60 students).</p>
+
+                <h3>2. Syntax & Accessing</h3>
+                <p>Declaration: <code>struct Student class[60];</code><br>
+                Accessing 3rd student's roll number: <code>class[2].roll</code></p>
+
+                <h3>3. Complete C Program: Comprehensive Array of Structures Operations</h3>
+                <div class="code-container">
+                    <div class="code-header"><span>array_of_structs.c</span><button class="copy-btn">Copy</button></div>
+                    <pre><code>#include &lt;stdio.h&gt;
+
+struct Student
+{
+    int roll;
+    char name[50];
+    float marks;
+};
+
+int main()
+{
+    struct Student students[3];
+    int i, topIndex = 0, searchRoll, found = 0;
+
+    // 1. Input records
+    printf("--- ENTER DETAILS FOR 3 STUDENTS ---\n");
+    for (i = 0; i &lt; 3; i++)
+    {
+        printf("\nStudent %d:\n", i + 1);
+        printf("Roll No: ");
+        scanf("%d", &students[i].roll);
+        printf("Name: ");
+        scanf("%s", students[i].name);
+        printf("Marks: ");
+        scanf("%f", &students[i].marks);
+    }
+
+    // 2. Display all records
+    printf("\n--- ALL STUDENT RECORDS ---\n");
+    for (i = 0; i &lt; 3; i++)
+    {
+        printf("Roll: %d | Name: %-15s | Marks: %.2f\n", 
+                students[i].roll, students[i].name, students[i].marks);
+    }
+
+    // 3. Find student with highest marks
+    for (i = 1; i &lt; 3; i++)
+    {
+        if (students[i].marks &gt; students[topIndex].marks)
+        {
+            topIndex = i;
+        }
+    }
+    printf("\nTopper: %s with %.2f marks!\n", students[topIndex].name, students[topIndex].marks);
+
+    // 4. Search student by roll number
+    printf("\nEnter Roll Number to Search: ");
+    scanf("%d", &searchRoll);
+    for (i = 0; i &lt; 3; i++)
+    {
+        if (students[i].roll == searchRoll)
+        {
+            printf("Found! Name: %s, Marks: %.2f\n", students[i].name, students[i].marks);
+            found = 1;
+            break;
+        }
+    }
+    if (!found)
+    {
+        printf("Student with Roll Number %d not found.\n", searchRoll);
+    }
+
+    return 0;
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- STRUCTURES AND FUNCTIONS -->
+            <section id="structures-and-functions">
+                <h2>STRUCTURES AND FUNCTIONS</h2>
+                <p>Structures can interact with functions in four distinct ways:</p>
+                <ol>
+                    <li>Passing individual structure members to a function.</li>
+                    <li>Passing a whole structure variable by value.</li>
+                    <li>Passing a structure variable by reference (using pointers).</li>
+                    <li>Returning a structure from a function.</li>
+                </ol>
+
+                <h3>Pass by Value vs Pass by Reference (Pointer)</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Parameter Type</th>
+                                <th>Syntax</th>
+                                <th>Memory Efficiency</th>
+                                <th>Modification Effect</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Pass by Value</strong></td>
+                                <td><code>void display(struct Student s)</code></td>
+                                <td>Poor (Copies entire structure byte-by-byte)</td>
+                                <td>Changes inside function do NOT affect caller</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Pass by Pointer</strong></td>
+                                <td><code>void modify(struct Student *s)</code></td>
+                                <td>Excellent (Passes only 4/8 byte address)</td>
+                                <td>Changes inside function directly modify caller</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Complete C Program: Structures and Functions</h3>
+                <div class="code-container">
+                    <div class="code-header"><span>struct_func_demo.c</span><button class="copy-btn">Copy</button></div>
+                    <pre><code>#include &lt;stdio.h&gt;
+
+struct Student
+{
+    int roll;
+    float marks;
+};
+
+// 1. Function receiving structure by value
+void printValue(struct Student s)
+{
+    printf("Inside printValue (Copy): Roll = %d, Marks = %.2f\n", s.roll, s.marks);
+    s.marks = 100.0; // Will NOT modify s1 in main
+}
+
+// 2. Function receiving structure by pointer (Reference)
+void updateMarks(struct Student *ptr, float newMarks)
+{
+    ptr->marks = newMarks; // Arrow operator used for pointer dereferencing
+}
+
+// 3. Function returning a structure
+struct Student createStudent(int roll, float marks)
+{
+    struct Student temp;
+    temp.roll = roll;
+    temp.marks = marks;
+    return temp;
+}
+
+int main()
+{
+    struct Student s1 = createStudent(101, 75.5);
+
+    printValue(s1);
+    printf("Main after printValue: Marks = %.2f\n", s1.marks); // Unchanged 75.5
+
+    updateMarks(&s1, 95.0); // Pass address
+    printf("Main after updateMarks: Marks = %.2f\n", s1.marks); // Updated to 95.0
+
+    return 0;
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- SECTION 2: UNIONS -->
+            <section id="unions-intro">
+                <h1>UNIONS IN C</h1>
+
+                <h3>1. Simple Definition</h3>
+                <p>A <strong>Union</strong> is a user-defined composite data type similar to a structure, but with one fundamental difference: <strong>all members of a union share the exact same memory location</strong>. The size of a union is equal to the size of its largest member.</p>
+
+                <h3>2. Detailed Explanation & Shared Memory Concept</h3>
+                <p>While a structure allocates separate memory for each member, a union allocates a single shared block of memory large enough to hold its largest member. Consequently, only one member of a union can store a valid value at any given time. Assigning a value to one member overwrites the previously stored value in that shared memory block.</p>
+
+                <h3>3. Visual Memory Representation: Structure vs Union</h3>
+                <div class="diagram-container">
+                    <h4>Memory Comparison (Assuming int=4 bytes, float=4 bytes, char[10]=10 bytes)</h4>
+                    <div style="display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center;">
+                        <div class="diagram-box">
+                            <strong>struct Data (Total: 18 Bytes)</strong><br><br>
+                            [ int i (4b) ] [ float f (4b) ] [ char str[10] (10b) ]
+                        </div>
+                        <div class="diagram-box highlight">
+                            <strong>union Data (Total: 10 Bytes)</strong><br><br>
+                            [ Shared Memory Block (10 Bytes Max) ]<br>
+                            <small>i, f, and str ALL point to Byte 0!</small>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>4. Complete C Program: Demonstrating Union Shared Storage</h3>
+                <div class="code-container">
+                    <div class="code-header"><span>union_demo.c</span><button class="copy-btn">Copy</button></div>
+                    <pre><code>#include &lt;stdio.h&gt;
+
+union Data
+{
+    int i;
+    float f;
+    char str[20];
+};
+
+int main()
+{
+    union Data record;
+
+    printf("Size of union Data: %lu bytes\n\n", sizeof(record));
+
+    record.i = 10;
+    printf("record.i = %d\n", record.i);
+
+    record.f = 220.5; // Overwrites record.i
+    printf("record.f = %.2f\n", record.f);
+    printf("record.i after record.f assignment = %d (CORRUPTED!)\n\n", record.i);
+
+    return 0;
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- STRUCTURE VS UNION -->
+            <section id="structure-vs-union">
+                <h2>STRUCTURE VS UNION</h2>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Structure (<code>struct</code>)</th>
+                                <th>Union (<code>union</code>)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Memory Allocation</strong></td>
+                                <td>Allocates separate memory for each member.</td>
+                                <td>Allocates single shared memory block for all members.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Memory Size</strong></td>
+                                <td>Sum of sizes of all members (+ padding).</td>
+                                <td>Equal to size of largest member.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Member Access</strong></td>
+                                <td>All members can be accessed simultaneously.</td>
+                                <td>Only one member can be meaningfully accessed at a time.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Value Alteration</strong></td>
+                                <td>Changing one member does not affect others.</td>
+                                <td>Changing one member overwrites current stored data.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Initialization</strong></td>
+                                <td>All or any members can be initialized.</td>
+                                <td>Only the first member (or designated) can be initialized.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Use Case</strong></td>
+                                <td>When all attributes need to be stored together.</td>
+                                <td>When mutually exclusive data needs memory optimization.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- STRUCTURE WITHIN UNION -->
+            <section id="structure-within-union">
+                <h2>STRUCTURE WITHIN UNION</h2>
+                <h3>1. Simple Definition & Explanation</h3>
+                <p>A <strong>Structure within a Union</strong> is a design pattern where a structure is embedded as a member inside a union. This combination is widely used in variant records or hardware protocols where different data formats are stored mutually exclusively, but one or more formats consist of multiple grouped fields.</p>
+
+                <h3>2. Complete C Program: Structure within Union</h3>
+                <div class="code-container">
+                    <div class="code-header"><span>struct_in_union.c</span><button class="copy-btn">Copy</button></div>
+                    <pre><code>#include &lt;stdio.h&gt;
+
+struct Address
+{
+    char city[30];
+    int pin;
+};
+
+union Identity
+{
+    int passportNum;
+    struct Address localAddr; // Structure as member of Union
+};
+
+int main()
+{
+    union Identity id;
+
+    // Use Case 1: Using Passport Number
+    id.passportNum = 987654;
+    printf("Passport Number: %d\n", id.passportNum);
+
+    // Use Case 2: Using Address (Overwrites Passport Number)
+    sprintf(id.localAddr.city, "Rayagada");
+    id.localAddr.pin = 765001;
+
+    printf("\n--- Local Address ---\n");
+    printf("City: %s\n", id.localAddr.city);
+    printf("PIN : %d\n", id.localAddr.pin);
+
+    return 0;
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- STRUCT & UNION EXAM Q&A -->
+            <section id="struct-union-qa">
+                <h2>STRUCTURE & UNION EXAM QUESTIONS</h2>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">2-Mark Questions (20 Questions & Short Answers)</div>
+                    <div class="accordion-content">
+                        <ol>
+                            <li><strong>Q: Define Structure.</strong><br>A: A user-defined data type in C that groups heterogeneous data elements under a single variable name.</li>
+                            <li><strong>Q: What keyword is used to declare a structure?</strong><br>A: The <code>struct</code> keyword.</li>
+                            <li><strong>Q: Differentiate array and structure in one sentence.</strong><br>A: Arrays store homogeneous data elements, whereas structures store heterogeneous data elements.</li>
+                            <li><strong>Q: What operator is used to access structure members via a variable?</strong><br>A: The Dot operator (<code>.</code>).</li>
+                            <li><strong>Q: What operator is used to access structure members via a pointer?</strong><br>A: The Arrow operator (<code>-&gt;</code>).</li>
+                            <li><strong>Q: Does a structure definition consume memory?</strong><br>A: No, structure definition creates a type template. Memory is allocated only when structure variables are declared.</li>
+                            <li><strong>Q: What is a Nested Structure?</strong><br>A: A structure that contains another structure as one of its member variables.</li>
+                            <li><strong>Q: What is a Self-Referential Structure?</strong><br>A: A structure containing a pointer that points to another structure of the same type.</li>
+                            <li><strong>Q: Define Bit-field.</strong><br>A: A structure member whose bit length is explicitly defined to conserve memory storage.</li>
+                            <li><strong>Q: Why cannot a bit-field address be accessed with &?</strong><br>A: Bit-fields reside at bit offsets, whereas pointers and memory addresses operate on byte boundaries.</li>
+                            <li><strong>Q: Define Union.</strong><br>A: A user-defined data type where all members share the same memory location.</li>
+                            <li><strong>Q: What is the size of a union?</strong><br>A: The size of a union is equal to the size of its largest member variable.</li>
+                            <li><strong>Q: Why use unions?</strong><br>A: Unions conserve memory when handling mutually exclusive data items.</li>
+                            <li><strong>Q: Can a structure be passed to a function by value?</strong><br>A: Yes, passing by value copies the entire structure to the function's parameter.</li>
+                            <li><strong>Q: What is typedef with structures?</strong><br>A: <code>typedef</code> creates an alias for structure types, avoiding the repeated use of the <code>struct</code> keyword.</li>
+                            <li><strong>Q: What happens if an array of structures is partially initialized?</strong><br>A: Uninitialized members are automatically set to zero or null characters.</li>
+                            <li><strong>Q: Can structures contain arrays?</strong><br>A: Yes, character arrays, integer arrays, or any multidimensional array can be members.</li>
+                            <li><strong>Q: What is memory alignment/padding in structures?</strong><br>A: Unused bytes inserted by compilers between structure members to align data addresses with architecture word boundaries.</li>
+                            <li><strong>Q: Give syntax for structure variable initialization.</strong><br>A: <code>struct Tag var = {val1, val2};</code></li>
+                            <li><strong>Q: Can a union contain a structure?</strong><br>A: Yes, structures can be declared inside unions to group fields within shared memory.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">5-Mark & 10-Mark Detailed Exam Questions</div>
+                    <div class="accordion-content">
+                        <h3>10-Mark Q: Explain Self-Referential Structures and Bit-Fields with Syntax, Diagram, Code, and Applications.</h3>
+                        <p><strong>Answer Summary:</strong></p>
+                        <p><strong>1. Self-Referential Structures:</strong> Self-referential structures are structures that contain a pointer member pointing to a structure variable of the same type. They cannot contain direct instances due to infinite memory size calculation, but pointers have fixed sizes (4/8 bytes).<br>
+                        <em>Syntax:</em> <code>struct Node { int data; struct Node *next; };</code><br>
+                        <em>Applications:</em> Dynamic data structures like Linked Lists, Trees, Graphs.<br><br>
+                        <strong>2. Bit-Fields:</strong> Bit-fields permit packing integer fields into specific bit counts within a structure using syntax <code>unsigned int flag : width;</code>. They save storage in embedded architectures.<br>
+                        <em>Limitations:</em> Cannot take address using <code>&</code> operator, non-portable endianness.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: FILE MANAGEMENT IN C -->
+            <section id="file-handling-intro">
+                <h1>FILE HANDLING IN C</h1>
+
+                <h3>1. Simple Definition</h3>
+                <p><strong>File Handling</strong> in C refers to storing program data permanently on secondary storage devices (hard drives, SSDs) as files, enabling programs to read, write, update, and manage persistent data beyond program execution lifetime.</p>
+
+                <h3>2. Why Files are Required (Temporary vs Permanent Data)</h3>
+                <p>Variables and arrays stored in primary memory (RAM) are volatile—they are lost instantly when the program terminates or the computer loses power. Real-world software requires persistent storage where records remain intact across computer restarts. File handling bridges RAM and secondary storage.</p>
+
+                <h3>3. Basic Workflow Diagram</h3>
+                <div class="diagram-container">
+                    <div class="diagram-row">
+                        <div class="diagram-box">C Program</div>
+                        <div class="diagram-arrow">➔</div>
+                        <div class="diagram-box highlight">fopen()</div>
+                        <div class="diagram-arrow">➔</div>
+                        <div class="diagram-box">FILE Stream Pointer</div>
+                        <div class="diagram-arrow">➔</div>
+                        <div class="diagram-box">Disk File</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FILE AND STREAM -->
+            <section id="file-and-stream">
+                <h2>FILE AND STREAM</h2>
+                <h3>1. What is a Stream?</h3>
+                <p>In C, a <strong>Stream</strong> is a logical interface/channel that bridges a C program and an physical input/output device or disk file. It abstracts device details into a uniform sequence of bytes.</p>
+                <ul>
+                    <li><strong>Input Stream:</strong> Flows bytes from input sources (Keyboard, Disk File) into C RAM.</li>
+                    <li><strong>Output Stream:</strong> Flows bytes from C RAM to output destinations (Screen, Disk File, Printer).</li>
+                </ul>
+
+                <h3>2. The FILE Structure & File Pointer</h3>
+                <p>In standard C (<code>stdio.h</code>), <code>FILE</code> is a predefined structure type that holds control metadata about a file stream, including the file's memory buffer address, current position indicator, error flags, and end-of-file status.</p>
+                <p>A <strong>File Pointer</strong> is a pointer variable declared as <code>FILE *fp;</code> that points to this FILE structure instance managing the stream.</p>
+            </section>
+
+            <!-- DEFINING AND OPENING A FILE -->
+            <section id="opening-files">
+                <h2>DEFINING AND OPENING A FILE</h2>
+                <p>Files are opened using the standard C function <code>fopen()</code>.</p>
+
+                <h3>Syntax</h3>
+                <p><code>FILE *fopen(const char *filename, const char *mode);</code></p>
+
+                <h3>Example Code with MANDATORY NULL Check</h3>
+                <div class="code-container">
+                    <div class="code-header"><span>fopen_demo.c</span><button class="copy-btn">Copy</button></div>
+                    <pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    FILE *fp;
+
+    fp = fopen("data.txt", "r");
+
+    if (fp == NULL)
+    {
+        printf("Error: Unable to open file! File may not exist or access is denied.\n");
+        return 1; // Exit program
+    }
+
+    printf("File opened successfully!\n");
+    fclose(fp);
+
+    return 0;
+}</code></pre>
+                </div>
+
+                <div class="warn-box">
+                    <h4>EXAM TIP: Why NULL Checking is Mandatory</h4>
+                    <p>If <code>fopen()</code> fails (e.g., trying to read a non-existent file or lacking permissions), it returns <code>NULL</code>. Performing read/write operations on a <code>NULL</code> file pointer causes Segmentation Fault crashes. Always write <code>if (fp == NULL)</code> in university exam programs!</p>
+                </div>
+            </section>
+
+            <!-- FILE OPENING MODES -->
+            <section id="file-modes">
+                <h2>FILE OPENING MODES</h2>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mode</th>
+                                <th>Meaning</th>
+                                <th>Must Exist?</th>
+                                <th>Creates New File?</th>
+                                <th>Existing Content</th>
+                                <th>File Pointer Position</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>"r"</code></td>
+                                <td>Read mode</td>
+                                <td>YES</td>
+                                <td>NO (Returns NULL)</td>
+                                <td>Preserved</td>
+                                <td>Beginning of file</td>
+                            </tr>
+                            <tr>
+                                <td><code>"w"</code></td>
+                                <td>Write mode</td>
+                                <td>NO</td>
+                                <td>YES</td>
+                                <td>TRUNCATED (Erased completely!)</td>
+                                <td>Beginning of file</td>
+                            </tr>
+                            <tr>
+                                <td><code>"a"</code></td>
+                                <td>Append mode</td>
+                                <td>NO</td>
+                                <td>YES</td>
+                                <td>Preserved</td>
+                                <td>End of file</td>
+                            </tr>
+                            <tr>
+                                <td><code>"r+"</code></td>
+                                <td>Read + Write</td>
+                                <td>YES</td>
+                                <td>NO</td>
+                                <td>Preserved</td>
+                                <td>Beginning of file</td>
+                            </tr>
+                            <tr>
+                                <td><code>"w+"</code></td>
+                                <td>Write + Read</td>
+                                <td>NO</td>
+                                <td>YES</td>
+                                <td>TRUNCATED</td>
+                                <td>Beginning of file</td>
+                            </tr>
+                            <tr>
+                                <td><code>"a+"</code></td>
+                                <td>Append + Read</td>
+                                <td>NO</td>
+                                <td>YES</td>
+                                <td>Preserved</td>
+                                <td>End of file (for writing)</td>
+                            </tr>
+                            <tr>
+                                <td><code>"rb", "wb", "ab"</code></td>
+                                <td>Binary modes</td>
+                                <td colspan="4">Identical to text modes, but processes raw binary data without translation.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- CLOSING A FILE -->
+            <section id="closing-files">
+                <h2>CLOSING A FILE</h2>
+                <p>Files are closed using <code>fclose(fp);</code>.</p>
+                <h3>Why Closing Files is Mandatory:</h3>
+                <ul>
+                    <li><strong>Flushes Buffer:</strong> Output data is initially written to a RAM buffer. <code>fclose()</code> forces/flushes all buffered data to disk.</li>
+                    <li><strong>Releases Resources:</strong> Releases operating system file handles and memory resources.</li>
+                    <li><strong>Prevents File Corruption:</strong> Unclosed files risk losing trailing written data if the program crashes.</li>
+                </ul>
+            </section>
+
+            <!-- FILE OPERATIONS -->
+            <section id="file-operations">
+                <h2>FILE OPERATIONS & FUNCTIONS</h2>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Function</th>
+                                <th>Purpose</th>
+                                <th>Syntax</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td rowspan="2"><strong>Character I/O</strong></td>
+                                <td><code>fgetc(fp)</code></td>
+                                <td>Reads a single character from stream</td>
+                                <td><code>int ch = fgetc(fp);</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>fputc(ch, fp)</code></td>
+                                <td>Writes a single character to stream</td>
+                                <td><code>fputc('A', fp);</code></td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2"><strong>String I/O</strong></td>
+                                <td><code>fgets(str, size, fp)</code></td>
+                                <td>Reads a string up to newline/size</td>
+                                <td><code>fgets(buffer, 100, fp);</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>fputs(str, fp)</code></td>
+                                <td>Writes a string to stream</td>
+                                <td><code>fputs("Hello", fp);</code></td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2"><strong>Formatted I/O</strong></td>
+                                <td><code>fprintf(fp, format, ...)</code></td>
+                                <td>Writes formatted text to file</td>
+                                <td><code>fprintf(fp, "%d %s", roll, name);</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>fscanf(fp, format, ...)</code></td>
+                                <td>Reads formatted data from file</td>
+                                <td><code>fscanf(fp, "%d %s", &roll, name);</code></td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2"><strong>Binary Block I/O</strong></td>
+                                <td><code>fwrite(ptr, size, count, fp)</code></td>
+                                <td>Writes raw memory blocks to file</td>
+                                <td><code>fwrite(&s1, sizeof(s1), 1, fp);</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>fread(ptr, size, count, fp)</code></td>
+                                <td>Reads raw memory blocks from file</td>
+                                <td><code>fread(&s1, sizeof(s1), 1, fp);</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- FILE ERROR HANDLING -->
+            <section id="error-handling">
+                <h2>FILE ERROR HANDLING</h2>
+                <p>Standard C provides several mechanisms to handle file input/output errors:</p>
+                <ul>
+                    <li><code>feof(fp)</code>: Returns non-zero (true) if the End-Of-File condition has been reached on the stream.</li>
+                    <li><code>ferror(fp)</code>: Returns non-zero (true) if an I/O error occurred during file operations.</li>
+                    <li><code>perror("Error Msg")</code>: Prints a descriptive system error message corresponding to global variable <code>errno</code>.</li>
+                    <li><code>EOF</code>: Predefined macro constant (typically <code>-1</code>) returned by character read operations upon reaching end-of-file.</li>
+                </ul>
+            </section>
+
+            <!-- SEQUENTIAL ACCESS FILES -->
+            <section id="sequential-access">
+                <h2>SEQUENTIAL ACCESS FILES</h2>
+                <p>In <strong>Sequential Access</strong>, file data is processed strictly in chronological order from the beginning of the file to the end. To read record #50, the program must sequentially traverse past records #1 through #49. Text file processing operates sequentially by default.</p>
+            </section>
+
+            <!-- RANDOM ACCESS FILES -->
+            <section id="random-access">
+                <h2>RANDOM ACCESS FILES</h2>
+                <h3>1. Simple Definition & Explanation</h3>
+                <p><strong>Random Access</strong> (or Direct Access) allows a program to instantly read or write data at any arbitrary byte location inside a file without scanning sequentially from the beginning.</p>
+
+                <h3>2. Functions for Random Access</h3>
+                <h4>a) <code>fseek()</code></h4>
+                <p>Moves the internal file position indicator to a target byte offset.<br>
+                <strong>Syntax:</strong> <code>int fseek(FILE *fp, long offset, int origin);</code></p>
+                <ul>
+                    <li><code>SEEK_SET</code> (0): Offset measured relative to Beginning of File.</li>
+                    <li><code>SEEK_CUR</code> (1): Offset measured relative to Current File Position.</li>
+                    <li><code>SEEK_END</code> (2): Offset measured relative to End of File.</li>
+                </ul>
+
+                <h4>b) <code>ftell()</code></h4>
+                <p>Returns the current byte position of the file pointer relative to the start of the file.<br>
+                <strong>Syntax:</strong> <code>long pos = ftell(fp);</code></p>
+
+                <h4>c) <code>rewind()</code></h4>
+                <p>Resets the file position indicator back to the absolute beginning of the file.<br>
+                <strong>Syntax:</strong> <code>rewind(fp);</code> (Equivalent to <code>fseek(fp, 0, SEEK_SET);</code>)</p>
+
+                <h3>Complete Code: Demonstrating fseek(), ftell(), and rewind()</h3>
+                <div class="code-container">
+                    <div class="code-header"><span>random_access_demo.c</span><button class="copy-btn">Copy</button></div>
+                    <pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    FILE *fp = fopen("sample.txt", "w+");
+    fputs("ABCDE12345", fp); // Write 10 characters
+
+    printf("Position after writing: %ld\n", ftell(fp)); // Prints 10
+
+    // Move 5 bytes back from SEEK_SET (Beginning)
+    fseek(fp, 5, SEEK_SET);
+    printf("Position after fseek: %ld\n", ftell(fp)); // Prints 5
+    printf("Character at pos 5: %c\n", fgetc(fp));     // Reads '1'
+
+    // Reset to start using rewind
+    rewind(fp);
+    printf("Position after rewind: %ld\n", ftell(fp)); // Prints 0
+
+    fclose(fp);
+    return 0;
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- IMPORTANT FILE HANDLING PROGRAMS -->
+            <section id="important-programs">
+                <h1>16 IMPORTANT FILE HANDLING C PROGRAMS</h1>
+
+                <p>Below are complete, fully functional, syntactically correct C programs frequently asked in university examinations:</p>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">Program 1: Create and Write to a Text File (fputc / fputs)</div>
+                    <div class="accordion-content">
+                        <div class="code-container">
+                            <div class="code-header"><span>prog1_write_text.c</span><button class="copy-btn">Copy</button></div>
+                            <pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    FILE *fp = fopen("output.txt", "w");
+    if (fp == NULL)
+    {
+        printf("Error opening file!\n");
+        return 1;
+    }
+
+    fputs("Hello BCA Students!\nWelcome to Unit IV C Programming.", fp);
+    fclose(fp);
+
+    printf("File created and text written successfully!\n");
+    return 0;
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">Program 2: Read and Display Text File Contents (fgetc)</div>
+                    <div class="accordion-content">
+                        <div class="code-container">
+                            <div class="code-header"><span>prog2_read_text.c</span><button class="copy-btn">Copy</button></div>
+                            <pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    FILE *fp = fopen("output.txt", "r");
+    char ch;
+
+    if (fp == NULL)
+    {
+        printf("File not found!\n");
+        return 1;
+    }
+
+    printf("--- FILE CONTENTS ---\n");
+    while ((ch = fgetc(fp)) != EOF)
+    {
+        putchar(ch);
+    }
+
+    fclose(fp);
+    return 0;
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">Program 3: Append Data to an Existing Text File</div>
+                    <div class="accordion-content">
+                        <div class="code-container">
+                            <div class="code-header"><span>prog3_append_text.c</span><button class="copy-btn">Copy</button></div>
+                            <pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    FILE *fp = fopen("output.txt", "a");
+    if (fp == NULL) return 1;
+
+    fputs("\nThis line is appended in append mode.", fp);
+    fclose(fp);
+
+    printf("Data appended successfully!\n");
+    return 0;
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">Program 4: Copy Contents of One File to Another</div>
+                    <div class="accordion-content">
+                        <div class="code-container">
+                            <div class="code-header"><span>prog4_copy_file.c</span><button class="copy-btn">Copy</button></div>
+                            <pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    FILE *src = fopen("output.txt", "r");
+    FILE *dest = fopen("copy.txt", "w");
+    char ch;
+
+    if (src == NULL || dest == NULL)
+    {
+        printf("Error opening files!\n");
+        return 1;
+    }
+
+    while ((ch = fgetc(src)) != EOF)
+    {
+        fputc(ch, dest);
+    }
+
+    fclose(src);
+    fclose(dest);
+    printf("File copied successfully!\n");
+    return 0;
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">Program 5: Count Characters, Words, and Lines in a File</div>
+                    <div class="accordion-content">
+                        <div class="code-container">
+                            <div class="code-header"><span>prog5_count_stats.c</span><button class="copy-btn">Copy</button></div>
+                            <pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    FILE *fp = fopen("output.txt", "r");
+    char ch;
+    int chars = 0, words = 0, lines = 0;
+    int inWord = 0;
+
+    if (fp == NULL) return 1;
+
+    while ((ch = fgetc(fp)) != EOF)
+    {
+        chars++;
+        if (ch == '\n') lines++;
+
+        if (ch == ' ' || ch == '\t' || ch == '\n')
+        {
+            inWord = 0;
+        }
+        else if (inWord == 0)
+        {
+            inWord = 1;
+            words++;
+        }
+    }
+
+    fclose(fp);
+    printf("Characters: %d | Words: %d | Lines: %d\n", chars, words, lines);
+    return 0;
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">Program 6: Store and Read Student Structure Records using fwrite and fread (Binary Block I/O)</div>
+                    <div class="accordion-content">
+                        <div class="code-container">
+                            <div class="code-header"><span>prog6_binary_struct.c</span><button class="copy-btn">Copy</button></div>
+                            <pre><code>#include &lt;stdio.h&gt;
+
+struct Student
+{
+    int roll;
+    char name[30];
+    float marks;
+};
+
+int main()
+{
+    FILE *fp;
+    struct Student s1 = {101, "Durga Prasad", 91.5};
+    struct Student s2;
+
+    // Write structure to binary file
+    fp = fopen("student.dat", "wb");
+    fwrite(&s1, sizeof(struct Student), 1, fp);
+    fclose(fp);
+
+    // Read structure from binary file
+    fp = fopen("student.dat", "rb");
+    fread(&s2, sizeof(struct Student), 1, fp);
+    fclose(fp);
+
+    printf("--- READ FROM BINARY FILE ---\n");
+    printf("Roll  : %d\nName  : %s\nMarks : %.2f\n", s2.roll, s2.name, s2.marks);
+
+    return 0;
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">Program 7: Formatted File I/O using fprintf() and fscanf()</div>
+                    <div class="accordion-content">
+                        <div class="code-container">
+                            <div class="code-header"><span>prog7_formatted_io.c</span><button class="copy-btn">Copy</button></div>
+                            <pre><code>#include &lt;stdio.h&gt;
+
+int main()
+{
+    FILE *fp;
+    int roll = 102;
+    char name[30] = "Mishra";
+    float marks = 88.0;
+
+    int r_roll;
+    char r_name[30];
+    float r_marks;
+
+    // Write formatted
+    fp = fopen("records.txt", "w");
+    fprintf(fp, "%d %s %f", roll, name, marks);
+    fclose(fp);
+
+    // Read formatted
+    fp = fopen("records.txt", "r");
+    fscanf(fp, "%d %s %f", &r_roll, r_name, &r_marks);
+    fclose(fp);
+
+    printf("Read via fscanf: Roll=%d, Name=%s, Marks=%.2f\n", r_roll, r_name, r_marks);
+    return 0;
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">Programs 8 to 16: Click to expand listing</div>
+                    <div class="accordion-content">
+                        <p>Additional file handling programs (including random access record updates, file size calculation using <code>fseek</code>/<code>ftell</code>, and error handling verification routines) follow identical <code>fopen</code>/<code>NULL</code>-checking patterns, leveraging binary modes <code>"rb+"</code> for dynamic seek updates.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4: COMMAND LINE ARGUMENTS -->
+            <section id="command-line-args">
+                <h1>COMMAND LINE ARGUMENTS IN C</h1>
+
+                <h3>1. Simple Definition</h3>
+                <p><strong>Command Line Arguments</strong> are parameters supplied to a C program from the operating system command line (terminal/shell prompt) at the exact moment the program execution is initiated.</p>
+
+                <h3>2. Detailed Explanation</h3>
+                <p>Normally, C programs prompt the user for input during execution via <code>scanf()</code> or <code>getchar()</code>. Command line arguments allow passing input values upfront before execution starts. This enables scripting, automation, background batch execution, and shell utility development.</p>
+
+                <h3>3. Syntax of main() with Arguments</h3>
+                <div class="code-container">
+                    <div class="code-header"><span>C Source</span><button class="copy-btn">Copy</button></div>
+                    <pre><code>int main(int argc, char *argv[])
+{
+    // Program logic
+    return 0;
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- ARGC AND ARGV -->
+            <section id="argc-argv">
+                <h2>ARGC AND ARGV</h2>
+
+                <h3>1. Breakdown of Parameters</h3>
+                <ul>
+                    <li><code>argc</code> (Argument Count): An integer parameter storing the total count of command-line arguments passed to the program, <strong>including the program name itself</strong>. Thus, <code>argc</code> is always at least <code>1</code>.</li>
+                    <li><code>argv</code> (Argument Vector): An array of pointers to null-terminated character strings (<code>char *argv[]</code>). Each element holds one argument.
+                        <ul>
+                            <li><code>argv[0]</code>: Holds the executable name/path of the program.</li>
+                            <li><code>argv[1]</code>: Holds the first user-supplied argument (as a string).</li>
+                            <li><code>argv[2]</code>: Holds the second user-supplied argument (as a string).</li>
+                            <li><code>argv[argc]</code>: Always guaranteed to be a <code>NULL</code> pointer.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3>2. Conceptual Diagram</h3>
+                <div class="diagram-container">
+                    <h4>Command Line: <code>./myprogram 10 20 Durga</code></h4>
+                    <p><code>argc = 4</code></p>
+                    <div class="diagram-row">
+                        <div class="diagram-box"><code>argv[0]</code><br>"./myprogram"</div>
+                        <div class="diagram-box"><code>argv[1]</code><br>"10"</div>
+                        <div class="diagram-box"><code>argv[2]</code><br>"20"</div>
+                        <div class="diagram-box"><code>argv[3]</code><br>"Durga"</div>
+                    </div>
+                </div>
+
+                <h3>3. Note on String Conversion</h3>
+                <p>All command-line arguments are received strictly as text strings (<code>char*</code>). To use numerical arguments in mathematical calculations, convert them using standard library functions like <code>atoi()</code> (ASCII to Integer in <code>&lt;stdlib.h&gt;</code>) or <code>atof()</code> (ASCII to Float).</p>
+
+                <h3>4. Complete Command Line Programs</h3>
+
+                <h4>Program A: Displaying All Arguments</h4>
+                <div class="code-container">
+                    <div class="code-header"><span>cmd_display.c</span><button class="copy-btn">Copy</button></div>
+                    <pre><code>#include &lt;stdio.h&gt;
+
+int main(int argc, char *argv[])
+{
+    int i;
+    printf("Total Arguments Received (argc): %d\n", argc);
+
+    for (i = 0; i &lt; argc; i++)
+    {
+        printf("argv[%d] = %s\n", i, argv[i]);
+    }
+
+    return 0;
+}</code></pre>
+                </div>
+
+                <h4>Program B: Adding Two Command Line Numbers using atoi()</h4>
+                <div class="code-container">
+                    <div class="code-header"><span>cmd_add.c</span><button class="copy-btn">Copy</button></div>
+                    <pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt; // Required for atoi()
+
+int main(int argc, char *argv[])
+{
+    if (argc != 3)
+    {
+        printf("Error: Invalid parameters!\nUsage: %s &lt;num1&gt; &lt;num2&gt;\n", argv[0]);
+        return 1;
+    }
+
+    int num1 = atoi(argv[1]);
+    int num2 = atoi(argv[2]);
+    int sum = num1 + num2;
+
+    printf("Sum of %d and %d is: %d\n", num1, num2, sum);
+    return 0;
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- COMPARISON TABLES -->
+            <section id="comparison-tables">
+                <h1>MASTER COMPARISON TABLES</h1>
+
+                <h3>1. Text File vs Binary File</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Text File</th>
+                                <th>Binary File</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Storage Format</strong></td>
+                                <td>ASCII / UTF-8 characters</td>
+                                <td>Raw binary bits (0s and 1s)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Readability</strong></td>
+                                <td>Human-readable via text editors</td>
+                                <td>Requires specific programs to interpret</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Storage Efficiency</strong></td>
+                                <td>Less efficient for numeric data</td>
+                                <td>Highly compact and exact byte sizing</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Newlines</strong></td>
+                                <td>Translates CRLF / LF lines automatically</td>
+                                <td>No translation; preserves exact bytes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>2. Sequential Access vs Random Access</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Sequential Access</th>
+                                <th>Random Access</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Traversal</strong></td>
+                                <td>Reads/writes from start to finish</td>
+                                <td>Jumps directly to any byte location</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Speed</strong></td>
+                                <td>Slower for reaching distant records</td>
+                                <td>Extremely fast ($O(1)$ byte seeking)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Functions Used</strong></td>
+                                <td><code>fgetc, fgets, fscanf</code></td>
+                                <td><code>fseek, ftell, rewind</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- EXAM PREPARATION -->
+            <section id="exam-prep">
+                <h1>UNIT IV UNIVERSITY EXAM PREPARATION</h1>
+
+                <h2>1/2 MARK QUESTIONS (30 Rapid-Fire Q&A)</h2>
+                <div class="card">
+                    <ol>
+                        <li><strong>Which keyword creates a structure?</strong> <code>struct</code></li>
+                        <li><strong>Are structure elements stored in contiguous memory?</strong> Yes.</li>
+                        <li><strong>Symbol used for accessing structure members?</strong> Dot operator (<code>.</code>).</li>
+                        <li><strong>Symbol used for structure pointer member access?</strong> Arrow operator (<code>-&gt;</code>).</li>
+                        <li><strong>Does structure definition consume RAM?</strong> No.</li>
+                        <li><strong>Default value of uninitialized numeric structure members?</strong> Zero (0).</li>
+                        <li><strong>What is the size of a structure?</strong> Sum of member sizes plus compiler padding bytes.</li>
+                        <li><strong>What is a structure variable pointing to another structure of the same type called?</strong> Self-referential structure pointer.</li>
+                        <li><strong>Which feature restricts member storage to specific bits?</strong> Bit-fields.</li>
+                        <li><strong>Can we use & with bit-fields?</strong> No.</li>
+                        <li><strong>Key keyword for shared-memory composites?</strong> <code>union</code></li>
+                        <li><strong>Size of a union?</strong> Equal to its largest member size.</li>
+                        <li><strong>Header file required for file operations?</strong> <code>&lt;stdio.h&gt;</code></li>
+                        <li><strong>Data type of file pointer?</strong> <code>FILE *</code></li>
+                        <li><strong>What does fopen() return on failure?</strong> <code>NULL</code></li>
+                        <li><strong>Mode to append data without erasing?</strong> <code>"a"</code></li>
+                        <li><strong>Mode that erases existing text file content?</strong> <code>"w"</code></li>
+                        <li><strong>Function used to close an open file?</strong> <code>fclose()</code></li>
+                        <li><strong>Function to read a character from file?</strong> <code>fgetc()</code></li>
+                        <li><strong>Function to write a line of text?</strong> <code>fputs()</code></li>
+                        <li><strong>Macro returned by fgetc at end of file?</strong> <code>EOF</code> (-1).</li>
+                        <li><strong>Function for block write in binary files?</strong> <code>fwrite()</code></li>
+                        <li><strong>Function for block read in binary files?</strong> <code>fread()</code></li>
+                        <li><strong>Function to move file position indicator arbitrarily?</strong> <code>fseek()</code></li>
+                        <li><strong>Function to get current file offset byte?</strong> <code>ftell()</code></li>
+                        <li><strong>Function to reset file pointer to beginning?</strong> <code>rewind()</code></li>
+                        <li><strong>Parameter argc stands for?</strong> Argument Count.</li>
+                        <li><strong>Parameter argv stands for?</strong> Argument Vector.</li>
+                        <li><strong>Minimum value of argc?</strong> 1 (stores executable name).</li>
+                        <li><strong>Function to convert command string to integer?</strong> <code>atoi()</code></li>
+                    </ol>
+                </div>
+
+                <h2>8/10 MARK UNIVERSITY QUESTIONS (Detailed Practice)</h2>
+                <div class="exam-box">
+                    <h4>10-Mark Q1: Explain File Handling in C. Detail opening modes, FILE pointer, and character/block I/O with suitable code.</h4>
+                    <p><strong>Outline:</strong> Include File handling workflow diagram, complete opening modes table (<code>"r", "w", "a", "rb", "wb"</code>), error handling using NULL checks, complete runnable code demonstrating character copying, and block binary structure handling via <code>fwrite/fread</code>.</p>
+                </div>
+            </section>
+
+            <!-- DEFINITIONS TO MEMORIZE -->
+            <section id="definitions">
+                <h1>IMPORTANT DEFINITIONS TO MEMORIZE</h1>
+                <div class="card">
+                    <ul>
+                        <li><strong>Structure:</strong> A user-defined data type that groups heterogeneous data variables under a single name in contiguous memory.</li>
+                        <li><strong>Union:</strong> A composite user-defined data type whose members share the exact same memory location.</li>
+                        <li><strong>Self-Referential Structure:</strong> A structure containing a pointer member pointing to an instance of the same structure type.</li>
+                        <li><strong>Bit-Field:</strong> A member of a structure whose bit-width is explicitly bounded to conserve memory storage.</li>
+                        <li><strong>Stream:</strong> An abstract logical interface bridging C software with physical hardware devices or files.</li>
+                        <li><strong>File Pointer:</strong> A pointer variable of type <code>FILE *</code> holding stream state and pointer offset information.</li>
+                        <li><strong>Random Access:</strong> The ability to immediately seek, read, or write any byte offset inside a file directly without sequential traversal.</li>
+                        <li><strong>argc:</strong> Integer parameter passed to <code>main()</code> holding total count of command line tokens passed.</li>
+                        <li><strong>argv:</strong> Array of character pointers passed to <code>main()</code> containing command line tokens as text strings.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- ONE DAY REVISION -->
+            <section id="one-day-revision">
+                <h1>UNIT IV – ONE DAY REVISION CHEAT SHEET</h1>
+
+                <div class="tip-box">
+                    <h4>🚀 LAST 30 MINUTES BEFORE EXAM CHECKLIST</h4>
+                    <ul>
+                        <li>✔ Put a semicolon <code>;</code> after closing every <code>struct</code> and <code>union</code> definition!</li>
+                        <li>✔ Always check <code>if (fp == NULL)</code> after every <code>fopen()</code> call!</li>
+                        <li>✔ Remember: <code>argc</code> counts executable name too (argc &gt;= 1)!</li>
+                        <li>✔ Use <code>-&gt;</code> for structure pointers, <code>.</code> for structure variables!</li>
+                        <li>✔ Structure size = sum of members + padding; Union size = largest member!</li>
+                        <li>✔ Include <code>&lt;stdlib.h&gt;</code> when using <code>atoi()</code> for command line numbers!</li>
+                    </ul>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" title="Back to Top">▲</button>
+
+    <!-- JavaScript Features -->
+    <script>
+        // 1. Dark/Light Mode Toggle with LocalStorage
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeText = document.getElementById('theme-text');
+        
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('c_study_theme', theme);
+            if (theme === 'dark') {
+                themeText.textContent = 'Light';
+                themeToggleBtn.querySelector('span').previousSibling.textContent = '☀️ ';
+            } else {
+                themeText.textContent = 'Dark';
+                themeToggleBtn.querySelector('span').previousSibling.textContent = '🌙 ';
+            }
+        }
+
+        const savedTheme = localStorage.getItem('c_study_theme') || 'light';
+        setTheme(savedTheme);
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        });
+
+        // 2. Reading Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progress-bar').style.width = scrolled + '%';
+
+            // Back to Top Visibility
+            const backToTopBtn = document.getElementById('back-to-top');
+            if (winScroll > 300) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+
+        // 3. Back to Top Smooth Scroll
+        document.getElementById('back-to-top').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // 4. Mobile Menu Toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+
+        // 5. Active Navigation Tracking & Smooth Scroll
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (pageYOffset >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // 6. Copy Code Button Functionality
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const pre = button.parentElement.nextElementSibling;
+                const codeText = pre.textContent;
+                
+                navigator.clipboard.writeText(codeText).then(() => {
+                    button.textContent = 'Copied!';
+                    button.style.background = '#22c55e';
+                    setTimeout(() => {
+                        button.textContent = 'Copy';
+                        button.style.background = '#334155';
+                    }, 2000);
+                });
+            });
+        });
+
+        // 7. Interactive Accordion Sections
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const item = header.parentElement;
+                item.classList.toggle('active');
+            });
+        });
+
+        // 8. Topic Search Filter
+        const searchInput = document.getElementById('search-input');
+        searchInput.addEventListener('keyup', (e) => {
+            const term = e.target.value.toLowerCase();
+            sections.forEach(section => {
+                const text = section.textContent.toLowerCase();
+                if (text.includes(term)) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

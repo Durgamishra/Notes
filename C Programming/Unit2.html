@@ -1,0 +1,1700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UNIT II – C Programming: Decision Control, Loops & Arrays</title>
+  <style>
+    :root {
+      --bg-primary: #f8fafc;
+      --bg-card: #ffffff;
+      --text-primary: #1e293b;
+      --text-secondary: #475569;
+      --accent-color: #2563eb;
+      --accent-hover: #1d4ed8;
+      --border-color: #e2e8f0;
+      --code-bg: #1e293b;
+      --code-text: #f8fafc;
+      --sidebar-width: 280px;
+      --note-bg: #eff6ff;
+      --note-border: #3b82f6;
+      --tip-bg: #f0fdf4;
+      --tip-border: #22c55e;
+      --warning-bg: #fef2f2;
+      --warning-border: #ef4444;
+      --syntax-bg: #faf5ff;
+      --syntax-border: #a855f7;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: #0f172a;
+      --bg-card: #1e293b;
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --accent-color: #3b82f6;
+      --accent-hover: #60a5fa;
+      --border-color: #334155;
+      --code-bg: #090d16;
+      --code-text: #e2e8f0;
+      --note-bg: #1e3a8a33;
+      --note-border: #3b82f6;
+      --tip-bg: #14532d33;
+      --tip-border: #22c55e;
+      --warning-bg: #7f1d1d33;
+      --warning-border: #ef4444;
+      --syntax-bg: #581c8733;
+      --syntax-border: #a855f7;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Reading Progress Bar */
+    #progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      z-index: 1000;
+    }
+
+    #progress-bar {
+      height: 100%;
+      background: var(--accent-color);
+      width: 0%;
+    }
+
+    /* Top Navigation Header */
+    header {
+      position: sticky;
+      top: 0;
+      background-color: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 900;
+      box-shadow: var(--shadow);
+    }
+
+    .header-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent-color);
+    }
+
+    .header-controls {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .search-box {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 0.375rem;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      outline: none;
+      width: 220px;
+    }
+
+    .theme-toggle-btn, .mobile-menu-btn {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 0.5rem 0.8rem;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+    }
+
+    /* Main Container & Layout */
+    .container {
+      display: flex;
+      flex: 1;
+    }
+
+    /* Sidebar Navigation */
+    sidebar {
+      width: var(--sidebar-width);
+      background-color: var(--bg-card);
+      border-right: 1px solid var(--border-color);
+      height: calc(100vh - 60px);
+      position: sticky;
+      top: 60px;
+      overflow-y: auto;
+      padding: 1.5rem 1rem;
+      flex-shrink: 0;
+    }
+
+    .sidebar-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      margin-bottom: 0.75rem;
+      font-weight: 700;
+    }
+
+    .sidebar-menu {
+      list-style: none;
+    }
+
+    .sidebar-menu li {
+      margin-bottom: 0.25rem;
+    }
+
+    .sidebar-menu a {
+      display: block;
+      padding: 0.4rem 0.75rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-radius: 0.25rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background-color: var(--note-bg);
+      color: var(--accent-color);
+      font-weight: 600;
+    }
+
+    /* Main Content Area */
+    main {
+      flex: 1;
+      padding: 2.5rem 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    section {
+      margin-bottom: 4rem;
+      scroll-margin-top: 80px;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      margin-bottom: 1rem;
+      color: var(--accent-color);
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.4rem;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+      color: var(--accent-color);
+    }
+
+    h4 {
+      font-size: 1.1rem;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      margin-bottom: 1.2rem;
+      color: var(--text-primary);
+      text-align: justify;
+    }
+
+    ul, ol {
+      margin-bottom: 1.2rem;
+      padding-left: 1.5rem;
+    }
+
+    li {
+      margin-bottom: 0.4rem;
+    }
+
+    /* Code Blocks */
+    .code-container {
+      position: relative;
+      margin: 1.5rem 0;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .code-header {
+      background-color: #0f172a;
+      color: #94a3b8;
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: monospace;
+      border-bottom: 1px solid #334155;
+    }
+
+    .copy-btn {
+      background: #334155;
+      color: #f8fafc;
+      border: none;
+      padding: 0.2rem 0.6rem;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      font-size: 0.75rem;
+    }
+
+    .copy-btn:hover {
+      background: var(--accent-color);
+    }
+
+    pre {
+      background-color: var(--code-bg);
+      color: var(--code-text);
+      padding: 1.2rem;
+      overflow-x: auto;
+      font-family: "Consolas", "Courier New", Courier, monospace;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: "Consolas", "Courier New", Courier, monospace;
+      background-color: var(--note-bg);
+      color: var(--accent-color);
+      padding: 0.15rem 0.4rem;
+      border-radius: 0.25rem;
+      font-size: 0.9em;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+    }
+
+    /* Tables */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 1.5rem 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      background-color: var(--bg-card);
+      border-radius: 0.5rem;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    th, td {
+      padding: 0.85rem 1.1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      background-color: var(--note-bg);
+      color: var(--accent-color);
+      font-weight: 700;
+    }
+
+    tr:hover {
+      background-color: var(--bg-primary);
+    }
+
+    /* Custom Callout Boxes */
+    .box {
+      padding: 1.2rem;
+      border-left: 4px solid;
+      border-radius: 0.375rem;
+      margin: 1.5rem 0;
+    }
+
+    .note-box {
+      background-color: var(--note-bg);
+      border-color: var(--note-border);
+    }
+
+    .exam-tip {
+      background-color: var(--tip-bg);
+      border-color: var(--tip-border);
+    }
+
+    .warning-box {
+      background-color: var(--warning-bg);
+      border-color: var(--warning-border);
+    }
+
+    .syntax-box {
+      background-color: var(--syntax-bg);
+      border-color: var(--syntax-border);
+      font-family: monospace;
+    }
+
+    .box-title {
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* CSS Flowcharts & Diagrams */
+    .diagram-container {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: var(--shadow);
+    }
+
+    .diagram-node {
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.375rem;
+      background-color: var(--note-bg);
+      border: 2px solid var(--note-border);
+      color: var(--text-primary);
+      font-weight: 600;
+      text-align: center;
+      min-width: 180px;
+    }
+
+    .diagram-decision {
+      padding: 1rem;
+      background-color: var(--syntax-bg);
+      border: 2px solid var(--syntax-border);
+      transform: rotate(0deg);
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      min-width: 160px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .diagram-arrow {
+      width: 2px;
+      height: 25px;
+      background-color: var(--text-secondary);
+      position: relative;
+    }
+
+    .diagram-arrow::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: -4px;
+      border-width: 5px 5px 0 5px;
+      border-style: solid;
+      border-color: var(--text-secondary) transparent transparent transparent;
+    }
+
+    .array-visual {
+      display: flex;
+      gap: 2px;
+      margin: 1rem 0;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+
+    .array-cell {
+      border: 2px solid var(--accent-color);
+      background-color: var(--bg-card);
+      width: 60px;
+      height: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      position: relative;
+    }
+
+    .array-index {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-top: 0.2rem;
+    }
+
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 60px);
+      gap: 5px;
+      margin: 1rem 0;
+    }
+
+    /* Back to Top Button */
+    #back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background-color: var(--accent-color);
+      color: #ffffff;
+      border: none;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      box-shadow: var(--shadow);
+      z-index: 1000;
+    }
+
+    #back-to-top:hover {
+      background-color: var(--accent-hover);
+    }
+
+    /* Responsive Mobile Layout */
+    @media (max-width: 900px) {
+      .container {
+        flex-direction: column;
+      }
+
+      sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        display: none;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      sidebar.open {
+        display: block;
+      }
+
+      .mobile-menu-btn {
+        display: flex;
+      }
+
+      main {
+        padding: 1.5rem;
+      }
+
+      .search-box {
+        width: 140px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="progress-container">
+    <div id="progress-bar"></div>
+  </div>
+
+  <header>
+    <div class="header-title">UNIT II – C Programming Portal</div>
+    <div class="header-controls">
+      <input type="text" id="searchBox" class="search-box" placeholder="Search syllabus topics...">
+      <button class="theme-toggle-btn" id="themeToggle">🌙 Dark</button>
+      <button class="mobile-menu-btn" id="menuToggle">☰ Menu</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <sidebar id="sidebar">
+      <div class="sidebar-title">UNIT II NAVIGATION</div>
+      <ul class="sidebar-menu">
+        <li><a href="#control-structures">1. Control Structures Overview</a></li>
+        <li><a href="#if-statement">2. Simple if Statement</a></li>
+        <li><a href="#if-else-statement">3. if-else Statement</a></li>
+        <li><a href="#nested-if-else">4. Nested if-else</a></li>
+        <li><a href="#else-if-ladder">5. else-if Ladder</a></li>
+        <li><a href="#switch-statement">6. switch Statement</a></li>
+        <li><a href="#looping-concepts">7. Looping Concepts</a></li>
+        <li><a href="#for-loop">8. for Loop</a></li>
+        <li><a href="#while-loop">9. while Loop</a></li>
+        <li><a href="#do-while-loop">10. do-while Loop</a></li>
+        <li><a href="#loop-comparison">11. Loop Comparison Table</a></li>
+        <li><a href="#break-statement">12. break Statement</a></li>
+        <li><a href="#continue-statement">13. continue Statement</a></li>
+        <li><a href="#goto-statement">14. goto Statement</a></li>
+        <li><a href="#concept-of-array">15. Concept of Arrays</a></li>
+        <li><a href="#array-declaration">16. Array Declaration & Init</a></li>
+        <li><a href="#1d-arrays">17. 1D Arrays & Operations</a></li>
+        <li><a href="#multidimensional-arrays">18. 2D / Multidimensional Arrays</a></li>
+        <li><a href="#character-arrays">19. Character Arrays</a></li>
+        <li><a href="#strings-in-c">20. Strings in C & Functions</a></li>
+        <li><a href="#limitations-of-arrays">21. Limitations of Arrays</a></li>
+        <li><a href="#important-programs">22. 22 Important C Programs</a></li>
+        <li><a href="#comparison-tables">23. Master Comparison Tables</a></li>
+        <li><a href="#question-bank">24. University Question Bank</a></li>
+        <li><a href="#one-day-revision">25. One-Day Revision & Checklist</a></li>
+      </ul>
+    </sidebar>
+
+    <main>
+      
+      <section id="control-structures">
+        <h1>1. Control Structures Overview</h1>
+        
+        <div class="box note-box">
+          <div class="box-title">📌 SIMPLE DEFINITION</div>
+          <p>A <strong>Control Structure</strong> is a programming construct that determines the order (or sequence) in which individual statements, instructions, or function calls are executed or evaluated within a C program.</p>
+        </div>
+
+        <h3>DETAILED EXPLANATION</h3>
+        <p>By default, a C program executes sequentially from top to bottom, executing one statement after another in the order they appear. However, real-world computational problems require programs to make choices, repeat actions based on conditions, or skip certain blocks of code entirely. Control structures provide the necessary flow control capabilities to alter the default linear execution path.</p>
+
+        <p>Control structures form the core logic of any computer program. Without control statements, a program would only be capable of executing a rigid sequence of instructions regardless of user input or changing data conditions. C provides four major fundamental categories of flow control statements: Sequential Execution, Selection (Decision Making), Iteration (Looping), and Unconditional Jump Control.</p>
+
+        <h3>CATEGORIES OF CONTROL STRUCTURES</h3>
+        <ul>
+          <li><strong>1. Sequential Control Structure:</strong> Default execution mode where instructions are executed step-by-step in linear succession.</li>
+          <li><strong>2. Decision / Selection Control Structure:</strong> Branching constructs (<code>if</code>, <code>if-else</code>, <code>switch</code>) that evaluate boolean expressions to choose between alternative execution paths.</li>
+          <li><strong>3. Looping / Iteration Control Structure:</strong> Repetitive constructs (<code>for</code>, <code>while</code>, <code>do-while</code>) that execute a block of code multiple times based on condition evaluation.</li>
+          <li><strong>4. Jump Statements:</strong> Transfer mechanisms (<code>break</code>, <code>continue</code>, <code>goto</code>, <code>return</code>) that unconditionally shift control flow to a different part of the program.</li>
+        </ul>
+
+        <div class="diagram-container">
+          <div class="diagram-node">Program Start</div>
+          <div class="diagram-arrow"></div>
+          <div class="diagram-node" style="background-color: var(--syntax-bg);">Control Structure Classification</div>
+          <div style="display: flex; gap: 1rem; width: 100%; justify-content: space-around; margin-top: 1rem;">
+            <div class="diagram-node" style="font-size: 0.8rem; min-width: 100px;">Sequential</div>
+            <div class="diagram-node" style="font-size: 0.8rem; min-width: 100px;">Decision (if / switch)</div>
+            <div class="diagram-node" style="font-size: 0.8rem; min-width: 100px;">Looping (for / while)</div>
+            <div class="diagram-node" style="font-size: 0.8rem; min-width: 100px;">Jump (break / goto)</div>
+          </div>
+        </div>
+
+        <div class="box exam-tip">
+          <div class="box-title">💡 5-MARK EXAM ANSWER: What is a Control Structure?</div>
+          <p><strong>Answer:</strong> A control structure in C is a programming statement that controls the execution flow of a program based on specified conditions. By default, C programs run sequentially. Control structures alter this default flow into conditional or repetitive execution. C supports four main control structures: (1) Sequential Control (default order), (2) Decision/Selection Control (if, if-else, switch), (3) Looping/Iterative Control (for, while, do-while), and (4) Jump Control (break, continue, goto). Control structures allow dynamic decision-making, code reusability, and algorithm implementation in software development.</p>
+        </div>
+      </section>
+
+      <section id="if-statement">
+        <h1>2. Simple if Statement</h1>
+
+        <div class="box note-box">
+          <div class="box-title">📌 SIMPLE DEFINITION</div>
+          <p>The <code>if</code> statement is the most basic decision-making construct in C. It executes a block of statements only if a given condition evaluates to <strong>true</strong> (non-zero). If the condition is <strong>false</strong> (zero), the statement block is completely bypassed.</p>
+        </div>
+
+        <h3>DETAILED EXPLANATION</h3>
+        <p>In C, decision-making relies entirely on condition evaluation. When the compiler encounters a simple <code>if</code> statement, it first evaluates the conditional expression inside the parentheses. In C, any non-zero numeric expression is treated as logical <code>true</code>, while a value of <code>0</code> is treated as logical <code>false</code>.</p>
+        <p>If the evaluated expression yields true, program control enters the curly braces <code>{}</code> and executes all statements within the <code>if</code> block. Once completed, control proceeds to the statement immediately following the <code>if</code> block. If the condition evaluates to false, the entire block is skipped, and execution resumes right after the closing brace. If only a single statement is present inside the <code>if</code> block, curly braces are optional, but omitting them is considered bad programming practice.</p>
+
+        <div class="box syntax-box">
+          <div class="box-title">💻 SYNTAX</div>
+          <pre>if (condition) {
+    // Statement(s) executed if condition is true (non-zero)
+}</pre>
+        </div>
+
+        <h3>FLOWCHART (Simple if)</h3>
+        <div class="diagram-container">
+          <div class="diagram-node">Start / Previous Statements</div>
+          <div class="diagram-arrow"></div>
+          <div class="diagram-decision">Test Condition?</div>
+          <div style="display: flex; gap: 2rem; align-items: center; margin-top: 1rem;">
+            <div style="text-align: center;">
+              <span style="color: green; font-weight: bold;">TRUE</span>
+              <div class="diagram-arrow"></div>
+              <div class="diagram-node">Execute IF Block</div>
+            </div>
+            <div style="text-align: center;">
+              <span style="color: red; font-weight: bold;">FALSE</span>
+              <div style="font-size: 0.8rem; color: var(--text-secondary);">Skip IF Block</div>
+            </div>
+          </div>
+          <div class="diagram-arrow"></div>
+          <div class="diagram-node">Next Statements</div>
+        </div>
+
+        <h3>EXAMPLE CODE & STEP-BY-STEP EXPLANATION</h3>
+        <div class="code-container">
+          <div class="code-header">
+            <span>simple_if_example.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+          </div>
+          <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    int age = 20;
+
+    // Simple if check
+    if (age >= 18) {
+        printf("You are eligible to vote!\n");
+    }
+
+    printf("Program finished successfully.\n");
+    return 0;
+}</code></pre>
+        </div>
+        <p><strong>Output:</strong></p>
+        <div class="box syntax-box">
+          <pre>You are eligible to vote!
+Program finished successfully.</pre>
+        </div>
+
+        <p><strong>Step-by-Step Breakdown:</strong></p>
+        <ol>
+          <li>Variable <code>age</code> is declared and initialized to 20.</li>
+          <li>The expression <code>age >= 18</code> evaluates to <code>20 >= 18</code>, which is <strong>1 (TRUE)</strong>.</li>
+          <li>Since the condition is true, control enters the block and prints <code>"You are eligible to vote!"</code>.</li>
+          <li>Control exits the <code>if</code> statement and proceeds to print <code>"Program finished successfully."</code>.</li>
+        </ol>
+
+        <div class="box warning-box">
+          <div class="box-title">⚠️ COMMON MISTAKES</div>
+          <ul>
+            <li><strong>Assignment vs Equality Operator:</strong> Writing <code>if (x = 5)</code> instead of <code>if (x == 5)</code>. <code>x = 5</code> assigns 5 to x, which evaluates to 5 (non-zero/true), making the block always execute!</li>
+            <li><strong>Semicolon after condition:</strong> Writing <code>if (x > 0); { ... }</code>. The semicolon acts as a null statement, terminating the <code>if</code> immediately, causing the block to run unconditionally.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="if-else-statement">
+        <h1>3. if-else Statement</h1>
+
+        <div class="box note-box">
+          <div class="box-title">📌 SIMPLE DEFINITION</div>
+          <p>The <code>if-else</code> statement provides a two-way decision path. It executes the <code>if</code> block if the condition is true, and executes the <code>else</code> block if the condition evaluates to false. Exactly one of the two blocks is guaranteed to execute.</p>
+        </div>
+
+        <h3>DETAILED EXPLANATION</h3>
+        <p>While a simple <code>if</code> statement handles situations where action is required only when a condition is true, real-world scenario often requires an alternative action when the condition fails. The <code>if-else</code> structure solves this by providing a dual-branch mechanism.</p>
+        <p>When the compiler evaluates an <code>if-else</code> construct, it evaluates the boolean condition inside the parentheses. If non-zero (true), control transfers directly to the <code>if</code> body, skipping the <code>else</code> body. Conversely, if the condition evaluates to zero (false), control skips the <code>if</code> body and immediately executes the statements in the <code>else</code> body. This guarantees mutual exclusivity—both blocks can never execute together in a single run.</p>
+
+        <div class="box syntax-box">
+          <div class="box-title">💻 SYNTAX</div>
+          <pre>if (condition) {
+    // True Block: Executed when condition is TRUE
+} else {
+    // False Block: Executed when condition is FALSE
+}</pre>
+        </div>
+
+        <h3>FLOWCHART (if-else)</h3>
+        <div class="diagram-container">
+          <div class="diagram-node">Start</div>
+          <div class="diagram-arrow"></div>
+          <div class="diagram-decision">Condition True?</div>
+          <div style="display: flex; gap: 3rem; margin-top: 1rem;">
+            <div style="text-align: center;">
+              <span style="color: green; font-weight: bold;">TRUE</span>
+              <div class="diagram-arrow"></div>
+              <div class="diagram-node">Execute IF Block</div>
+            </div>
+            <div style="text-align: center;">
+              <span style="color: red; font-weight: bold;">FALSE</span>
+              <div class="diagram-arrow"></div>
+              <div class="diagram-node">Execute ELSE Block</div>
+            </div>
+          </div>
+          <div class="diagram-arrow"></div>
+          <div class="diagram-node">Continue Program</div>
+        </div>
+
+        <h3>EXAMPLE: Even or Odd Determination</h3>
+        <div class="code-container">
+          <div class="code-header">
+            <span>even_odd.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+          </div>
+          <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    int num = 15;
+
+    if (num % 2 == 0) {
+        printf("%d is an EVEN number.\n", num);
+    } else {
+        printf("%d is an ODD number.\n", num);
+    }
+
+    return 0;
+}</code></pre>
+        </div>
+        <p><strong>Output:</strong> <code>15 is an ODD number.</code></p>
+
+        <div class="box exam-tip">
+          <div class="box-title">💡 10-MARK EXAM ANSWER: Explain Decision Making with if and if-else</div>
+          <p><strong>1. Introduction:</strong> Decision control structures allow C programs to alter execution sequence based on conditions. The primary branching statements are <code>if</code> and <code>if-else</code>.</p>
+          <p><strong>2. Simple if:</strong> Used for one-way decision-making. Condition is tested; if non-zero, statements inside braces run. Syntax: <code>if (condition) { statements; }</code>.</p>
+          <p><strong>3. if-else:</strong> Provides a two-way path. Syntax: <code>if (condition) { block1; } else { block2; }</code>. If condition evaluates to true, block1 executes; otherwise block2 executes.</p>
+          <p><strong>4. Comparison Table:</strong></p>
+          <div class="table-wrapper">
+            <table>
+              <tr><th>Feature</th><th>Simple if</th><th>if-else</th></tr>
+              <tr><td>Decision Paths</td><td>One-way branching</td><td>Two-way branching</td></tr>
+              <tr><td>False Action</td><td>No action taken when false</td><td>Executes alternative 'else' block</td></tr>
+              <tr><td>Guaranteed Execution</td><td>Block may be skipped completely</td><td>One of the two blocks always executes</td></tr>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="nested-if-else">
+        <h1>4. Nested if-else</h1>
+
+        <div class="box note-box">
+          <div class="box-title">📌 SIMPLE DEFINITION</div>
+          <p><strong>Nested if-else</strong> occurs when an <code>if</code> or an <code>else</code> statement is placed inside another <code>if</code> or <code>else</code> block. It is used to evaluate complex, multi-layered logical conditions.</p>
+        </div>
+
+        <h3>DETAILED EXPLANATION</h3>
+        <p>When decision-making depends on a series of sub-conditions, simple <code>if-else</code> constructs are insufficient. Nesting enables a programmer to test a secondary condition only after a primary condition has satisfied true or false.</p>
+        <p>In a nested structure, the outer condition is evaluated first. If true, control enters the outer <code>if</code> block, where it encounters an inner <code>if-else</code> statement. The inner condition is then evaluated to decide between inner branches. A common issue in nesting is the <em>Dangling Else Problem</em>, where an <code>else</code> clause may visually appear to belong to an outer <code>if</code>, but C compiler rules always associate an <code>else</code> with the nearest un-paired preceding <code>if</code> unless explicit curly braces are used.</p>
+
+        <div class="box syntax-box">
+          <div class="box-title">💻 SYNTAX</div>
+          <pre>if (condition1) {
+    if (condition2) {
+        // Executed when both condition1 & condition2 are TRUE
+    } else {
+        // Executed when condition1 is TRUE, but condition2 is FALSE
+    }
+} else {
+    // Executed when condition1 is FALSE
+}</pre>
+        </div>
+
+        <h3>EXAMPLE: Find Largest of Three Numbers</h3>
+        <div class="code-container">
+          <div class="code-header">
+            <span>largest_three.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+          </div>
+          <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    int a = 25, b = 40, c = 15;
+
+    if (a >= b) {
+        if (a >= c) {
+            printf("%d is the largest.\n", a);
+        } else {
+            printf("%d is the largest.\n", c);
+        }
+    } else {
+        if (b >= c) {
+            printf("%d is the largest.\n", b);
+        } else {
+            printf("%d is the largest.\n", c);
+        }
+    }
+    return 0;
+}</code></pre>
+        </div>
+        <p><strong>Output:</strong> <code>40 is the largest.</code></p>
+      </section>
+
+      <section id="else-if-ladder">
+        <h1>5. else-if Ladder</h1>
+
+        <div class="box note-box">
+          <div class="box-title">📌 SIMPLE DEFINITION</div>
+          <p>An <strong>else-if ladder</strong> is a multi-way decision-making structure used to test several conditions sequentially. Conditions are checked top-to-bottom; as soon as a true condition is found, its block runs, and the rest of the ladder is bypassed.</p>
+        </div>
+
+        <h3>DETAILED EXPLANATION</h3>
+        <p>When a program needs to choose among multiple distinct choices based on ranges or multiple logical tests, nesting becomes hard to read. An <code>else-if</code> ladder provides a structured linear format for evaluating multiple conditions sequentially.</p>
+        <p>Execution begins at the top. The compiler evaluates <code>condition1</code>. If true, its corresponding code block executes, and the entire remaining ladder is skipped. If false, control shifts down to evaluate <code>condition2</code>. This cascading process continues until a true condition is met or the final optional <code>else</code> block is reached, which acts as a default fallback when all preceding conditions evaluate to false.</p>
+
+        <div class="box syntax-box">
+          <div class="box-title">💻 SYNTAX</div>
+          <pre>if (condition1) {
+    // Code block 1
+} else if (condition2) {
+    // Code block 2
+} else if (condition3) {
+    // Code block 3
+} else {
+    // Default Code block (when all above conditions are FALSE)
+}</pre>
+        </div>
+
+        <h3>EXAMPLE: Student Grade Calculation</h3>
+        <div class="code-container">
+          <div class="code-header">
+            <span>grade_ladder.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+          </div>
+          <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    int marks = 85;
+
+    if (marks >= 90) {
+        printf("Grade: A+\n");
+    } else if (marks >= 80) {
+        printf("Grade: A\n");
+    } else if (marks >= 70) {
+        printf("Grade: B\n");
+    } else if (marks >= 60) {
+        printf("Grade: C\n");
+    } else if (marks >= 50) {
+        printf("Grade: D\n");
+    } else {
+        printf("Grade: Fail\n");
+    }
+
+    return 0;
+}</code></pre>
+        </div>
+        <p><strong>Output:</strong> <code>Grade: A</code></p>
+      </section>
+
+      <section id="switch-statement">
+        <h1>6. switch Statement</h1>
+
+        <div class="box note-box">
+          <div class="box-title">📌 SIMPLE DEFINITION</div>
+          <p>The <code>switch</code> statement is a multi-way selection control statement in C that evaluates an integer or character expression and transfers execution directly to a matching labeled <code>case</code> block.</p>
+        </div>
+
+        <h3>DETAILED EXPLANATION</h3>
+        <p>The <code>switch</code> statement is an efficient alternative to long <code>else-if</code> ladders when a variable needs to be tested against a set of discrete integral or character constant values. Internally, compilers often optimize <code>switch</code> statements using jump tables, making execution faster than evaluating multiple relational conditions sequentially.</p>
+
+        <p><strong>Key Rules & Components:</strong></p>
+        <ul>
+          <li><strong>Expression Type:</strong> The expression inside <code>switch(expr)</code> MUST evaluate to an <code>int</code> or <code>char</code>. Floating-point numbers (<code>float</code>, <code>double</code>) are STRICTLY NOT allowed.</li>
+          <li><strong>Case Label:</strong> Must be a constant integer or character literal (e.g., <code>case 1:</code> or <code>case 'A':</code>). Variables or range expressions (e.g., <code>case x:</code> or <code>case 1...5:</code>) are invalid in standard C.</li>
+          <li><strong>Role of <code>break</code>:</strong> The <code>break</code> statement terminates the switch block. Omitting <code>break</code> causes execution to flow continuously into subsequent case blocks regardless of their labels. This behavior is called <strong>Fall-Through</strong>.</li>
+          <li><strong>Role of <code>default</code>:</strong> Optional fallback block executed when no case label matches the evaluated expression.</li>
+        </ul>
+
+        <div class="box syntax-box">
+          <div class="box-title">💻 SYNTAX</div>
+          <pre>switch (expression) {
+    case value1:
+        // Statements
+        break;
+    case value2:
+        // Statements
+        break;
+    default:
+        // Default Statements
+}</pre>
+        </div>
+
+        <h3>EXAMPLE: Simple Menu Calculator</h3>
+        <div class="code-container">
+          <div class="code-header">
+            <span>switch_calculator.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+          </div>
+          <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    char op = '+';
+    int a = 10, b = 5;
+
+    switch (op) {
+        case '+':
+            printf("Result: %d\n", a + b);
+            break;
+        case '-':
+            printf("Result: %d\n", a - b);
+            break;
+        case '*':
+            printf("Result: %d\n", a * b);
+            break;
+        case '/':
+            printf("Result: %d\n", a / b);
+            break;
+        default:
+            printf("Invalid Operator!\n");
+    }
+    return 0;
+}</code></pre>
+        </div>
+        <p><strong>Output:</strong> <code>Result: 15</code></p>
+
+        <div class="box exam-tip">
+          <div class="box-title">💡 10-MARK COMPARISON: switch vs else-if Ladder</div>
+          <div class="table-wrapper">
+            <table>
+              <tr><th>Property</th><th>switch Statement</th><th>else-if Ladder</th></tr>
+              <tr><td>Expression Type</td><td>Restricted to integer or character constants only</td><td>Supports any relational or boolean expressions (float, ranges)</td></tr>
+              <tr><td>Evaluation Basis</td><td>Tests for exact equality against constant values</td><td>Tests conditions based on logical or relational checks</td></tr>
+              <tr><td>Performance</td><td>Faster for many cases (uses compiler jump tables)</td><td>Evaluates conditions sequentially top-to-bottom (slower)</td></tr>
+              <tr><td>Execution Fall-through</td><td>Occurs if <code>break</code> is omitted intentionally or accidentally</td><td>Not possible; blocks are inherently mutually exclusive</td></tr>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="looping-concepts">
+        <h1>7. Looping Concepts & Iteration</h1>
+
+        <div class="box note-box">
+          <div class="box-title">📌 SIMPLE DEFINITION</div>
+          <p>A <strong>Loop</strong> is a control construct that repeatedly executes a block of target statements as long as a specified boolean condition remains <strong>true</strong>.</p>
+        </div>
+
+        <h3>DETAILED EXPLANATION</h3>
+        <p>Looping (or iteration) allows programmers to execute repetitive tasks efficiently without code duplication. Every well-designed loop in C consists of four fundamental components:</p>
+        <ol>
+          <li><strong>Initialization:</strong> Sets the starting value of the loop control variable before iteration begins.</li>
+          <li><strong>Test Condition:</strong> Evaluates a boolean expression. If true, the loop body executes; if false, loop terminates.</li>
+          <li><strong>Loop Body:</strong> The set of instructions that execute repeatedly during each iteration.</li>
+          <li><strong>Update (Increment/Decrement):</strong> Modifies the loop control variable after each pass to bring it closer to failing the test condition, preventing an <strong>Infinite Loop</strong>.</li>
+        </ol>
+
+        <p><strong>Loop Classification:</strong></p>
+        <ul>
+          <li><strong>Entry-Controlled Loops (<code>for</code>, <code>while</code>):</strong> Condition is tested <em>before</em> executing the loop body. If initial condition is false, body executes 0 times.</li>
+          <li><strong>Exit-Controlled Loops (<code>do-while</code>):</strong> Condition is tested <em>after</em> executing the loop body. The body is guaranteed to execute at least 1 time regardless of condition.</li>
+        </ul>
+      </section>
+
+      <section id="for-loop">
+        <h1>8. for Loop</h1>
+
+        <div class="box note-box">
+          <div class="box-title">📌 SIMPLE DEFINITION</div>
+          <p>The <code>for</code> loop is an entry-controlled loop that combines initialization, condition testing, and control variable updates into a single concise header statement. It is ideal for counter-controlled loops where the number of iterations is known in advance.</p>
+        </div>
+
+        <div class="box syntax-box">
+          <div class="box-title">💻 SYNTAX & EXECUTION ORDER</div>
+          <pre>for (initialization; condition; update) {
+    // Loop body statements
+}</pre>
+          <p><strong>Execution Order:</strong> 1. Initialization &rarr; 2. Test Condition &rarr; 3. Loop Body (if True) &rarr; 4. Update Expression &rarr; Repeat from Step 2.</p>
+        </div>
+
+        <h3>EXAMPLE: Multiplication Table</h3>
+        <div class="code-container">
+          <div class="code-header">
+            <span>for_table.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+          </div>
+          <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    int num = 5;
+    for (int i = 1; i <= 5; i++) {
+        printf("%d x %d = %d\n", num, i, num * i);
+    }
+    return 0;
+}</code></pre>
+        </div>
+        <p><strong>Output:</strong></p>
+        <div class="box syntax-box">
+          <pre>5 x 1 = 5
+5 x 2 = 10
+5 x 3 = 15
+5 x 4 = 20
+5 x 5 = 25</pre>
+        </div>
+      </section>
+
+      <section id="while-loop">
+        <h1>9. while Loop</h1>
+
+        <div class="box note-box">
+          <div class="box-title">📌 SIMPLE DEFINITION</div>
+          <p>The <code>while</code> loop is an entry-controlled iterative statement that repeatedly executes a statement block as long as the test condition remains true. It is typically used when the exact number of iterations is not known beforehand.</p>
+        </div>
+
+        <div class="box syntax-box">
+          <div class="box-title">💻 SYNTAX</div>
+          <pre>initialization;
+while (condition) {
+    // Loop body statements
+    update; // Increment or Decrement
+}</pre>
+        </div>
+
+        <h3>EXAMPLE: Reverse a Number</h3>
+        <div class="code-container">
+          <div class="code-header">
+            <span>reverse_number.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+          </div>
+          <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    int num = 1234, rev = 0, rem;
+
+    while (num != 0) {
+        rem = num % 10;
+        rev = rev * 10 + rem;
+        num /= 10;
+    }
+
+    printf("Reversed Number: %d\n", rev);
+    return 0;
+}</code></pre>
+        </div>
+        <p><strong>Output:</strong> <code>Reversed Number: 4321</code></p>
+      </section>
+
+      <section id="do-while-loop">
+        <h1>10. do-while Loop</h1>
+
+        <div class="box note-box">
+          <div class="box-title">📌 SIMPLE DEFINITION</div>
+          <p>The <code>do-while</code> loop is an exit-controlled iterative statement where the loop condition is evaluated at the bottom of the loop body. This guarantees that the loop body executes <strong>at least once</strong>, even if the condition is false initially.</p>
+        </div>
+
+        <div class="box syntax-box">
+          <div class="box-title">💻 SYNTAX</div>
+          <pre>initialization;
+do {
+    // Loop body statements
+    update;
+} while (condition); // Note mandatory semicolon!</pre>
+        </div>
+
+        <h3>DEMONSTRATION: while vs do-while (False Condition)</h3>
+        <div class="code-container">
+          <div class="code-header">
+            <span>loop_diff_demo.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+          </div>
+          <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    int x = 10;
+
+    printf("Testing while loop:\n");
+    while (x < 5) {
+        printf("Inside while loop\n"); // Will NOT execute
+        x++;
+    }
+
+    printf("Testing do-while loop:\n");
+    do {
+        printf("Inside do-while loop (Runs at least once!)\n"); // WILL execute
+        x++;
+    } while (x < 5);
+
+    return 0;
+}</code></pre>
+        </div>
+      </section>
+
+      <section id="loop-comparison">
+        <h1>11. Master Loop Comparison Table</h1>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>for Loop</th>
+                <th>while Loop</th>
+                <th>do-while Loop</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Control Type</td>
+                <td>Entry-Controlled</td>
+                <td>Entry-Controlled</td>
+                <td>Exit-Controlled</td>
+              </tr>
+              <tr>
+                <td>Condition Check</td>
+                <td>Top of loop (before execution)</td>
+                <td>Top of loop (before execution)</td>
+                <td>Bottom of loop (after execution)</td>
+              </tr>
+              <tr>
+                <td>Min Executions</td>
+                <td>0 times (if initial condition is false)</td>
+                <td>0 times (if initial condition is false)</td>
+                <td><strong>1 time</strong> (always runs body first)</td>
+              </tr>
+              <tr>
+                <td>Best Used For</td>
+                <td>Known number of iterations</td>
+                <td>Unknown iterations (event-driven)</td>
+                <td>Menu-driven user programs</td>
+              </tr>
+              <tr>
+                <td>Syntax Structure</td>
+                <td>Combined header: (init; cond; update)</td>
+                <td>Separate init, cond, update lines</td>
+                <td>Trailing semicolon after <code>while(cond);</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="break-statement">
+        <h1>12. break Statement</h1>
+
+        <div class="box note-box">
+          <div class="box-title">📌 SIMPLE DEFINITION</div>
+          <p>The <code>break</code> statement is a loop control jump statement that immediately terminates the innermost enclosing loop or <code>switch</code> block, transferring control to the statement immediately following the loop.</p>
+        </div>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span>break_example.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+          </div>
+          <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    for (int i = 1; i <= 10; i++) {
+        if (i == 5) {
+            printf("Break triggered at i = 5!\n");
+            break; // Loop terminates immediately
+        }
+        printf("%d ", i);
+    }
+    printf("\nOutside loop.\n");
+    return 0;
+}</code></pre>
+        </div>
+        <p><strong>Output:</strong> <code>1 2 3 4 Break triggered at i = 5! Outside loop.</code></p>
+      </section>
+
+      <section id="continue-statement">
+        <h1>13. continue Statement</h1>
+
+        <div class="box note-box">
+          <div class="box-title">📌 SIMPLE DEFINITION</div>
+          <p>The <code>continue</code> statement skips the remaining statements inside the current iteration of a loop and immediately jumps to the next iteration evaluation (update step in <code>for</code>, condition check in <code>while</code>).</p>
+        </div>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span>continue_example.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+          </div>
+          <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    for (int i = 1; i <= 5; i++) {
+        if (i == 3) {
+            continue; // Skips printing 3
+        }
+        printf("%d ", i);
+    }
+    return 0;
+}</code></pre>
+        </div>
+        <p><strong>Output:</strong> <code>1 2 4 5</code></p>
+      </section>
+
+      <section id="goto-statement">
+        <h1>14. goto Statement</h1>
+
+        <div class="box note-box">
+          <div class="box-title">📌 SIMPLE DEFINITION</div>
+          <p> The <code>goto</code> statement provides an unconditional jump from the <code>goto</code> line to a labeled statement within the same function scope.</p>
+        </div>
+
+        <h3>SYNTAX & EXAMPLE</h3>
+        <div class="box syntax-box">
+          <pre>goto label_name;
+...
+label_name:
+    // Code to execute after jump</pre>
+        </div>
+
+        <p><strong>Disadvantages:</strong> Excessive usage of <code>goto</code> creates "Spaghetti Code," which destroys structured program flow, making code extremely difficult to debug, trace, maintain, or optimize.</p>
+      </section>
+
+      <section id="concept-of-array">
+        <h1>15. Concept of Arrays</h1>
+
+        <div class="box note-box">
+          <div class="box-title">📌 SIMPLE DEFINITION</div>
+          <p>An <strong>Array</strong> is a derived data type in C that stores a fixed-size, sequential collection of elements of the <strong>same data type</strong> in contiguous memory locations.</p>
+        </div>
+
+        <h3>DETAILED EXPLANATION</h3>
+        <p>In standard programming without arrays, storing 100 student marks would require declaring 100 individual variables (e.g., <code>m1, m2, ..., m100</code>). Managing such variables is inefficient. An array solves this problem by allowing a single variable identifier to store multiple values accessed via index numbers.</p>
+
+        <p><strong>Key Properties of C Arrays:</strong></p>
+        <ul>
+          <li><strong>Homogeneous Data:</strong> All elements in an array must be of identical data types (all <code>int</code>, all <code>float</code>, etc.).</li>
+          <li><strong>Contiguous Memory Allocation:</strong> Elements are placed in sequential adjacent memory addresses without gaps.</li>
+          <li><strong>Zero-Based Indexing:</strong> For an array of size $N$, element indices range from $0$ to $N-1$.</li>
+        </ul>
+
+        <h3>MEMORY REPRESENTATION DIAGRAM</h3>
+        <p>Consider <code>int arr[5] = {10, 20, 30, 40, 50};</code> assuming base address 2000 (integers taking 4 bytes each):</p>
+        
+        <div class="array-visual">
+          <div class="array-cell">
+            <span>10</span>
+            <span class="array-index">arr[0]<br>2000</span>
+          </div>
+          <div class="array-cell">
+            <span>20</span>
+            <span class="array-index">arr[1]<br>2004</span>
+          </div>
+          <div class="array-cell">
+            <span>30</span>
+            <span class="array-index">arr[2]<br>2008</span>
+          </div>
+          <div class="array-cell">
+            <span>40</span>
+            <span class="array-index">arr[3]<br>2012</span>
+          </div>
+          <div class="array-cell">
+            <span>50</span>
+            <span class="array-index">arr[4]<br>2016</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="array-declaration">
+        <h1>16. Array Declaration & Initialization</h1>
+
+        <h3>ARRAY DECLARATION SYNTAX</h3>
+        <div class="box syntax-box">
+          <pre>data_type array_name[array_size];</pre>
+        </div>
+        <p>Example: <code>int marks[5];</code> allocates $5 \times 4 = 20$ bytes of memory (on 32/64-bit platforms).</p>
+
+        <h3>INITIALIZATION METHODS</h3>
+        <ol>
+          <li><strong>Compile-time Full Initialization:</strong> <code>int num[5] = {1, 2, 3, 4, 5};</code></li>
+          <li><strong>Partial Initialization:</strong> <code>int num[5] = {10, 20};</code> (Unassigned elements automatically become <code>0</code>).</li>
+          <li><strong>Initialization without Size:</strong> <code>int num[] = {5, 10, 15};</code> (Compiler automatically sets size to 3).</li>
+          <li><strong>Runtime Input (Looping):</strong> Populating array values via user input with <code>scanf()</code>.</li>
+        </ol>
+      </section>
+
+      <section id="1d-arrays">
+        <h1>17. 1D Array Programs & Operations</h1>
+
+        <h3>PROGRAM 1: Read & Display Array Elements</h3>
+        <div class="code-container">
+          <div class="code-header">
+            <span>array_io.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+          </div>
+          <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    int arr[5] = {10, 20, 30, 40, 50};
+
+    printf("Array elements are:\n");
+    for (int i = 0; i < 5; i++) {
+        printf("arr[%d] = %d\n", i, arr[i]);
+    }
+    return 0;
+}</code></pre>
+        </div>
+
+        <h3>PROGRAM 2: Sum & Average of Array Elements</h3>
+        <div class="code-container">
+          <div class="code-header">
+            <span>array_sum_avg.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+          </div>
+          <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    int arr[5] = {10, 20, 30, 40, 50};
+    int sum = 0;
+
+    for (int i = 0; i < 5; i++) {
+        sum += arr[i];
+    }
+
+    float avg = (float)sum / 5;
+    printf("Sum = %d, Average = %.2f\n", sum, avg);
+    return 0;
+}</code></pre>
+        </div>
+
+        <h3>PROGRAM 3: Linear Search in Array</h3>
+        <div class="code-container">
+          <div class="code-header">
+            <span>linear_search.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+          </div>
+          <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    int arr[5] = {12, 45, 23, 89, 56};
+    int key = 23, found = -1;
+
+    for (int i = 0; i < 5; i++) {
+        if (arr[i] == key) {
+            found = i;
+            break;
+        }
+    }
+
+    if (found != -1)
+        printf("Element %d found at index %d.\n", key, found);
+    else
+        printf("Element not found.\n");
+
+    return 0;
+}</code></pre>
+        </div>
+      </section>
+
+      <section id="multidimensional-arrays">
+        <h1>18. 2D & Multidimensional Arrays</h1>
+
+        <div class="box note-box">
+          <div class="box-title">📌 SIMPLE DEFINITION</div>
+          <p>A <strong>Two-Dimensional (2D) Array</strong> is an array of arrays arranged conceptually as a grid or matrix with rows and columns.</p>
+        </div>
+
+        <h3>DECLARATION & MEMORY REPRESENTATION</h3>
+        <div class="box syntax-box">
+          <pre>data_type array_name[rows][columns];</pre>
+        </div>
+        <p>Example: <code>int matrix[2][3];</code> represents 2 rows and 3 columns (Total 6 elements).</p>
+
+        <div class="matrix-grid">
+          <div class="array-cell">m[0][0]</div>
+          <div class="array-cell">m[0][1]</div>
+          <div class="array-cell">m[0][2]</div>
+          <div class="array-cell">m[1][0]</div>
+          <div class="array-cell">m[1][1]</div>
+          <div class="array-cell">m[1][2]</div>
+        </div>
+
+        <h3>EXAMPLE: Matrix Addition</h3>
+        <div class="code-container">
+          <div class="code-header">
+            <span>matrix_add.c</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+          </div>
+          <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    int a[2][2] = {{1, 2}, {3, 4}};
+    int b[2][2] = {{5, 6}, {7, 8}};
+    int sum[2][2];
+
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            sum[i][j] = a[i][j] + b[i][j];
+            printf("%d ", sum[i][j]);
+        }
+        printf("\n");
+    }
+    return 0;
+}</code></pre>
+        </div>
+        <p><strong>Output:</strong></p>
+        <div class="box syntax-box">
+          <pre>6 8
+10 12</pre>
+        </div>
+      </section>
+
+      <section id="character-arrays">
+        <h1>19. Character Arrays</h1>
+
+        <div class="box note-box">
+          <div class="box-title">📌 SIMPLE DEFINITION</div>
+          <p>A <strong>Character Array</strong> is a sequence of elements where each element stores a single character value (type <code>char</code>).</p>
+        </div>
+
+        <p>Example: <code>char letters[5] = {'H', 'e', 'l', 'l', 'o'};</code></p>
+        <p>Unlike regular numeric arrays, character arrays can represent textual words when properly terminated with a Null Character (<code>'\0'</code>).</p>
+      </section>
+
+      <section id="strings-in-c">
+        <h1>20. Strings in C & Library Functions</h1>
+
+        <div class="box note-box">
+          <div class="box-title">📌 SIMPLE DEFINITION</div>
+          <p>In C, a <strong>String</strong> is a one-dimensional array of characters terminated by a special <strong>Null Character (<code>'\0'</code>)</strong>.</p>
+        </div>
+
+        <h3>IMPORTANCE OF NULL CHARACTER ('\0')</h3>
+        <p>The null character has an ASCII value of 0. It serves as an end-of-string sentinel marker, telling C string processing functions (like <code>printf("%s")</code> or <code>strlen()</code>) where the string payload terminates in memory.</p>
+
+        <div class="array-visual">
+          <div class="array-cell">'D'</div>
+          <div class="array-cell">'u'</div>
+          <div class="array-cell">'r'</div>
+          <div class="array-cell">'g'</div>
+          <div class="array-cell">'a'</div>
+          <div class="array-cell" style="border-color: red;">'\0'</div>
+        </div>
+
+        <h3>COMMON STRING LIBRARY FUNCTIONS (&lt;string.h&gt;)</h3>
+        <div class="table-wrapper">
+          <table>
+            <tr><th>Function</th><th>Syntax</th><th>Description</th></tr>
+            <tr><td><code>strlen(str)</code></td><td><code>size_t len = strlen(s);</code></td><td>Returns length of string s excluding <code>'\0'</code></td></tr>
+            <tr><td><code>strcpy(dest, src)</code></td><td><code>strcpy(d, s);</code></td><td>Copies contents of src string into dest array</td></tr>
+            <tr><td><code>strcat(s1, s2)</code></td><td><code>strcat(s1, s2);</code></td><td>Appends/concatenates string s2 to end of s1</td></tr>
+            <tr><td><code>strcmp(s1, s2)</code></td><td><code>int diff = strcmp(s1, s2);</code></td><td>Compares s1 & s2 lexicographically (returns 0 if equal)</td></tr>
+          </table>
+        </div>
+      </section>
+
+      <section id="limitations-of-arrays">
+        <h1>21. Limitations of Arrays</h1>
+
+        <div class="box warning-box">
+          <div class="box-title">⚠️ KEY LIMITATIONS OF C ARRAYS</div>
+          <ul>
+            <li><strong>Fixed Size:</strong> Array size must be specified at compile time and cannot be resized dynamically during runtime in basic array allocations.</li>
+            <li><strong>Homogeneous Constraint:</strong> Cannot store heterogeneous data types (e.g., mixing integers and floats in a single array is illegal).</li>
+            <li><strong>Lack of Bounds Checking:</strong> C does not verify array index boundaries. Accessing <code>arr[10]</code> in a 5-element array results in Undefined Behavior or Segmentation Fault!</li>
+            <li><strong>Expensive Insertions/Deletions:</strong> Inserting or deleting an element requires shifting elements, resulting in inefficient $O(N)$ operations.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="important-programs">
+        <h1>22. 22 Important C Programs (Unit II)</h1>
+        
+        <p>Below is a curated collection of foundational programs covering all Unit II concepts:</p>
+
+        <h3>1. Check Even or Odd</h3>
+        <pre><code>if (num % 2 == 0) printf("Even"); else printf("Odd");</code></pre>
+
+        <h3>2. Check Positive or Negative</h3>
+        <pre><code>if (num >= 0) printf("Positive"); else printf("Negative");</code></pre>
+
+        <h3>3. Find Largest of Two Numbers</h3>
+        <pre><code>max = (a > b) ? a : b;</code></pre>
+
+        <h3>4. Find Largest of Three Numbers</h3>
+        <pre><code>if(a>=b && a>=c) max=a; else if(b>=c) max=b; else max=c;</code></pre>
+
+        <h3>5. Grade Calculation using else-if Ladder</h3>
+        <pre><code>if(m>=90) grade='A'; else if(m>=75) grade='B'; else grade='F';</code></pre>
+
+        <h3>6. Calculator using switch</h3>
+        <pre><code>switch(op) { case '+': res=a+b; break; case '-': res=a-b; break; }</code></pre>
+
+        <h3>7. Print 1 to 10 using for Loop</h3>
+        <pre><code>for(int i=1; i<=10; i++) printf("%d ", i);</code></pre>
+
+        <h3>8. Print 1 to 10 using while Loop</h3>
+        <pre><code>int i=1; while(i<=10){ printf("%d ", i); i++; }</code></pre>
+
+        <h3>9. Print 1 to 10 using do-while Loop</h3>
+        <pre><code>int i=1; do { printf("%d ", i); i++; } while(i<=10);</code></pre>
+
+        <h3>10. Factorial of a Number</h3>
+        <pre><code>long fact=1; for(int i=1; i<=n; i++) fact *= i;</code></pre>
+
+        <h3>11. Sum of Digits</h3>
+        <pre><code>while(n>0){ sum += n%10; n/=10; }</code></pre>
+
+        <h3>12. Reverse a Number</h3>
+        <pre><code>while(n>0){ rev = rev*10 + n%10; n/=10; }</code></pre>
+
+        <h3>13. Array Input & Output</h3>
+        <pre><code>for(int i=0; i<n; i++) scanf("%d", &arr[i]);</code></pre>
+
+        <h3>14. Sum of Array Elements</h3>
+        <pre><code>for(int i=0; i<n; i++) sum += arr[i];</code></pre>
+
+        <h3>15. Find Largest Element in Array</h3>
+        <pre><code>int max=arr[0]; for(int i=1; i<n; i++) if(arr[i]>max) max=arr[i];</code></pre>
+
+        <h3>16. Linear Search in Array</h3>
+        <pre><code>for(int i=0; i<n; i++) if(arr[i]==key) return i;</code></pre>
+
+        <h3>17. Reverse an Array</h3>
+        <pre><code>for(int i=0; i<n/2; i++){ int t=a[i]; a[i]=a[n-1-i]; a[n-1-i]=t; }</code></pre>
+
+        <h3>18. Matrix Addition</h3>
+        <pre><code>c[i][j] = a[i][j] + b[i][j];</code></pre>
+
+        <h3>19. Matrix Transpose</h3>
+        <pre><code>trans[j][i] = matrix[i][j];</code></pre>
+
+        <h3>20. String Length Calculation (without strlen)</h3>
+        <pre><code>int len=0; while(str[len] != '\0') len++;</code></pre>
+
+        <h3>21. String Copy (without strcpy)</h3>
+        <pre><code>int i=0; while((dest[i]=src[i])!='\0') i++;</code></pre>
+
+        <h3>22. Palindrome String Checker</h3>
+        <pre><code>// Compares characters from front and back until middle</code></pre>
+      </section>
+
+      <section id="comparison-tables">
+        <h1>23. Master Comparison Tables</h1>
+
+        <h3>if vs if-else</h3>
+        <div class="table-wrapper">
+          <table>
+            <tr><th>if Statement</th><th>if-else Statement</th></tr>
+            <tr><td>One-way branching path</td><td>Two-way branching path</td></tr>
+            <tr><td>No statement executed if false</td><td>Executes else block if false</td></tr>
+          </table>
+        </div>
+
+        <h3>break vs continue</h3>
+        <div class="table-wrapper">
+          <table>
+            <tr><th>break Statement</th><th>continue Statement</th></tr>
+            <tr><td>Terminates the loop completely</td><td>Skips current iteration & jumps to next pass</td></tr>
+            <tr><td>Control goes outside the loop</td><td>Control stays inside the loop</td></tr>
+          </table>
+        </div>
+      </section>
+
+      <section id="question-bank">
+        <h1>24. University Question Bank</h1>
+
+        <h3>2-MARK QUESTIONS</h3>
+        <ol>
+          <li><strong>Q: What is a control structure?</strong><br>A: A construct that alters the default sequential flow of program execution based on logical conditions.</li>
+          <li><strong>Q: What is the significance of the null character <code>'\0'</code>?</strong><br>A: It marks the end termination of a string in memory.</li>
+          <li><strong>Q: Why is <code>do-while</code> called an exit-controlled loop?</strong><br>A: Because its test condition is evaluated at the end after executing the body once.</li>
+        </ol>
+
+        <h3>10-MARK LONG QUESTIONS</h3>
+        <ol>
+          <li>Explain decision control statements in C with syntax, flowcharts, and code examples.</li>
+          <li>Differentiate between <code>for</code>, <code>while</code>, and <code>do-while</code> loops with suitable examples.</li>
+          <li>Explain 1D and 2D arrays with memory representation and matrix addition program.</li>
+        </ol>
+      </section>
+
+      <section id="one-day-revision">
+        <h1>25. One-Day Revision & Exam Checklist</h1>
+
+        <div class="box exam-tip">
+          <div class="box-title">⚡ LAST 30 MINUTES BEFORE EXAM CHECKLIST</div>
+          <ul>
+            <li>✔ Always place a semicolon after <code>do-while</code> condition: <code>while(cond);</code></li>
+            <li>✔ Array indexing always starts at 0 and ends at <code>N-1</code>.</li>
+            <li>✔ String arrays require 1 extra byte for the null character <code>'\0'</code>.</li>
+            <li>✔ Do not put semicolons immediately after <code>if(cond);</code> or <code>for(...);</code>.</li>
+            <li>✔ In <code>switch</code>, expression must be integral (no <code>float</code>).</li>
+          </ul>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <button id="back-to-top" title="Back to Top">↑</button>
+
+  <script>
+    // Theme Toggle Functionality with LocalStorage
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+
+    if (currentTheme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      themeToggleBtn.innerHTML = '☀️ Light';
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      let theme = document.documentElement.getAttribute('data-theme');
+      if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+        themeToggleBtn.innerHTML = '🌙 Dark';
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+        themeToggleBtn.innerHTML = '☀️ Light';
+      }
+    });
+
+    // Mobile Sidebar Drawer Toggle
+    const menuToggleBtn = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+
+    menuToggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+    });
+
+    // Reading Progress Bar
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('progress-bar').style.width = scrolled + '%';
+
+      // Back to top button visibility
+      const backToTopBtn = document.getElementById('back-to-top');
+      if (winScroll > 300) {
+        backToTopBtn.style.display = 'flex';
+      } else {
+        backToTopBtn.style.display = 'none';
+      }
+    });
+
+    // Back to top click handler
+    document.getElementById('back-to-top').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Copy Code Snippet Function
+    function copyCode(button) {
+      const codeBlock = button.parentElement.nextElementSibling.querySelector('code');
+      navigator.clipboard.writeText(codeBlock.innerText).then(() => {
+        button.innerText = 'Copied!';
+        setTimeout(() => button.innerText = 'Copy Code', 2000);
+      });
+    }
+
+    // Real-time Search Box Filter
+    document.getElementById('searchBox').addEventListener('keyup', function() {
+      let filter = this.value.toLowerCase();
+      let sections = document.querySelectorAll('main section');
+
+      sections.forEach(sec => {
+        let text = sec.innerText.toLowerCase();
+        if (text.includes(filter)) {
+          sec.style.display = '';
+        } else {
+          sec.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
