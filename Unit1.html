@@ -1,0 +1,1991 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNIT I – C PROGRAMMING: Complete BCA Exam Preparation Portal</title>
+    <style>
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --bg-sidebar: #0f172a;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --text-sidebar: #e2e8f0;
+            --accent-primary: #2563eb;
+            --accent-hover: #1d4ed8;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+            
+            --code-bg: #1e1e2e;
+            --code-text: #cdd6f4;
+            --code-header: #181825;
+            
+            --note-bg: #eff6ff;
+            --note-border: #3b82f6;
+            --note-text: #1e40af;
+            
+            --tip-bg: #f0fdf4;
+            --tip-border: #22c55e;
+            --tip-text: #166534;
+            
+            --warn-bg: #fffbeeb;
+            --warn-border: #f59e0b;
+            --warn-text: #92400e;
+            
+            --syntax-bg: #faf5ff;
+            --syntax-border: #a855f7;
+            --syntax-text: #6b21a8;
+
+            --exam-5m-bg: #fdf2f8;
+            --exam-5m-border: #ec4899;
+            --exam-10m-bg: #f0f9ff;
+            --exam-10m-border: #0284c7;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
+            --bg-sidebar: #020617;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-sidebar: #f1f5f9;
+            --accent-primary: #3b82f6;
+            --accent-hover: #60a5fa;
+            --border-color: #334155;
+            
+            --code-bg: #111827;
+            --code-text: #e5e7eb;
+            --code-header: #1f2937;
+            
+            --note-bg: #1e3a8a22;
+            --note-border: #3b82f6;
+            --note-text: #93c5fd;
+            
+            --tip-bg: #14532d22;
+            --tip-border: #22c55e;
+            --tip-text: #86efac;
+            
+            --warn-bg: #78350f22;
+            --warn-border: #f59e0b;
+            --warn-text: #fde68a;
+            
+            --syntax-bg: #581c8722;
+            --syntax-border: #a855f7;
+            --syntax-text: #e9d5ff;
+
+            --exam-5m-bg: #83184322;
+            --exam-5m-border: #f472b6;
+            --exam-10m-bg: #07598522;
+            --exam-10m-border: #38bdf8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        /* Reading Progress Bar */
+        #progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: transparent;
+            z-index: 1000;
+        }
+
+        #progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #2563eb, #ec4899, #8b5cf6);
+            width: 0%;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Main Container Layout */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 300px;
+            background-color: var(--bg-sidebar);
+            color: var(--text-sidebar);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            overflow-y: auto;
+            z-index: 900;
+            transition: transform 0.3s ease;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 24px 20px 16px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.25rem;
+            color: #ffffff;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .sidebar-header p {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 16px 12px;
+            flex-grow: 1;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 4px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 0.875rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .sidebar-menu a:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            transform: translateX(4px);
+        }
+
+        .sidebar-menu a.active {
+            background-color: var(--accent-primary);
+            color: #ffffff;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .sidebar-menu .badge {
+            margin-left: auto;
+            background: rgba(255,255,255,0.15);
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* Main Content Styling */
+        .main-content {
+            margin-left: 300px;
+            flex-grow: 1;
+            padding: 40px 48px;
+            max-width: 1200px;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* Top Navbar Floating Control */
+        .top-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .theme-toggle-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.875rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle-btn:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-primary);
+        }
+
+        /* Banner Styling */
+        .portal-header {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: white;
+            padding: 36px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portal-header::after {
+            content: "";
+            position: absolute;
+            right: -50px;
+            bottom: -50px;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .portal-header h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 12px;
+        }
+
+        .portal-header p {
+            font-size: 1.05rem;
+            color: #94a3b8;
+            max-width: 800px;
+        }
+
+        .tag-list {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: rgba(255,255,255,0.1);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #60a5fa;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .topic-section {
+            background-color: var(--bg-card);
+            border-radius: 16px;
+            padding: 36px;
+            margin-bottom: 48px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .topic-section:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .topic-header {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 16px;
+            margin-bottom: 28px;
+        }
+
+        .topic-header h2 {
+            font-size: 1.75rem;
+            color: var(--accent-primary);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .topic-header .topic-num {
+            background: var(--accent-primary);
+            color: white;
+            font-size: 0.9rem;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        /* Subsections & Content Elements */
+        h3 {
+            font-size: 1.25rem;
+            margin: 24px 0 12px 0;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+            font-size: 1.025rem;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 24px;
+            color: var(--text-secondary);
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Callout Boxes */
+        .box {
+            padding: 20px 24px;
+            border-radius: 12px;
+            margin: 24px 0;
+            border-left: 5px solid;
+            position: relative;
+        }
+
+        .box-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .box-note { background: var(--note-bg); border-color: var(--note-border); color: var(--text-primary); }
+        .box-note .box-title { color: var(--note-border); }
+
+        .box-tip { background: var(--tip-bg); border-color: var(--tip-border); color: var(--text-primary); }
+        .box-tip .box-title { color: var(--tip-border); }
+
+        .box-warn { background: var(--warn-bg); border-color: var(--warn-border); color: var(--text-primary); }
+        .box-warn .box-title { color: var(--warn-border); }
+
+        .box-syntax { background: var(--syntax-bg); border-color: var(--syntax-border); color: var(--text-primary); }
+        .box-syntax .box-title { color: var(--syntax-border); }
+
+        .box-5m { background: var(--exam-5m-bg); border-color: var(--exam-5m-border); color: var(--text-primary); }
+        .box-5m .box-title { color: var(--exam-5m-border); }
+
+        .box-10m { background: var(--exam-10m-bg); border-color: var(--exam-10m-border); color: var(--text-primary); }
+        .box-10m .box-title { color: var(--exam-10m-border); }
+
+        .code-container {
+            background-color: var(--code-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 24px 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .code-header {
+            background-color: var(--code-header);
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #a6adc8;
+            font-family: monospace;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .copy-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #cdd6f4;
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        pre {
+            padding: 20px;
+            overflow-x: auto;
+            color: var(--code-text);
+            font-family: "Fira Code", Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Syntax highlighting simple utility */
+        .kw { color: #cba6f7; font-weight: bold; } /* Keywords */
+        .dt { color: #89b4fa; } /* Data types */
+        .st { color: #a6e3a1; } /* Strings */
+        .cm { color: #6c7086; font-style: italic; } /* Comments */
+        .num { color: #fab387; } /* Numbers */
+        .pp { color: #f38ba8; } /* Preprocessor */
+
+        /* HTML Tables Styling */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 24px 0;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 14px 18px;
+            font-weight: 700;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        td {
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0,0,0,0.02);
+        }
+
+        [data-theme="dark"] tr:nth-child(even) {
+            background-color: rgba(255,255,255,0.02);
+        }
+
+        /* Diagrams & Custom UI Visuals */
+        .pipeline-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: center;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px 20px;
+            gap: 16px;
+        }
+
+        .flow-number {
+            background: var(--accent-primary);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .flow-desc strong {
+            color: var(--text-primary);
+            display: block;
+        }
+
+        .flow-desc span {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .mem-cell {
+            border: 2px dashed var(--accent-primary);
+            background: var(--bg-secondary);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .mem-addr {
+            font-size: 0.75rem;
+            color: #888;
+            font-family: monospace;
+        }
+
+        .mem-val {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--accent-primary);
+            margin: 4px 0;
+        }
+
+        .mem-var {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        /* Back to top button */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-lg);
+            font-size: 1.2rem;
+            z-index: 1000;
+            transition: all 0.2s;
+        }
+
+        #back-to-top:hover {
+            transform: translateY(-4px);
+            background: var(--accent-hover);
+        }
+
+        /* Question Bank Tabs */
+        .tab-container {
+            margin: 24px 0;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 8px;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: var(--text-secondary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            color: var(--accent-primary);
+            border-bottom-color: var(--accent-primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .accordion-item {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            background: var(--bg-card);
+        }
+
+        .accordion-header {
+            padding: 16px 20px;
+            background: var(--bg-secondary);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .accordion-content {
+            padding: 20px;
+            display: none;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .accordion-item.active .accordion-content {
+            display: block;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .portal-header h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Reading Progress Bar -->
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <div class="app-container">
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>C PROGRAMMING</h2>
+                <p>UNIT I Exam Prep Portal</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#intro" class="nav-link active">1. Introduction <span class="badge">Syllabus</span></a></li>
+                <li><a href="#keywords" class="nav-link">2. Keywords & Identifiers</a></li>
+                <li><a href="#constants" class="nav-link">3. Constants & Escapes</a></li>
+                <li><a href="#variables" class="nav-link">4. Variables & Scope</a></li>
+                <li><a href="#io" class="nav-link">5. Input & Output (I/O)</a></li>
+                <li><a href="#compilation" class="nav-link">6. Compilation Pipeline</a></li>
+                <li><a href="#datatypes" class="nav-link">7. Data Types & Qualifiers</a></li>
+                <li><a href="#memory" class="nav-link">8. Memory Representation</a></li>
+                <li><a href="#operators" class="nav-link">9. Operators (All Types)</a></li>
+                <li><a href="#expressions" class="nav-link">10. Precedence & Associativity</a></li>
+                <li><a href="#questions" class="nav-link">Exam Question Bank</a></li>
+                <li><a href="#programs" class="nav-link">Important Programs</a></li>
+                <li><a href="#revision" class="nav-link">One-Day Revision</a></li>
+                <li><a href="#checklist" class="nav-link">30-Min Checklist</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="top-navbar">
+                <button class="mobile-toggle" id="menuToggle">☰ Syllabus Menu</button>
+                <div style="flex-grow:1"></div>
+                <button class="theme-toggle-btn" id="themeToggle">
+                    <span id="themeIcon">🌙</span> <span id="themeText">Dark Mode</span>
+                </button>
+            </div>
+
+            <!-- Portal Header -->
+            <header class="portal-header">
+                <h1>UNIT I – C PROGRAMMING</h1>
+                <p>Comprehensive BCA University Examination Study Portal. Fully elaborated explanations, ready-to-write 5-mark & 10-mark answers, syntax breakdowns, memory representations, and code implementations.</p>
+                <div class="tag-list">
+                    <span class="tag">BCA / BSC CS</span>
+                    <span class="tag">University Syllabus</span>
+                    <span class="tag">Full Depth Notes</span>
+                    <span class="tag">ANSI C Standard</span>
+                </div>
+            </header>
+
+            <!-- ================= TOPIC 1 ================= -->
+            <section id="intro" class="topic-section">
+                <div class="topic-header">
+                    <h2><span class="topic-num">01</span> Introduction to Programming & C</h2>
+                </div>
+
+                <h3>1. Simple Definition</h3>
+                <p>A <strong>programming language</strong> is a formalized set of instructions, rules, and syntax used by human programmers to communicate with a computer system and instruct it to perform specific computational tasks, solve mathematical calculations, or manage data operations.</p>
+
+                <h3>2. Detailed Explanation</h3>
+                <p>Computers inherently understand only binary digits—sequences of 0s and 1s representing high and low electronic voltage states. Because human thought process is abstract and expressed in natural languages, writing complex applications directly in machine language is tedious, error-prone, and inefficient. Programming languages act as a bridge between human logic and computer hardware.</p>
+                <p>Programming languages have evolved through distinct generations: Machine Language (1st Generation), Assembly Language (2nd Generation), and High-Level Languages (3rd Generation and beyond). High-level languages abstract hardware complexities, allowing developers to write instructions using English-like syntax and mathematical expressions.</p>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Machine Language</th>
+                                <th>Assembly Language</th>
+                                <th>High-Level Language (e.g., C)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>Syntax</th>
+                                <td>Binary digits (0s and 1s)</td>
+                                <td>Mnemonic codes (ADD, MOV)</td>
+                                <td>English-like keywords (`if`, `while`)</td>
+                            </tr>
+                            <tr>
+                                <th>Execution Speed</th>
+                                <td>Extremely Fast (Direct CPU)</td>
+                                <td>Fast (Minimal translation)</td>
+                                <td>Requires Compilation / Translation</td>
+                            </tr>
+                            <tr>
+                                <th>Portability</th>
+                                <td>Non-portable (Machine specific)</td>
+                                <td>Non-portable (Architecture specific)</td>
+                                <td>Highly Portable across processors</td>
+                            </tr>
+                            <tr>
+                                <th>Error Debugging</th>
+                                <td>Extremely Difficult</td>
+                                <td>Difficult</td>
+                                <td>Easy and structured</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Compiler vs. Interpreter</h3>
+                <p>To execute high-level programs, code must be translated into machine instructions. This is done via two distinct language processors:</p>
+                <ul>
+                    <li><strong>Compiler:</strong> Translates the entire source code into machine code in one go, generating an intermediate object/executable file. Execution speed is high. C, C++, and Rust use compilers.</li>
+                    <li><strong>Interpreter:</strong> Translates and executes the source code line-by-line. If an error occurs, execution stops immediately at that line. Debugging is easier, but execution speed is slower. Python and JavaScript use interpreters.</li>
+                </ul>
+
+                <h3>History and Origin of C Language</h3>
+                <p>The C programming language was developed between 1969 and 1972 by <strong>Dennis Ritchie</strong> at AT&T Bell Laboratories in Murray Hill, New Jersey. C was created primarily to implement the UNIX operating system. It evolved from older languages: ALGOL 60 → CPL → BCPL (developed by Martin Richards) → B (developed by Ken Thompson) → <strong>C</strong> (Dennis Ritchie).</p>
+                <p>In 1989, the American National Standards Institute (ANSI) standardized C (known as ANSI C or C89), ensuring uniform execution across different computing systems worldwide.</p>
+
+                <h3>Key Characteristics of C</h3>
+                <ul>
+                    <li><strong>Middle-Level Language:</strong> Combines the structural clarity of high-level languages with low-level direct access to hardware and memory addresses (via pointers).</li>
+                    <li><strong>Structured Language:</strong> Supports function modularity, block structures, and control flow primitives.</li>
+                    <li><strong>Portability:</strong> C programs written for one machine can be compiled and executed on other architectures with minimal changes.</li>
+                    <li><strong>Extensibility:</strong> Users can write custom functions and add them to standard software library suites.</li>
+                </ul>
+
+                <h3>Basic Structure of a C Program</h3>
+                <p>A standard C program follows a well-defined sequence of sections:</p>
+                <div class="box box-syntax">
+                    <div class="box-title">Syntax Structure</div>
+                    1. Documentation Section (Comments)<br>
+                    2. Link / Preprocessor Directives (`#include`)<br>
+                    3. Definition Section (`#define`)<br>
+                    4. Global Declaration Section<br>
+                    5. Main Function Header (`int main()`)<br>
+                    6. Local Variable Declarations & Executable Statements<br>
+                    7. User-Defined Functions
+                </div>
+
+                <h3>Example C Code: Hello World</h3>
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>hello.c</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+                    </div>
+                    <pre><code><span class="cm">/*
+ * Program: Hello World Demonstrator
+ * Author: BCA Exam Portal
+ */</span>
+<span class="pp">#include &lt;stdio.h&gt;</span>  <span class="cm">// Preprocessor directive for Standard I/O library</span>
+
+<span class="dt">int</span> main() {        <span class="cm">// Main execution entry point</span>
+    <span class="cm">// Output text to console</span>
+    printf(<span class="st">"Hello, World!\n"</span>);
+    
+    <span class="kw">return</span> <span class="num">0</span>;       <span class="cm">// Signal successful termination to OS</span>
+}</code></pre>
+                </div>
+
+                <h3>Line-by-Line Explanation</h3>
+                <ul>
+                    <li><code>#include &lt;stdio.h&gt;</code>: Directs the preprocessor to include the Standard Input Output header file containing function declarations for <code>printf()</code> and <code>scanf()</code>.</li>
+                    <li><code>int main()</code>: The mandatory execution entry point for every C program. Returns an integer status code to the OS.</li>
+                    <li><code>printf("Hello, World!\n");</code>: Built-in formatted output function. <code>\n</code> represents a newline escape character.</li>
+                    <li><code>return 0;</code>: Indicates that the program executed and exited cleanly without errors (status code 0).</li>
+                </ul>
+
+                <div class="box box-5m">
+                    <div class="box-title">Ready-to-Write 5-Mark Exam Answer: Characteristics and Importance of C</div>
+                    <p><strong>Answer:</strong> C is widely regarded as the foundational programming language of modern computing. Key characteristics include:</p>
+                    <ol>
+                        <li><strong>Middle-Level Capabilities:</strong> Provides high-level language readability alongside low-level memory manipulation using pointers and bitwise operators.</li>
+                        <li><strong>Structured & Modular:</strong> Problems can be broken down into smaller, reusable functions.</li>
+                        <li><strong>High Efficiency & Speed:</strong> Produces fast execution code close to assembly speed.</li>
+                        <li><strong>Portability:</strong> Code is machine-independent; a source file can be recompiled across multiple operating systems.</li>
+                        <li><strong>Rich Library Support:</strong> Offers built-in header functions for math, strings, dynamic memory, and I/O management.</li>
+                    </ol>
+                </div>
+
+                <div class="box box-10m">
+                    <div class="box-title">Ready-to-Write 10-Mark Exam Answer: Basic Structure of C Program with Evolution</div>
+                    <p><strong>1. Historical Background & Evolution:</strong> C was created by Dennis Ritchie at AT&T Bell Labs in 1972. It originated from the B language (Ken Thompson) and BCPL (Martin Richards) to build the UNIX operating system. ANSI standardized it in 1989 (ANSI C).</p>
+                    <p><strong>2. Structural Sections of a C Program:</strong></p>
+                    <ul>
+                        <li><strong>Documentation Section:</strong> Contains header comments detailing the author, purpose, and date.</li>
+                        <li><strong>Preprocessor Section:</strong> Begins with <code>#</code> (e.g., <code>#include &lt;stdio.h&gt;</code>) to link required system libraries before compilation.</li>
+                        <li><strong>Global Declarations:</strong> Variables and function prototypes accessible across all code blocks.</li>
+                        <li><strong>Main Function:</strong> Mandatory entry point <code>int main()</code> enclosing execution statements within curly braces <code>{}</code>.</li>
+                        <li><strong>Statements & Expressions:</strong> Logic, loop primitives, function invocations, and assignment operations terminating with a semicolon <code>;</code>.</li>
+                        <li><strong>Return Statement:</strong> <code>return 0;</code> to signal successful execution to the host environment.</li>
+                    </ul>
+                    <p><strong>3. Applications of C:</strong> Operating System Kernels (Linux, Windows, macOS), Embedded Hardware Firmware, Compilers, MySQL Engines, and Real-time Graphics Systems.</p>
+                </div>
+
+                <div class="box box-warn">
+                    <div class="box-title">Common Mistakes</div>
+                    <ul>
+                        <li>Forgetting the semicolon (<code>;</code>) at the end of statement lines.</li>
+                        <li>Writing <code>Main()</code> or <code>MAIN()</code> instead of lowercase <code>main()</code> (C is case-sensitive).</li>
+                        <li>Omitting header files like <code>&lt;stdio.h&gt;</code> when using <code>printf()</code>.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- ================= TOPIC 2 ================= -->
+            <section id="keywords" class="topic-section">
+                <div class="topic-header">
+                    <h2><span class="topic-num">02</span> Keywords & Identifiers</h2>
+                </div>
+
+                <h3>1. Simple Definition</h3>
+                <p><strong>Keywords</strong> are reserved words that have predefined, fixed meanings to the C compiler and cannot be redefined. <strong>Identifiers</strong> are custom names given by programmers to program elements such as variables, functions, arrays, structures, and labels.</p>
+
+                <h3>2. Detailed Explanation</h3>
+                <p>In the C language token system, every word processed by the compiler is classified as a keyword, identifier, constant, string literal, symbol, or operator. Keywords form the structural syntax of the language (e.g., controlling loops, defining types, specifying storage). Because the compiler relies on these words to parse logic, they cannot be used as user-defined variable names.</p>
+                <p>Identifiers, on the other hand, are created by the programmer. Constructing valid identifiers requires strict adherence to lexical rules enforced by the compiler during lexical analysis.</p>
+
+                <h3>The 32 Standard ANSI C Keywords</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Reserved Keywords</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>Data Types</th>
+                                <td><code>char</code>, <code>int</code>, <code>float</code>, <code>double</code>, <code>void</code></td>
+                            </tr>
+                            <tr>
+                                <th>Type Modifiers</th>
+                                <td><code>signed</code>, <code>unsigned</code>, <code>short</code>, <code>long</code></td>
+                            </tr>
+                            <tr>
+                                <th>Control Flow</th>
+                                <td><code>if</code>, <code>else</code>, <code>switch</code>, <code>case</code>, <code>default</code>, <code>break</code>, <code>continue</code>, <code>goto</code></td>
+                            </tr>
+                            <tr>
+                                <th>Looping Primitives</th>
+                                <td><code>for</code>, <code>while</code>, <code>do</code></td>
+                            </tr>
+                            <tr>
+                                <th>Storage Classes</th>
+                                <td><code>auto</code>, <code>register</code>, <code>static</code>, <code>extern</code></td>
+                            </tr>
+                            <tr>
+                                <th>Derived/User-Defined</th>
+                                <td><code>struct</code>, <code>union</code>, <code>enum</code>, <code>typedef</code></td>
+                            </tr>
+                            <tr>
+                                <th>Qualifiers & Misc</th>
+                                <td><code>const</code>, <code>volatile</code>, <code>sizeof</code>, <code>return</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Rules for Naming Identifiers</h3>
+                <ol>
+                    <li>An identifier can consist of upper and lower case letters (<code>A-Z</code>, <code>a-z</code>), digits (<code>0-9</code>), and the underscore character (<code>_</code>).</li>
+                    <li>The <strong>first character must be a letter or an underscore</strong>. It cannot begin with a digit.</li>
+                    <li>C is strictly <strong>case-sensitive</strong>: <code>TotalMarks</code>, <code>totalmarks</code>, and <code>TOTALMARKS</code> are three distinct identifiers.</li>
+                    <li><strong>No reserved keyword</strong> can be used as an identifier name (e.g., <code>int float;</code> is illegal).</li>
+                    <li>No special characters, spaces, or punctuation symbols (such as <code>@</code>, <code>$</code>, <code>%</code>, <code>-</code>) are allowed within an identifier.</li>
+                    <li>Identifier length is implementation-dependent, but ANSI C guarantees recognition of at least the first 31 characters.</li>
+                </ol>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Identifier</th>
+                                <th>Status</th>
+                                <th>Reason / Explanation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>student_age</code></td>
+                                <td><strong style="color:green;">Valid</strong></td>
+                                <td>Uses letters and underscore correctly.</td>
+                            </tr>
+                            <tr>
+                                <td><code>_count</code></td>
+                                <td><strong style="color:green;">Valid</strong></td>
+                                <td>Begins with an underscore.</td>
+                            </tr>
+                            <tr>
+                                <td><code>2ndYear</code></td>
+                                <td><strong style="color:red;">Invalid</strong></td>
+                                <td>Cannot start with a numeric digit.</td>
+                            </tr>
+                            <tr>
+                                <td><code>total-amount</code></td>
+                                <td><strong style="color:red;">Invalid</strong></td>
+                                <td>Hyphen <code>-</code> is an operator, not allowed.</td>
+                            </tr>
+                            <tr>
+                                <td><code>float</code></td>
+                                <td><strong style="color:red;">Invalid</strong></td>
+                                <td>Reserved keyword cannot be used as identifier.</td>
+                            </tr>
+                            <tr>
+                                <td><code>average score</code></td>
+                                <td><strong style="color:red;">Invalid</strong></td>
+                                <td>Contains space; spaces are forbidden.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="box box-5m">
+                    <div class="box-title">Ready-to-Write 5-Mark Exam Answer: Keywords vs Identifiers</div>
+                    <p><strong>Answer:</strong></p>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>Keywords</th>
+                                    <th>Identifiers</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>Definition</th>
+                                    <td>Reserved words with fixed syntax meaning in C.</td>
+                                    <td>User-defined names for variables, functions, etc.</td>
+                                </tr>
+                                <tr>
+                                    <th>Quantity</th>
+                                    <td>Exactly 32 standard keywords in ANSI C.</td>
+                                    <td>Infinite possibilities based on naming rules.</td>
+                                </tr>
+                                <tr>
+                                    <th>Case Sensitivity</th>
+                                    <td>Must always be written in lowercase.</td>
+                                    <td>Can mix upper and lower case letters.</td>
+                                </tr>
+                                <tr>
+                                    <th>Purpose</th>
+                                    <td>Specifies structure, types, and control flow.</td>
+                                    <td>Identifies dynamic memory locations & routines.</td>
+                                </tr>
+                                <tr>
+                                    <th>Example</th>
+                                    <td><code>int</code>, <code>while</code>, <code>return</code>, <code>struct</code></td>
+                                    <td><code>studentCount</code>, <code>calculateSum</code>, <code>item_price</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= TOPIC 3 ================= -->
+            <section id="constants" class="topic-section">
+                <div class="topic-header">
+                    <h2><span class="topic-num">03</span> Constants</h2>
+                </div>
+
+                <h3>1. Simple Definition</h3>
+                <p>A <strong>constant</strong> (also called a literal) is a fixed value assigned to a program element that cannot be altered or modified by the program during execution.</p>
+
+                <h3>2. Detailed Types of Constants</h3>
+                <ul>
+                    <li><strong>Integer Constants:</strong> Whole numerical quantities without fractional components.
+                        <ul>
+                            <li><em>Decimal:</em> Digits 0–9 without leading zero (e.g., <code>150</code>, <code>-45</code>).</li>
+                            <li><em>Octal:</em> Digits 0–7 preceded by a leading zero <code>0</code> (e.g., <code>025</code> = 21 in decimal).</li>
+                            <li><em>Hexadecimal:</em> Digits 0–9 and letters A–F, preceded by <code>0x</code> or <code>0X</code> (e.g., <code>0x1A</code> = 26 in decimal).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Real / Floating-Point Constants:</strong> Numbers containing fractional components or exponential expressions.
+                        <ul>
+                            <li><em>Fractional Notation:</em> <code>3.14159</code>, <code>-0.005</code></li>
+                            <li><em>Scientific Exponential Notation:</em> <code>1.5e3</code> (represents 1.5 × 10<sup>3</sup> = 1500.0).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Character Constants:</strong> A single character enclosed within single quotes (e.g., <code>'A'</code>, <code>'9'</code>, <code>'$'</code>). Internally, C converts them to ASCII integer codes (e.g., <code>'A'</code> = 65).</li>
+                    <li><strong>String Constants:</strong> A sequence of zero or more characters enclosed within double quotes (e.g., <code>"Hello BCA"</code>, <code>"123"</code>). C appends a hidden null character <code>'\0'</code> to signal the end of string memory.</li>
+                </ul>
+
+                <h3>Escape Sequences in C</h3>
+                <p>An escape sequence is a non-printable or special character combination beginning with a backslash (<code>\</code>) used to handle formatting within strings and character constants.</p>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Escape Sequence</th>
+                                <th>Character Name</th>
+                                <th>ASCII Value / Functional Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>\n</code></td><td>Newline</td><td>Moves cursor to the start of the next line.</td></tr>
+                            <tr><td><code>\t</code></td><td>Horizontal Tab</td><td>Advances cursor by 5–8 character tab spaces.</td></tr>
+                            <tr><td><code>\b</code></td><td>Backspace</td><td>Moves cursor back by one position.</td></tr>
+                            <tr><td><code>\r</code></td><td>Carriage Return</td><td>Moves cursor back to the start of current line.</td></tr>
+                            <tr><td><code>\\</code></td><td>Backslash</td><td>Prints a literal backslash character.</td></tr>
+                            <tr><td><code>\'</code></td><td>Single Quote</td><td>Prints a literal single quote.</td></tr>
+                            <tr><td><code>\"</code></td><td>Double Quote</td><td>Prints a literal double quote.</td></tr>
+                            <tr><td><code>\0</code></td><td>Null Character</td><td>Represents string termination in memory.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Symbolic Constants: <code>#define</code> vs <code>const</code> Keyword</h3>
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>constants_demo.c</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+                    </div>
+                    <pre><code><span class="pp">#include &lt;stdio.h&gt;</span>
+
+<span class="pp">#define PI_MACRO 3.14159</span>       <span class="cm">// Preprocessor directive substitution</span>
+
+<span class="dt">int</span> main() {
+    <span class="kw">const</span> <span class="dt">float</span> PI_CONST = <span class="num">3.14159f</span>; <span class="cm">// Typed constant variable</span>
+    
+    <span class="cm">// PI_CONST = 3.14; // ERROR: Assignment of read-only variable!</span>
+    printf(<span class="st">"Macro PI: %f, Const PI: %f\n"</span>, PI_MACRO, PI_CONST);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+
+                <div class="box box-5m">
+                    <div class="box-title">Ready-to-Write 5-Mark Exam Answer: Methods of Defining Constants</div>
+                    <p>In C, constants can be defined using two primary methods:</p>
+                    <ol>
+                        <li><strong>Preprocessor Directive (<code>#define</code>):</strong> Replaces occurrences of a symbol with a value before compilation begins.
+                            <br><em>Syntax:</em> <code>#define NAME value</code>
+                            <br><em>Advantage:</em> Takes no RAM memory space at runtime.
+                        </li>
+                        <li><strong>Type Qualifier (<code>const</code> Keyword):</strong> Declares a variable as read-only, enforced by the compiler.
+                            <br><em>Syntax:</em> <code>const data_type variable_name = value;</code>
+                            <br><em>Advantage:</em> Respects type checking and variable scope rules.</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- ================= TOPIC 4 ================= -->
+            <section id="variables" class="topic-section">
+                <div class="topic-header">
+                    <h2><span class="topic-num">04</span> Variables</h2>
+                </div>
+
+                <h3>1. Simple Definition</h3>
+                <p>A <strong>variable</strong> is a named location in memory used to store data that can be read, changed, or updated during program execution.</p>
+
+                <h3>2. Variable Phases: Declaration, Initialization, Assignment</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Phase</th>
+                                <th>Definition</th>
+                                <th>C Code Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>Declaration</th>
+                               <td>Tells compiler the variable name and reserves appropriate data type memory.</td>
+                                <td><code>int salary;</code></td>
+                            </tr>
+                            <tr>
+                                <th>Initialization</th>
+                                <td>First-time value assignment given during declaration.</td>
+                                <td><code>int salary = 50000;</code></td>
+                            </tr>
+                            <tr>
+                                <th>Assignment</th>
+                                <td>Updating or changing an existing variable's value later in code execution.</td>
+                                <td><code>salary = 55000;</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Variable Scope: Local vs. Global</h3>
+                <ul>
+                    <li><strong>Local Variables:</strong> Declared inside a function or block <code>{}</code>. They are accessible only within that block, created on block entry, and destroyed on exit.</li>
+                    <li><strong>Global Variables:</strong> Declared outside all functions at the top of the file. Accessible by any function in the program throughout its entire lifecycle.</li>
+                </ul>
+
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>scope_demo.c</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+                    </div>
+                    <pre><code><span class="pp">#include &lt;stdio.h&gt;</span>
+
+<span class="dt">int</span> global_counter = <span class="num">100</span>; <span class="cm">// Global Variable</span>
+
+<span class="dt">void</span> display() {
+    <span class="dt">int</span> local_var = <span class="num">10</span>;   <span class="cm">// Local Variable inside display()</span>
+    printf(<span class="st">"Global: %d, Local: %d\n"</span>, global_counter, local_var);
+}
+
+<span class="dt">int</span> main() {
+    display();
+    <span class="cm">// printf("%d", local_var); // ERROR: local_var is out of scope!</span>
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- ================= TOPIC 5 ================= -->
+            <section id="io" class="topic-section">
+                <div class="topic-header">
+                    <h2><span class="topic-num">05</span> Input and Output Operations</h2>
+                </div>
+
+                <h3>1. Formatted I/O Functions: <code>printf()</code> and <code>scanf()</code></h3>
+                <p>C relies on standard library routines defined in <code>&lt;stdio.h&gt;</code> to manage stream operations:</p>
+                <ul>
+                    <li><code>printf()</code>: Standard formatted output routine that sends styled data to <code>stdout</code> (the console screen). It returns the total count of printed characters.</li>
+                    <li><code>scanf()</code>: Standard formatted input routine that reads characters from <code>stdin</code> (keyboard input), converts them according to format specifiers, and stores them in memory locations passed via address pointers (<code>&amp;</code>). It returns the count of successfully matched and assigned items.</li>
+                </ul>
+
+                <h3>Comprehensive Format Specifier Table</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Specifier</th>
+                                <th>Data Type</th>
+                                <th>Meaning / Usage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>%d</code> or <code>%i</code></td><td><code>int</code></td><td>Signed decimal integer</td></tr>
+                            <tr><td><code>%f</code></td><td><code>float</code></td><td>Floating-point fractional number (default 6 decimal places)</td></tr>
+                            <tr><td><code>%lf</code></td><td><code>double</code></td><td>Double precision floating-point number</td></tr>
+                            <tr><td><code>%c</code></td><td><code>char</code></td><td>Single character</td></tr>
+                            <tr><td><code>%s</code></td><td><code>char[]</code></td><td>String (character array)</td></tr>
+                            <tr><td><code>%u</code></td><td><code>unsigned int</code></td><td>Unsigned decimal integer</td></tr>
+                            <tr><td><code>%ld</code></td><td><code>long int</code></td><td>Signed long integer</td></tr>
+                            <tr><td><code>%p</code></td><td><code>void*</code></td><td>Hexadecimal representation of a pointer address</td></tr>
+                            <tr><td><code>%x</code> / <code>%X</code></td><td><code>int</code></td><td>Unsigned Hexadecimal integer (lowercase/uppercase)</td></tr>
+                            <tr><td><code>%o</code></td><td><code>int</code></td><td>Unsigned Octal integer</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Role of Address Operator (<code>&amp;</code>) in <code>scanf</code></h3>
+                <p>The <code>&amp;</code> symbol is the <strong>address-of operator</strong> in C. When passing variables to <code>scanf()</code>, passing just the name passes the variable's <em>value</em>, whereas passing <code>&amp;variable_name</code> provides the <em>memory address</em> where <code>scanf()</code> must write the value read from the keyboard.</p>
+
+                <div class="box box-warn">
+                    <div class="box-title">Critical Exception: Strings and Arrays</div>
+                    <p>Arrays and String variables (e.g., <code>char name[20];</code>) naturally decay into pointers representing their starting base memory address. Therefore, using <code>&amp;</code> when reading strings in <code>scanf("%s", name);</code> is redundant and incorrect syntax!</p>
+                </div>
+
+                <h3>Unformatted I/O Functions</h3>
+                <ul>
+                    <li><code>getchar()</code>: Reads a single character from keyboard entry.</li>
+                    <li><code>putchar(ch)</code>: Displays a single character to the console.</li>
+                    <li><code>fgets(str, size, stdin)</code>: Safely reads a complete line of text including spaces from standard input, preventing buffer overflow issues associated with older routines like <code>gets()</code>.</li>
+                    <li><code>puts(str)</code>: Writes a string to the console and automatically appends a newline character.</li>
+                </ul>
+
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>io_demo.c</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+                    </div>
+                    <pre><code><span class="pp">#include &lt;stdio.h&gt;</span>
+
+<span class="dt">int</span> main() {
+    <span class="dt">int</span> age;
+    <span class="dt">float</span> gpa;
+    <span class="dt">char</span> grade;
+
+    printf(<span class="st">"Enter Age, GPA, and Grade Letter: "</span>);
+    <span class="cm">// Address operator & passes memory addresses to scanf</span>
+    scanf(<span class="st">"%d %f %c"</span>, &amp;age, &amp;gpa, &amp;grade);
+
+    printf(<span class="st">"\n--- Student Info ---\n"</span>);
+    printf(<span class="st">"Age: %d | GPA: %.2f | Grade: %c\n"</span>, age, gpa, grade);
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- ================= TOPIC 6 ================= -->
+            <section id="compilation" class="topic-section">
+                <div class="topic-header">
+                    <h2><span class="topic-num">06</span> Compilation and Pre-processing Pipeline</h2>
+                </div>
+
+                <h3>1. Simple Definition</h3>
+                <p>The <strong>compilation process</strong> in C transforms human-readable C source code (<code>.c</code>) into machine-executable binary files (<code>.exe</code> or <code>a.out</code>) through a multi-stage translation pipeline consisting of four primary phases: Preprocessor, Compiler, Assembler, and Linker.</p>
+
+                <h3>2. Visual Compilation Pipeline Diagram</h3>
+                <div class="pipeline-flow">
+                    <div class="flow-step">
+                        <div class="flow-number">1</div>
+                        <div class="flow-desc">
+                            <strong>Source Code File (`main.c`)</strong>
+                            <span>Human-readable high-level code written by developer.</span>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-number">2</div>
+                        <div class="flow-desc">
+                            <strong>Preprocessor (`main.i`)</strong>
+                            <span>Expands macros (`#define`), includes header files (`#include`), and strips comments.</span>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-number">3</div>
+                        <div class="flow-desc">
+                            <strong>Compiler (`main.s`)</strong>
+                            <span>Translates expanded C code into architecture-specific Assembly instructions.</span>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-number">4</div>
+                        <div class="flow-desc">
+                            <strong>Assembler (`main.o` or `main.obj`)</strong>
+                            <span>Converts Assembly instructions into binary Object Code containing machine instructions.</span>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-number">5</div>
+                        <div class="flow-desc">
+                            <strong>Linker (`main.exe` / `a.out`)</strong>
+                            <span>Merges object files with system library code routines (e.g., standard `printf` binary).</span>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-number">6</div>
+                        <div class="flow-desc">
+                            <strong>Loader & CPU Execution</strong>
+                            <span>Loads final binary executable into RAM memory for CPU instruction execution.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Preprocessor Directives Explained</h3>
+                <p>Preprocessor directives begin with a hash symbol (<code>#</code>) and are executed before actual code compilation begins:</p>
+                <ul>
+                    <li><code>#include &lt;stdio.h&gt;</code>: Search system library paths for standard header declarations.</li>
+                    <li><code>#include "myheader.h"</code>: Search current local project directory for user-defined header files.</li>
+                    <li><code>#define SIZE 100</code>: Macro definition replacing all occurrences of <code>SIZE</code> with token <code>100</code>.</li>
+                    <li><code>#ifdef</code>, <code>#ifndef</code>, <code>#endif</code>: Conditional compilation blocks used to include or skip code sections based on build flags.</li>
+                </ul>
+
+                <div class="box box-10m">
+                    <div class="box-title">Ready-to-Write 10-Mark Exam Answer: Complete C Compilation Pipeline</div>
+                    <p><strong>1. Introduction:</strong> C uses a compiled build chain model where source code is systematically processed through multiple distinct software components before execution.</p>
+                    <p><strong>2. Detailed Stages:</strong></p>
+                    <ul>
+                        <li><strong>Stage 1: Preprocessing Phase:</strong> The preprocessor takes <code>file.c</code> and generates <code>file.i</code>. It strips out human comments, includes code from header files specified in <code>#include</code> directives, and expands macro definition blocks (<code>#define</code>).</li>
+                        <li><strong>Stage 2: Compilation Phase:</strong> The compiler accepts expanded source <code>file.i</code>, performs lexical, syntax, and semantic analysis, and translates the logic into architecture-specific Assembly code (<code>file.s</code>). Syntax errors are raised at this step.</li>
+                        <li><strong>Stage 3: Assembly Phase:</strong> The assembler translates assembly instructions in <code>file.s</code> into binary machine language relocatable object code (<code>file.o</code> or <code>file.obj</code>).</li>
+                        <li><strong>Stage 4: Linking Phase:</strong> The linker resolves reference addresses across multiple object files and external C libraries (like <code>libc</code>). It binds implementation code for library routines (e.g., <code>printf</code>) and produces the finalized standalone binary executable (<code>file.exe</code>).</li>
+                        <li><strong>Stage 5: Loading Phase:</strong> When invoked, the operating system's Loader component copies the executable file from secondary storage into RAM memory, sets up register stacks, and transfers control to the <code>main()</code> entry point.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- ================= TOPIC 7 ================= -->
+            <section id="datatypes" class="topic-section">
+                <div class="topic-header">
+                    <h2><span class="topic-num">07</span> Data Types, Qualifiers & Modifiers</h2>
+                </div>
+
+                <h3>1. Classification of Data Types</h3>
+                <p>Data types specify how much memory to allocate for a variable, the format of bits stored, and the range of operations that can be performed on it.</p>
+                <ul>
+                    <li><strong>Primary / Basic Data Types:</strong> Built-in primitive types (<code>int</code>, <code>char</code>, <code>float</code>, <code>double</code>, <code>void</code>).</li>
+                    <li><strong>Derived Data Types:</strong> Constructed from basic types (Arrays, Pointers, Functions, References).</li>
+                    <li><strong>User-Defined Data Types:</strong> Custom types defined by the programmer (<code>struct</code>, <code>union</code>, <code>enum</code>, <code>typedef</code>).</li>
+                </ul>
+
+                <h3>Primary Data Types Master Reference Table</h3>
+                <div class="box box-note">
+                    <div class="box-title">Important Compiler Architectural Dependency Note</div>
+                    <p>Sizes and numerical ranges of C data types are not rigidly fixed by the ANSI standard; they depend on the targeted CPU architecture (16-bit, 32-bit, or 64-bit systems) and compiler implementation. Typical 32-bit/64-bit architecture values are shown below.</p>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data Type</th>
+                                <th>Meaning</th>
+                                <th>Typical Size</th>
+                                <th>Typical Numerical Range</th>
+                                <th>Format Specifier</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>char</code></td>
+                                <td>Single character / Byte</td>
+                                <td>1 Byte (8 bits)</td>
+                                <td>-128 to 127 (or 0 to 255)</td>
+                                <td><code>%c</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>int</code></td>
+                                <td>Signed Integer</td>
+                                <td>4 Bytes (32 bits)</td>
+                                <td>-2,147,483,648 to 2,147,483,647</td>
+                                <td><code>%d</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>float</code></td>
+                                <td>Single Precision Float</td>
+                                <td>4 Bytes (32 bits)</td>
+                                <td>1.2E-38 to 3.4E+38 (6 decimal places)</td>
+                                <td><code>%f</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>double</code></td>
+                                <td>Double Precision Float</td>
+                                <td>8 Bytes (64 bits)</td>
+                                <td>2.3E-308 to 1.7E+308 (15 decimal places)</td>
+                                <td><code>%lf</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>void</code></td>
+                                <td>Valueless / Empty</td>
+                                <td>0 Bytes</td>
+                                <td>N/A (Represents absence of value)</td>
+                                <td>N/A</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Data Type Modifiers</h3>
+                <p>Modifiers alter the size or sign boundary range of primary data types:</p>
+                <ul>
+                    <li><code>signed</code>: Uses 1 bit to store the sign (+/-); default setting for numeric types.</li>
+                    <li><code>unsigned</code>: Removes negative ranges, using all bits for positive magnitude, effectively doubling the positive upper limit.</li>
+                    <li><code>short</code>: Decreases storage size (typically 2 bytes for <code>short int</code>).</li>
+                    <li><code>long</code>: Increases storage size (typically 8 bytes for <code>long long int</code>).</li>
+                </ul>
+
+                <h3>Data Type Qualifiers</h3>
+                <ul>
+                    <li><code>const</code>: Makes variable value read-only; attempts to modify it trigger compile-time errors.</li>
+                    <li><code>volatile</code>: Informs the compiler that a variable's value may be changed by external hardware or concurrent threads, disabling aggressive compiler caching optimizations.</li>
+                    <li><code>restrict</code>: A pointer qualifier indicating that no other pointer accesses the same underlying memory block, enabling performance optimizations.</li>
+                </ul>
+            </section>
+
+            <!-- ================= TOPIC 8 ================= -->
+            <section id="memory" class="topic-section">
+                <div class="topic-header">
+                    <h2><span class="topic-num">08</span> Memory Representation</h2>
+                </div>
+
+                <h3>1. Simple Definition</h3>
+                <p><strong>Memory representation</strong> refers to how the C compiler and underlying system hardware store data values as binary bit patterns (0s and 1s) inside RAM byte cells located at specific memory addresses.</p>
+
+                <h3>2. Detailed Memory Architecture</h3>
+                <p>Computer memory (RAM) is structured as an array of byte cells, where each 1 Byte = 8 Bits. Every byte cell has a unique hexadecimal address pointer (e.g., <code>0x7ffd1000</code>).</p>
+
+                <div class="memory-grid">
+                    <div class="mem-cell">
+                        <div class="mem-addr">0x7ffd1000</div>
+                        <div class="mem-val">00010100</div>
+                        <div class="mem-var">age = 20</div>
+                    </div>
+                    <div class="mem-cell">
+                        <div class="mem-addr">0x7ffd1001</div>
+                        <div class="mem-val">01000001</div>
+                        <div class="mem-var">ch = 'A'</div>
+                    </div>
+                </div>
+
+                <h3>Signed Integer Representation: Two's Complement</h3>
+                <p>Unsigned integers are stored using direct binary conversion. Signed integers use <strong>Two's Complement notation</strong> to represent negative numbers.</p>
+
+                <div class="box box-syntax">
+                    <div class="box-title">Step-by-Step Example: Storing -5 in an 8-bit Signed Memory Byte</div>
+                    <ol>
+                        <li>Write positive 5 in binary: <code>0000 0101</code></li>
+                        <li>Invert all bits (One's Complement): <code>1111 1010</code></li>
+                        <li>Add 1 bit to the result (Two's Complement):
+                            <br><code>1111 1010 + 1 = 1111 1011</code>
+                        </li>
+                        <li>Result: <code>1111 1011</code> represents <code>-5</code> in memory. The leftmost Bit (MSB = 1) serves as the sign indicator for negative values.</li>
+                    </ol>
+                </div>
+
+                <h3>Character Representation (ASCII)</h3>
+                <p>Characters are stored in 1 byte of memory using their numeric ASCII codes. For example, when declaring <code>char grade = 'A';</code>, the binary representation of ASCII code 65 (<code>01000001</code>) is written to that memory byte cell.</p>
+            </section>
+
+            <!-- ================= TOPIC 9 ================= -->
+            <section id="operators" class="topic-section">
+                <div class="topic-header">
+                    <h2><span class="topic-num">09</span> Operators</h2>
+                </div>
+
+                <h3>1. Simple Definition</h3>
+                <p>An <strong>operator</strong> is a special symbol that instructs the C compiler to perform specific mathematical, logical, relational, or bitwise manipulations on one or more data values called <strong>operands</strong>.</p>
+
+                <h3>Classification by Number of Operands</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Operands Required</th>
+                                <th>Operators Included</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>Unary Operators</th>
+                                <td>1 Operand</td>
+                                <td><code>++</code>, <code>--</code>, <code>sizeof</code>, <code>!</code>, <code>~</code>, Unary <code>-</code></td>
+                                <td><code>x++</code>, <code>-a</code>, <code>sizeof(int)</code></td>
+                            </tr>
+                            <tr>
+                                <th>Binary Operators</th>
+                                <td>2 Operands</td>
+                                <td><code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>, <code>&amp;&amp;</code>, <code>||</code>, <code>&amp;</code>, <code>|</code>, <code>==</code></td>
+                                <td><code>a + b</code>, <code>x &gt; y</code></td>
+                            </tr>
+                            <tr>
+                                <th>Ternary Operator</th>
+                                <td>3 Operands</td>
+                                <td>Conditional Operator <code>? :</code></td>
+                                <td><code>(a &gt; b) ? a : b</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Exhaustive Operator Categories</h3>
+
+                <h4>1. Arithmetic Operators</h4>
+                <p>Used to perform standard mathematical calculations: Addition (<code>+</code>), Subtraction (<code>-</code>), Multiplication (<code>*</code>), Division (<code>/</code>), and Modulus (<code>%</code>).</p>
+                <div class="box box-warn">
+                    <div class="box-title">Exam Rule: Modulus Operator Restriction</div>
+                    <p>The modulus remainder operator <code>%</code> works <strong>only on integer operands</strong> (e.g., <code>10 % 3 = 1</code>). Using floating-point values (e.g., <code>10.5 % 3.0</code>) causes a compile-time syntax error!</p>
+                </div>
+
+                <h4>2. Relational Operators</h4>
+                <p>Used to compare two values. They evaluate to boolean integer truth values: <code>1</code> for True, and <code>0</code> for False. Symbols include: <code>==</code> (Equal to), <code>!=</code> (Not equal to), <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>.</p>
+
+                <h4>3. Logical Operators & Short-Circuit Evaluation</h4>
+                <p>Combines multiple relational test expressions: Logical AND (<code>&amp;&amp;</code>), Logical OR (<code>||</code>), and Logical NOT (<code>!</code>).</p>
+                <ul>
+                    <li><code>A &amp;&amp; B</code>: Returns 1 only if BOTH operands are true. If <code>A</code> evaluates to 0, <code>B</code> is <strong>not evaluated at all</strong> (Short-Circuiting).</li>
+                    <li><code>A || B</code>: Returns 1 if AT LEAST ONE operand is true. If <code>A</code> evaluates to 1, <code>B</code> is <strong>skipped</strong> completely.</li>
+                </ul>
+
+                <h4>4. Bitwise Operators (Step-by-Step Binary Example)</h4>
+                <p>Bitwise operators work directly on the individual bits of integer operands.</p>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Operator</th>
+                                <th>Name</th>
+                                <th>Action</th>
+                                <th>Binary Example (x = 5 [0101], y = 3 [0011])</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><code>&amp;</code></td><td>Bitwise AND</td><td>1 if both bits are 1</td><td><code>5 &amp; 3</code> = <code>0001</code> (Decimal 1)</td></tr>
+                            <tr><td><code>|</code></td><td>Bitwise OR</td><td>1 if either bit is 1</td><td><code>5 | 3</code> = <code>0111</code> (Decimal 7)</td></tr>
+                            <tr><td><code>^</code></td><td>Bitwise XOR</td><td>1 if bits are different</td><td><code>5 ^ 3</code> = <code>0110</code> (Decimal 6)</td></tr>
+                            <tr><td><code>~</code></td><td>Bitwise NOT</td><td>Inverts all bits</td><td><code>~5</code> = 2's complement inversion (-6)</td></tr>
+                            <tr><td><code>&lt;&lt;</code></td><td>Left Shift</td><td>Shifts bits left by N positions</td><td><code>5 &lt;&lt; 1</code> = <code>1010</code> (Decimal 10) [Multiplies by 2<sup>N</sup>]</td></tr>
+                            <tr><td><code>&gt;&gt;</code></td><td>Right Shift</td><td>Shifts bits right by N positions</td><td><code>5 &gt;&gt; 1</code> = <code>0010</code> (Decimal 2) [Divides by 2<sup>N</sup>]</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>5. Increment and Decrement Operators: Pre vs. Post</h4>
+                <ul>
+                    <li><strong>Pre-Increment (<code>++x</code>):</strong> Increments the value of <code>x</code> by 1 <em>first</em>, then returns the updated value in the surrounding expression.</li>
+                    <li><strong>Post-Increment (<code>x++</code>):</strong> Evaluates the current value of <code>x</code> in the expression <em>first</em>, then increments <code>x</code> by 1 afterwards.</li>
+                </ul>
+
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>increment_demo.c</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+                    </div>
+                    <pre><code><span class="pp">#include &lt;stdio.h&gt;</span>
+
+<span class="dt">int</span> main() {
+    <span class="dt">int</span> a = <span class="num">5</span>, b = <span class="num">5</span>;
+    <span class="dt">int</span> res1 = ++a; <span class="cm">// Pre: 'a' becomes 6, res1 receives 6</span>
+    <span class="dt">int</span> res2 = b++; <span class="cm">// Post: res2 receives 5, then 'b' becomes 6</span>
+
+    printf(<span class="st">"Pre-inc: res1 = %d, a = %d\n"</span>, res1, a);
+    printf(<span class="st">"Post-inc: res2 = %d, b = %d\n"</span>, res2, b);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- ================= TOPIC 10 ================= -->
+            <section id="expressions" class="topic-section">
+                <div class="topic-header">
+                    <h2><span class="topic-num">10</span> Expressions, Precedence & Associativity</h2>
+                </div>
+
+                <h3>1. Simple Definitions</h3>
+                <p>An <strong>expression</strong> is a valid combination of operands, operators, and function calls that evaluates to a single scalar value.</p>
+                <p><strong>Operator Precedence</strong> determines the relative evaluation order when multiple distinct operators appear in the same unparenthesized expression. <strong>Associativity</strong> defines the execution direction (Left-to-Right or Right-to-Left) when operators of equal precedence appear together.</p>
+
+                <h3>Complete 15-Level Precedence Hierarchy Table</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rank / Level</th>
+                                <th>Operator Category</th>
+                                <th>Operators</th>
+                                <th>Associativity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1 (Highest)</td><td>Postfix / Expression</td><td><code>()</code> <code>[]</code> <code>-&gt;</code> <code>.</code> <code>++</code>(post) <code>--</code>(post)</td><td>Left-to-Right</td></tr>
+                            <tr><td>2</td><td>Unary Operators</td><td><code>++</code>(pre) <code>--</code>(pre) <code>+</code> <code>-</code> <code>!</code> <code>~</code> <code>sizeof</code> <code>(type)</code></td><td><strong>Right-to-Left</strong></td></tr>
+                            <tr><td>3</td><td>Multiplicative</td><td><code>*</code> <code>/</code> <code>%</code></td><td>Left-to-Right</td></tr>
+                            <tr><td>4</td><td>Additive</td><td><code>+</code> <code>-</code></td><td>Left-to-Right</td></tr>
+                            <tr><td>5</td><td>Bitwise Shift</td><td><code>&lt;&lt;</code> <code>&gt;&gt;</code></td><td>Left-to-Right</td></tr>
+                            <tr><td>6</td><td>Relational</td><td><code>&lt;</code> <code>&lt;=</code> <code>&gt;</code> <code>&gt;=</code></td><td>Left-to-Right</td></tr>
+                            <tr><td>7</td><td>Equality</td><td><code>==</code> <code>!=</code></td><td>Left-to-Right</td></tr>
+                            <tr><td>8</td><td>Bitwise AND</td><td><code>&amp;</code></td><td>Left-to-Right</td></tr>
+                            <tr><td>9</td><td>Bitwise XOR</td><td><code>^</code></td><td>Left-to-Right</td></tr>
+                            <tr><td>10</td><td>Bitwise OR</td><td><code>|</code></td><td>Left-to-Right</td></tr>
+                            <tr><td>11</td><td>Logical AND</td><td><code>&amp;&amp;</code></td><td>Left-to-Right</td></tr>
+                            <tr><td>12</td><td>Logical OR</td><td><code>||</code></td><td>Left-to-Right</td></tr>
+                            <tr><td>13</td><td>Conditional (Ternary)</td><td><code>? :</code></td><td><strong>Right-to-Left</strong></td></tr>
+                            <tr><td>14</td><td>Assignment Operators</td><td><code>=</code> <code>+=</code> <code>-=</code> <code>*=</code> <code>/=</code> <code>%=</code> <code>&amp;=</code> <code>^=</code> <code>|=</code></td><td><strong>Right-to-Left</strong></td></tr>
+                            <tr><td>15 (Lowest)</td><td>Comma Operator</td><td><code>,</code></td><td>Left-to-Right</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Step-by-Step Expression Evaluation Example</h3>
+                <div class="box box-syntax">
+                    <div class="box-title">Evaluate: x = 10 + 2 * 6 / 3 - 4</div>
+                    <ol>
+                        <li>Level 3 Multiplicative operators have higher precedence than additive ones. Left-to-right associativity applies:
+                            <br>First evaluate <code>2 * 6 = 12</code>. Expression becomes: <code>10 + 12 / 3 - 4</code>
+                        </li>
+                        <li>Next evaluate division: <code>12 / 3 = 4</code>. Expression becomes: <code>10 + 4 - 4</code></li>
+                        <li>Level 4 Additive operators evaluate Left-to-Right:
+                            <br>First addition: <code>10 + 4 = 14</code>. Expression becomes: <code>14 - 4</code>
+                        </li>
+                        <li>Subtraction: <code>14 - 4 = 10</code>.</li>
+                        <li>Final Assignment (Level 14): Stores <code>10</code> into variable <code>x</code>.</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- ================= QUESTION BANK ================= -->
+            <section id="questions" class="topic-section">
+                <div class="topic-header">
+                    <h2>University Exam Question Bank</h2>
+                </div>
+
+                <div class="tab-container">
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" onclick="openTab(event, 'vshort')">Very Short (1/2 Marks)</button>
+                        <button class="tab-btn" onclick="openTab(event, 'short')">Short Questions (3/5 Marks)</button>
+                        <button class="tab-btn" onclick="openTab(event, 'long')">Long Questions (8/10 Marks)</button>
+                    </div>
+
+                    <!-- Very Short Questions -->
+                    <div id="vshort" class="tab-content active">
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">Q1. Who developed the C language and in which year? <span>+</span></div>
+                            <div class="accordion-content">C was developed by Dennis Ritchie in 1972 at AT&T Bell Laboratories in Murray Hill, New Jersey.</div>
+                        </div>
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">Q2. What is the size of a float data type in C? <span>+</span></div>
+                            <div class="accordion-content">A standard float occupies 4 bytes (32 bits) of memory, providing approximately 6 decimal places of precision.</div>
+                        </div>
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">Q3. What is the role of the address operator &amp; in scanf()? <span>+</span></div>
+                            <div class="accordion-content">The address-of operator (&amp;) passes the physical memory address of a variable to scanf(), allowing it to write input data directly to that memory location.</div>
+                        </div>
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">Q4. Differentiate between pre-increment and post-increment. <span>+</span></div>
+                            <div class="accordion-content">Pre-increment (++x) increments the value first before evaluating it in an expression; post-increment (x++) evaluates the current value first and then increments the variable.</div>
+                        </div>
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">Q5. What is a macro in C? <span>+</span></div>
+                            <div class="accordion-content">A macro is an identifier defined by the preprocessor directive #define that is substituted with a specified token value throughout the source code prior to compilation.</div>
+                        </div>
+                    </div>
+
+                    <!-- Short Questions -->
+                    <div id="short" class="tab-content">
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">Q1. Explain the differences between a Compiler and an Interpreter. <span>+</span></div>
+                            <div class="accordion-content">
+                                <ul>
+                                    <li><strong>Compiler:</strong> Translates the entire source file at once into binary code. Execution is fast. Generates object files. Examples: C, C++.</li>
+                                    <li><strong>Interpreter:</strong> Translates and executes source code line-by-line. Stops immediately when an error is encountered. No intermediate object file generated. Examples: Python, JavaScript.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">Q2. List rules for naming identifiers in C. Give 2 valid and 2 invalid examples. <span>+</span></div>
+                            <div class="accordion-content">
+                                <p><strong>Rules:</strong> Must start with a letter or underscore. Cannot contain spaces or special symbols (except _). Cannot be a reserved keyword. Case sensitive.</p>
+                                <p><strong>Valid:</strong> <code>_sum</code>, <code>totalMarks</code></p>
+                                <p><strong>Invalid:</strong> <code>2sum</code> (starts with number), <code>float</code> (reserved keyword)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Long Questions -->
+                    <div id="long" class="tab-content">
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">Q1. Explain the complete C compilation pipeline with a diagram and detail each phase. <span>+</span></div>
+                            <div class="accordion-content">Refer to <strong>Topic 6: Compilation and Pre-processing Pipeline</strong> section above for full 10-mark structured answer format.</div>
+                        </div>
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">Q2. Explain all Bitwise operators available in C with binary examples. <span>+</span></div>
+                            <div class="accordion-content">Refer to <strong>Topic 9: Operators</strong> section for complete binary step-by-step examples of &amp;, |, ^, ~, &lt;&lt;, and &gt;&gt;.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= IMPORTANT PROGRAMS ================= -->
+            <section id="programs" class="topic-section">
+                <div class="topic-header">
+                    <h2>Important C Programs for Unit I Exams</h2>
+                </div>
+
+                <h3>Program 1: Swap Two Numbers Without Using a Third Variable (Bitwise XOR)</h3>
+                <p><strong>Concept Tested:</strong> Bitwise XOR operator mechanics, variable updates, and standard I/O.</p>
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>swap_xor.c</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+                    </div>
+                    <pre><code><span class="pp">#include &lt;stdio.h&gt;</span>
+
+<span class="dt">int</span> main() {
+    <span class="dt">int</span> a, b;
+    printf(<span class="st">"Enter two integers (a and b): "</span>);
+    scanf(<span class="st">"%d %d"</span>, &amp;a, &amp;b);
+
+    printf(<span class="st">"Before Swapping: a = %d, b = %d\n"</span>, a, b);
+
+    <span class="cm">// Swapping logic using Bitwise XOR</span>
+    a = a ^ b;
+    b = a ^ b;
+    a = a ^ b;
+
+    printf(<span class="st">"After Swapping:  a = %d, b = %d\n"</span>, a, b);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+                <div class="box box-tip">
+                    <div class="box-title">Expected Sample Output</div>
+                    Enter two integers (a and b): 15 30<br>
+                    Before Swapping: a = 15, b = 30<br>
+                    After Swapping:  a = 30, b = 15
+                </div>
+
+                <h3>Program 2: Data Type Memory Explorer (sizeof Operator)</h3>
+                <p><strong>Concept Tested:</strong> Primary data types, type modifiers, memory allocation, and <code>sizeof</code> unary operator.</p>
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>sizeof_explorer.c</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+                    </div>
+                    <pre><code><span class="pp">#include &lt;stdio.h&gt;</span>
+
+<span class="dt">int</span> main() {
+    printf(<span class="st">"--- C Data Type Memory Sizes ---\n"</span>);
+    printf(<span class="st">"Size of char:      %lu Byte(s)\n"</span>, <span class="kw">sizeof</span>(<span class="dt">char</span>));
+    printf(<span class="st">"Size of int:       %lu Byte(s)\n"</span>, <span class="kw">sizeof</span>(<span class="dt">int</span>));
+    printf(<span class="st">"Size of float:     %lu Byte(s)\n"</span>, <span class="kw">sizeof</span>(<span class="dt">float</span>));
+    printf(<span class="st">"Size of double:    %lu Byte(s)\n"</span>, <span class="kw">sizeof</span>(<span class="dt">double</span>));
+    printf(<span class="st">"Size of long int:  %lu Byte(s)\n"</span>, <span class="kw">sizeof</span>(<span class="dt">long int</span>));
+    <span class="kw">return</span> <span class="num">0</span>;
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- ================= ONE DAY REVISION ================= -->
+            <section id="revision" class="topic-section">
+                <div class="topic-header">
+                    <h2>UNIT I – ONE DAY REVISION CHEATSHEET</h2>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Concept</th>
+                                <th>Key Point Summary</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>Dennis Ritchie / Bell Labs</th>
+                                <td>C was developed in 1972 to write UNIX operating system.</td>
+                            </tr>
+                            <tr>
+                                <th>32 Keywords</th>
+                                <td>Always written in lowercase; cannot be used as variable identifiers.</td>
+                            </tr>
+                            <tr>
+                                <th>Preprocessor Directives</th>
+                                <td>Lines starting with <code>#</code> processed before code compilation.</td>
+                            </tr>
+                            <tr>
+                                <th>Modulus <code>%</code> Operator</th>
+                                <td>Returns integer remainder. <strong>Only works with integer data types!</strong></td>
+                            </tr>
+                            <tr>
+                                <th>Signed Representation</th>
+                                <td>Stored in RAM using <strong>Two's Complement</strong> (Invert bits + Add 1).</td>
+                            </tr>
+                            <tr>
+                                <th>Logical Short-Circuiting</th>
+                                <td>In <code>&amp;&amp;</code>, if 1st term is 0, 2nd is skipped. In <code>||</code>, if 1st term is 1, 2nd is skipped.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ================= 30-MIN CHECKLIST ================= -->
+            <section id="checklist" class="topic-section">
+                <div class="topic-header">
+                    <h2>Last 30 Minutes Before Exam Checklist</h2>
+                </div>
+
+                <ul>
+                    <li>✔ Check that <code>main()</code> is spelled in lowercase.</li>
+                    <li>✔ Ensure every execution statement ends with a semicolon <code>;</code>.</li>
+                    <li>✔ Verify that <code>scanf()</code> variables have the address operator <code>&amp;</code> (except string arrays!).</li>
+                    <li>✔ Remember that <code>float</code> uses <code>%f</code> while <code>double</code> uses <code>%lf</code> format specifier.</li>
+                    <li>✔ Check precedence: Parentheses <code>()</code> are highest; Assignment operators <code>=</code> are right-to-left.</li>
+                    <li>✔ Double check escape sequence directions: backslash <code>\n</code> and NOT forward slash <code>/n</code>.</li>
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" title="Back to Top">↑</button>
+
+    <!-- JavaScript Implementation -->
+    <script>
+        
+        // Dark / Light Theme Toggle Setup
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        const htmlElement = document.documentElement;
+
+        // Load saved theme from localStorage
+        const savedTheme = localStorage.getItem('c_portal_theme') || 'light';
+        setTheme(savedTheme);
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            setTheme(newTheme);
+        });
+
+        function setTheme(theme) {
+            htmlElement.setAttribute('data-theme', theme);
+            localStorage.setItem('c_portal_theme', theme);
+            if (theme === 'dark') {
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light Mode';
+            } else {
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark Mode';
+            }
+        }
+
+        // Reading Progress Bar and Scroll Listener
+        const progressBar = document.getElementById('progress-bar');
+        const backToTopBtn = document.getElementById('back-to-top');
+
+        window.addEventListener('scroll', () => {
+            // Update Reading Progress
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + '%';
+
+            // Show Back to Top Button past 400px
+            if (winScroll > 400) {
+                backToTopBtn.style.display = 'flex';
+            } else {
+                backToTopBtn.style.display = 'none';
+            }
+
+            // Highlight Active Sidebar Section
+            const sections = document.querySelectorAll('.topic-section');
+            const navLinks = document.querySelectorAll('.sidebar-menu a');
+            let currentSectionId = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (winScroll >= sectionTop) {
+                    currentSectionId = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + currentSectionId) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Scroll to Top action
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Mobile Menu Drawer Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+
+        // Close Mobile Sidebar on Link Click
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                sidebar.classList.remove('active');
+            });
+        });
+
+        // Copy Code Functionality
+        function copyCode(button) {
+            const codeBlock = button.parentElement.nextElementSibling.querySelector('code');
+            const textToCopy = codeBlock.innerText;
+
+            // Fallback for document.execCommand('copy') per environment restrictions
+            const textarea = document.createElement('textarea');
+            textarea.value = textToCopy;
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                document.execCommand('copy');
+                button.textContent = 'Copied!';
+                button.style.background = '#22c55e';
+                button.style.color = '#ffffff';
+                setTimeout(() => {
+                    button.textContent = 'Copy Code';
+                    button.style.background = 'rgba(255,255,255,0.1)';
+                    button.style.color = '#cdd6f4';
+                }, 2000);
+            } catch (err) {
+                button.textContent = 'Failed';
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // Question Bank Tab Controller
+        function openTab(evt, tabName) {
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        // Accordion Controller for Question Bank
+        function toggleAccordion(header) {
+            const item = header.parentElement;
+            item.classList.toggle('active');
+            const span = header.querySelector('span');
+            if (span) {
+                span.textContent = item.classList.contains('active') ? '−' : '+';
+            }
+        }
+    </script>
+</body>
+</html>
