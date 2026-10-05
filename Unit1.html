@@ -1,0 +1,1792 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit–I: Object-Oriented Programming & C++ | BCA Study Notes</title>
+    <style>
+        /* ==========================================================================
+           COLOR PALETTE & CSS VARIABLES (Vercel/Linear/Notion Modern Aesthetic)
+           ========================================================================== */
+        :root {
+            /* Dark Theme (Default) */
+            --bg-base: #090d16;
+            --bg-surface: #111827;
+            --bg-surface-elevated: #1f293d;
+            --bg-glass: rgba(17, 24, 39, 0.75);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --border-hover: rgba(56, 189, 248, 0.4);
+            
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --text-heading: #ffffff;
+            
+            --primary: #38bdf8;        /* Vivid Cyan */
+            --primary-glow: rgba(56, 189, 248, 0.25);
+            --secondary: #818cf8;      /* Indigo */
+            --accent: #f43f5e;         /* Rose accent */
+            --accent-green: #10b981;   /* Emerald */
+            --accent-yellow: #f59e0b;  /* Amber */
+
+            --code-bg: #030712;
+            --code-text: #e5e7eb;
+            --callout-exam-bg: rgba(56, 189, 248, 0.08);
+            --callout-exam-border: #0284c7;
+
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-mono: "Fira Code", "Cascadia Code", Consolas, Monaco, "Courier New", monospace;
+
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.5);
+
+            --nav-height: 70px;
+        }
+
+        [data-theme="light"] {
+            --bg-base: #f8fafc;
+            --bg-surface: #ffffff;
+            --bg-surface-elevated: #f1f5f9;
+            --bg-glass: rgba(255, 255, 255, 0.85);
+            --border-color: rgba(0, 0, 0, 0.1);
+            --border-hover: rgba(14, 165, 233, 0.5);
+            
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --text-heading: #0f172a;
+            
+            --primary: #0284c7;
+            --primary-glow: rgba(2, 132, 199, 0.15);
+            --secondary: #4f46e5;
+            --accent: #e11d48;
+            --accent-green: #059669;
+            --accent-yellow: #d97706;
+
+            --code-bg: #0f172a;
+            --code-text: #f8fafc;
+            --callout-exam-bg: rgba(2, 132, 199, 0.06);
+            --callout-exam-border: #0284c7;
+
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        /* ==========================================================================
+           GLOBAL BASE STYLES
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            line-height: 1.7;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Reading Container Width */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+            margin-top: 40px;
+            align-items: start;
+        }
+
+        @media (max-width: 992px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text-heading);
+            font-weight: 700;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+        }
+
+        h1 { font-size: 2.75rem; margin-bottom: 16px; }
+        h2 { font-size: 1.85rem; margin-top: 40px; margin-bottom: 20px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
+        h3 { font-size: 1.4rem; margin-top: 28px; margin-bottom: 14px; color: var(--primary); }
+        h4 { font-size: 1.15rem; margin-top: 20px; margin-bottom: 10px; }
+
+        p { margin-bottom: 18px; color: var(--text-main); }
+
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 24px;
+        }
+
+        li { margin-bottom: 8px; }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           HEADER & NAVIGATION BAR
+           ========================================================================== */
+        header.sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: var(--bg-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            height: var(--nav-height);
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .brand-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-heading);
+            background: var(--bg-surface-elevated);
+            text-decoration: none;
+        }
+
+        .theme-toggle {
+            background: var(--bg-surface-elevated);
+            border: 1px solid var(--border-color);
+            color: var(--text-heading);
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-heading);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 992px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: var(--nav-height);
+                left: 0;
+                right: 0;
+                background: var(--bg-surface);
+                flex-direction: column;
+                padding: 20px;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+
+        /* ==========================================================================
+           HERO / BANNER SECTION
+           ========================================================================== */
+        .hero-section {
+            padding: 60px 0 40px;
+            background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.12) 0%, transparent 70%);
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--primary);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .hero-desc {
+            max-width: 750px;
+            margin: 0 auto 30px;
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none !important;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #0284c7);
+            color: #ffffff;
+            border: none;
+            box-shadow: 0 4px 14px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--primary-glow);
+        }
+
+        .btn-secondary {
+            background: var(--bg-surface-elevated);
+            color: var(--text-heading);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-color);
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================================================
+           SIDEBAR NAVIGATION
+           ========================================================================== */
+        .sidebar {
+            position: sticky;
+            top: calc(var(--nav-height) + 20px);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            max-height: calc(100vh - var(--nav-height) - 40px);
+            overflow-y: auto;
+        }
+
+        .sidebar-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 4px;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            padding: 8px 12px;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            color: var(--primary);
+            background: var(--primary-glow);
+            font-weight: 600;
+        }
+
+        /* ==========================================================================
+           CARD & CONTAINER COMPONENTS (Glassmorphism & SaaS Style)
+           ========================================================================== */
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-sm);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            border-color: var(--border-hover);
+        }
+
+        /* Exam Callouts / Quick Exam Answer Box */
+        .exam-card {
+            background: var(--callout-exam-bg);
+            border-left: 4px solid var(--callout-exam-border);
+            border-radius: 0 10px 10px 0;
+            padding: 20px 24px;
+            margin: 20px 0 28px;
+        }
+
+        .exam-card-title {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        /* Exam Points Callout */
+        .exam-points {
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px dashed var(--accent-yellow);
+            border-radius: 10px;
+            padding: 18px 22px;
+            margin: 20px 0;
+        }
+
+        .exam-points-title {
+            color: var(--accent-yellow);
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ==========================================================================
+           CODE BLOCKS
+           ========================================================================== */
+        .code-container {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .code-header {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 8px 16px;
+            border-bottom: 1px solid var(--border-color);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        pre {
+            margin: 0;
+            padding: 18px;
+            overflow-x: auto;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--code-text);
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: var(--font-mono);
+        }
+
+        /* Inline code */
+        p code, li code {
+            background: var(--bg-surface-elevated);
+            color: var(--primary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.88rem;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Code Syntax Highlighting Simulation */
+        .token-keyword { color: #f43f5e; font-weight: bold; }
+        .token-type { color: #38bdf8; }
+        .token-string { color: #10b981; }
+        .token-comment { color: #6b7280; font-style: italic; }
+        .token-func { color: #818cf8; }
+
+        /* ==========================================================================
+           TABLES
+           ========================================================================== */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            margin: 24px 0;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.92rem;
+        }
+
+        th {
+            background: var(--bg-surface-elevated);
+            color: var(--text-heading);
+            padding: 14px 16px;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.015);
+        }
+
+        /* ==========================================================================
+           SYLLABUS OVERVIEW CARDS
+           ========================================================================== */
+        .syllabus-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0 40px;
+        }
+
+        .syllabus-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .syllabus-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .syllabus-num {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--border-color);
+            position: absolute;
+            top: 10px;
+            right: 16px;
+        }
+
+        /* ==========================================================================
+           BACK TO TOP BUTTON
+           ========================================================================== */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: #ffffff;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: scale(1.1);
+        }
+
+        /* ==========================================================================
+           REVISION & CHEAT SHEET STYLES
+           ========================================================================== */
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .quick-item {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .quick-item strong {
+            color: var(--primary);
+            display: block;
+            margin-bottom: 4px;
+            font-size: 1rem;
+        }
+
+        /* ==========================================================================
+           FOOTER
+           ========================================================================== */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 40px 0;
+            margin-top: 80px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sticky Navigation Header -->
+    <header class="sticky-header">
+        <div class="container nav-inner">
+            <div class="brand-title">
+                <span>⚡ BCA Notes: Unit–I</span>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#section1">OOP Principles</a></li>
+                <li><a href="#section2">C++ Basics</a></li>
+                <li><a href="#section3">Functions</a></li>
+                <li><a href="#comparison-tables">Comparisons</a></li>
+                <li><a href="#cpp-programs">Programs</a></li>
+                <li><a href="#exam-prep">Exam Prep</a></li>
+                <li><a href="#quick-revision">Revision</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark/Light Mode">
+                <span id="themeIcon">🌙</span> <span id="themeText">Dark</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero / Banner Section -->
+    <section class="hero-section" id="hero">
+        <div class="container">
+            <span class="badge">BCA • C++ • OOP • Unit I</span>
+            <h1>Unit–I: Object-Oriented Programming & C++</h1>
+            <p class="hero-subtitle">Complete Detailed Exam Notes | BCA University Examination</p>
+            <p class="hero-desc">
+                Comprehensive university-level examination notes covering Object-Oriented Programming principles, C++ fundamental constructs, memory organization, and advanced function mechanisms.
+            </p>
+            <div class="hero-buttons">
+                <a href="#syllabus" class="btn btn-primary">Explore Syllabus</a>
+                <a href="#exam-prep" class="btn btn-secondary">Exam Preparation Q&A</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="container content-wrapper">
+        
+        <!-- Sticky Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-title">Syllabus Index</div>
+            <ul class="sidebar-menu">
+                <li><a href="#syllabus">Syllabus Overview</a></li>
+                <li><a href="#topic1">1. OOP Paradigm</a></li>
+                <li><a href="#topic2">2. Basic Concepts of OOP</a></li>
+                <li><a href="#topic3">3. Benefits of OOP</a></li>
+                <li><a href="#topic4">4. Characteristics of OOP</a></li>
+                <li><a href="#topic5">5. OOP Languages</a></li>
+                <li><a href="#topic6">6. Applications of OOP</a></li>
+                <li><a href="#topic7">7. Introduction to C++</a></li>
+                <li><a href="#topic8">8. C vs C++</a></li>
+                <li><a href="#topic9">9. Tokens in C++</a></li>
+                <li><a href="#topic10">10. Data Types in C++</a></li>
+                <li><a href="#topic11">11. Operators in C++</a></li>
+                <li><a href="#topic12">12. Structure of C++ Program</a></li>
+                <li><a href="#topic13">13. C++ Statements</a></li>
+                <li><a href="#topic14">14. Expressions in C++</a></li>
+                <li><a href="#topic15">15. Control Structures</a></li>
+                <li><a href="#topic16">16. Functions in C++</a></li>
+                <li><a href="#topic17">17. Argument Passing</a></li>
+                <li><a href="#topic18">18. Inline Functions</a></li>
+                <li><a href="#topic19">19. Default Arguments</a></li>
+                <li><a href="#topic20">20. Const Arguments</a></li>
+                <li><a href="#topic21">21. Friend Functions</a></li>
+                <li><a href="#comparison-tables">Comparison Tables</a></li>
+                <li><a href="#cpp-programs">Practical Programs</a></li>
+                <li><a href="#exam-prep">University Exam Q&A</a></li>
+                <li><a href="#quick-revision">Quick Revision</a></li>
+                <li><a href="#cheat-sheet">Syntax Cheat Sheet</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content Body -->
+        <main class="main-content">
+
+            <!-- SYLLABUS OVERVIEW -->
+            <section id="syllabus">
+                <h2>Syllabus Overview</h2>
+                <p>This unit is divided into three core sections designed to systematically build your understanding from theoretical software engineering paradigms down to concrete C++ syntax and implementation details.</p>
+                
+                <div class="syllabus-grid">
+                    <div class="syllabus-card">
+                        <div class="syllabus-num">01</div>
+                        <h3>OOP Principles</h3>
+                        <p>Core software paradigms, basic concepts (Classes, Objects, Encapsulation, Abstraction, Inheritance, Polymorphism), benefits, and characteristics.</p>
+                    </div>
+                    <div class="syllabus-card">
+                        <div class="syllabus-num">02</div>
+                        <h3>C++ Fundamentals</h3>
+                        <p>Evolution of C++, procedural vs object-oriented models, tokens, fundamental/derived data types, operators, and control structures.</p>
+                    </div>
+                    <div class="syllabus-card">
+                        <div class="syllabus-num">03</div>
+                        <h3>Functions in C++</h3>
+                        <p>Function prototypes, argument passing mechanisms (Value vs Reference), inline optimization, default/const parameters, and friend functions.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==========================================================================
+               SECTION 1: PRINCIPLES OF OBJECT-ORIENTED PROGRAMMING
+               ========================================================================== -->
+            <section id="section1">
+                <h2>Section 1: Principles of Object-Oriented Programming</h2>
+
+                <!-- TOPIC 1 -->
+                <article class="card" id="topic1">
+                    <h3>1. Object-Oriented Programming (OOP) Paradigm</h3>
+                    
+                    <div class="exam-card">
+                        <div class="exam-card-title">📌 Quick Exam Answer (2–5 Marks)</div>
+                        <p><strong>Definition:</strong> Object-Oriented Programming (OOP) is an architectural programming paradigm centered around "objects" rather than actions, and "data" rather than logic. It packages state (data fields) and operations (methods/functions) together into unified structural entities.</p>
+                        <p><strong>Key Points:</strong> Organizes software as a collection of interacting objects; Emphasizes data security and encapsulation; Replaces global data access with strict message passing.</p>
+                    </div>
+
+                    <h4>Detailed 10-Mark Answer</h4>
+                    <p>A programming paradigm specifies the fundamental approach, style, and philosophy of structuring and executing computer programs. Historically, software development was dominated by Procedural/Imperative paradigms (such as standard C, Pascal, and Fortran). Procedural programming approaches a problem by breaking it down into a sequence of instructions, routines, and procedural subprograms. However, as business software grew exponentially in size and complexity, procedural languages exhibited critical architectural flaws.</p>
+                    
+                    <p>In procedural programming, data and functions are treated as separate, distinct entities. Programs rely heavily on global variables to share state across multiple functions. As systems scale to tens of thousands of lines of code, tracking which function modifies which global variable becomes nearly impossible. Unintended side effects occur, data corruption becomes frequent, and modifying a single data structure requires cascading changes across the entire codebase. This vulnerability is often called the "software crisis."</p>
+
+                    <p>Object-Oriented Programming was created explicitly to solve the maintainability and security deficiencies of the procedural paradigm. Instead of viewing a program as a flow of execution steps operating on passive data, OOP views a software system as a dynamic network of autonomous, interacting entities called <strong>Objects</strong>. Each object holds its own private state and provides a set of public functions to safely manipulate that state.</p>
+
+                    <p>OOP ties data closely to the functions that operate on it, protecting data from unauthorized external modification. Outside functions cannot arbitrarily access an object's internal variables; they must send a "message" (invoke a member function) asking the object to execute an operation. This architectural shift mirrors real-world physical systems where objects (like automobiles, bank accounts, or employees) possess specific characteristics and behave according to defined rules.</p>
+
+                    <div class="code-container">
+                        <div class="code-header">Real-World OOP Representation Example: Student Entity</div>
+                        <pre><code><span class="token-comment">// Real-world entity modeled as an Object in C++</span>
+<span class="token-keyword">class</span> <span class="token-type">Student</span> {
+<span class="token-keyword">private</span>:
+    <span class="token-type">int</span> rollNumber;
+    <span class="token-type">string</span> name;
+    <span class="token-type">float</span> marks;
+
+<span class="token-keyword">public</span>:
+    <span class="token-type">void</span> setDetails(<span class="token-type">int</span> r, <span class="token-type">string</span> n, <span class="token-type">float</span> m) {
+        rollNumber = r;
+        name = n;
+        marks = m;
+    }
+    
+    <span class="token-type">void</span> displayGrade() {
+        <span class="token-keyword">if</span>(marks >= <span class="token-string">75.0</span>) 
+            cout &lt;&lt; name &lt;&lt; <span class="token-string">" achieved Distinction."</span>;
+        <span class="token-keyword">else</span> 
+            cout &lt;&lt; name &lt;&lt; <span class="token-string">" passed successfully."</span>;
+    }
+};</code></pre>
+                    </div>
+
+                    <div class="exam-points">
+                        <div class="exam-points-title">💡 Must-Remember Exam Points</div>
+                        <ul>
+                            <li>Procedural = Focus on Algorithm & Step-by-Step Logic; Data moves freely across functions.</li>
+                            <li>Object-Oriented = Focus on Data Security & Real-World Modeling; Functions are bound directly to data.</li>
+                            <li>Objects communicate with one another through well-defined function calls (message passing).</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <!-- TOPIC 2 -->
+                <article class="card" id="topic2">
+                    <h3>2. Basic Concepts of OOP</h3>
+                    <p>To master Object-Oriented Programming, students must understand its core conceptual pillars. Every university examination frequently tests these foundational concepts individually or collectively.</p>
+
+                    <div class="exam-card">
+                        <div class="exam-card-title">📌 Quick Exam Answer (2–5 Marks)</div>
+                        <p>The foundational pillars of OOP are <strong>Object</strong> (runtime entity), <strong>Class</strong> (user-defined blueprint), <strong>Encapsulation</strong> (wrapping data and methods), <strong>Abstraction</strong> (hiding implementation details), <strong>Inheritance</strong> (reusing code hierarchy), and <strong>Polymorphism</strong> (multiple forms for a single interface).</p>
+                    </div>
+
+                    <h4>Detailed 10-Mark Explanation of Core Pillar Concepts</h4>
+
+                    <p><strong>1. Object:</strong> An object is the basic run-time entity in an object-oriented system. It represents a identifiable person, place, system item, or dataset. Programatically, an object resides in memory and possesses three mandatory characteristics: <em>State</em> (represented by its attributes/variables), <em>Behavior</em> (represented by its member functions), and <em>Identity</em> (a unique address or handle distinguishing it from other objects in RAM).</p>
+
+                    <p><strong>2. Class:</strong> A class is a user-defined data type that serves as the logical blueprint or template from which individual objects are instantiated. A class defines the data members and member functions that all objects created from it will possess. A class takes up no memory space until an object of that class is declared.</p>
+
+                    <p><strong>3. Encapsulation:</strong> Encapsulation is the mechanism of bundling data members and the member functions that operate on them into a single unified unit (a class). Crucially, encapsulation enables <em>Data Hiding</em> by applying access specifiers (private, protected, public), ensuring that an object's internal variables cannot be directly tampered with by external code.</p>
+
+                    <p><strong>4. Abstraction:</strong> Abstraction is the act of representing essential features of a system without including background complexity, technical implementation details, or internal logic. It presents a simple, clean user interface. For example, when driving a car, pressing the accelerator increases speed (abstraction); the driver does not need to understand internal combustion mechanics or fuel-injection algorithms.</p>
+
+                    <p><strong>5. Inheritance:</strong> Inheritance is the mechanism by which a new class (derived/child class) inherits the properties, state, and behaviors of an existing class (base/parent class). It forms an "IS-A" hierarchical relationship and allows software engineers to extend software through code reusability without modifying original, tested code bases.</p>
+
+                    <p><strong>6. Polymorphism:</strong> Derived from Greek meaning "many forms", polymorphism is the capability of a single operator, function, or interface to behave differently based on the context or data types provided. It is divided into <em>Compile-time Polymorphism</em> (Function Overloading, Operator Overloading) and <em>Runtime Polymorphism</em> (Virtual Functions / Method Overriding).</p>
+
+                    <div class="code-container">
+                        <div class="code-header">C++ Code Demonstration of Core Concepts</div>
+                        <pre><code><span class="token-keyword">#include</span> <span class="token-string">&lt;iostream&gt;</span>
+<span class="token-keyword">using namespace</span> std;
+
+<span class="token-comment">// Class Definition & Abstraction/Encapsulation</span>
+<span class="token-keyword">class</span> <span class="token-type">BankAccount</span> {
+<span class="token-keyword">private</span>:
+    <span class="token-type">double</span> balance; <span class="token-comment">// Encapsulated private data</span>
+
+<span class="token-keyword">public</span>:
+    <span class="token-type">BankAccount</span>(<span class="token-type">double</span> initial) { balance = initial; }
+    
+    <span class="token-type">void</span> deposit(<span class="token-type">double</span> amount) {
+        <span class="token-keyword">if</span>(amount > <span class="token-string">0</span>) balance += amount;
+    }
+    
+    <span class="token-type">void</span> display() {
+        cout &lt;&lt; <span class="token-string">"Current Balance: $"</span> &lt;&lt; balance &lt;&lt; endl;
+    }
+};
+
+<span class="token-type">int</span> main() {
+    <span class="token-comment">// Object Instantiation</span>
+    <span class="token-type">BankAccount</span> myAccount(<span class="token-string">1000.0</span>); 
+    myAccount.deposit(<span class="token-string">500.0</span>);
+    myAccount.display();
+    <span class="token-keyword">return</span> <span class="token-string">0</span>;
+}</code></pre>
+                    </div>
+                </article>
+
+                <!-- TOPIC 3 -->
+                <article class="card" id="topic3">
+                    <h3>3. Benefits of OOP</h3>
+                    
+                    <div class="exam-card">
+                        <div class="exam-card-title">📌 Quick Exam Answer (2–5 Marks)</div>
+                        <p><strong>Summary:</strong> OOP significantly reduces software complexity and cost through Code Reusability (via Inheritance), Modularity (independent classes), Maintainability (easy updates), Robust Security (data hiding), and Real-World Structural Mapping.</p>
+                    </div>
+
+                    <h4>Detailed 10-Mark Explanation</h4>
+                    <p>The widespread industry adoption of Object-Oriented Programming stems directly from the technical and financial advantages it provides over traditional development methodologies. Large-scale software engineering projects involve hundreds of developers, millions of lines of code, and evolving business requirements. OOP handles this scale through several mechanisms:</p>
+
+                    <ul>
+                        <li><strong>Code Reusability:</strong> Through class inheritance, developers can extend existing classes and reuse verified, bug-free components without rewriting original code. This dramatically accelerates software delivery cycles.</li>
+                        <li><strong>Modularity and Parallel Development:</strong> Classes are standalone, modular code units. Development teams can build, test, and debug different objects independently without causing code clashes across the team.</li>
+                        <li><strong>Enhanced Data Security:</strong> By marking critical data members as <code>private</code>, programmers protect object state from external corruption and unintended side effects, drastically simplifying debugging.</li>
+                        <li><strong>Scalability and Maintainability:</strong> Software design changes are localized within specific class files. Upgrading a system feature involves modifying an internal class method without breaking external system modules.</li>
+                        <li><strong>Direct Real-World Modeling:</strong> Designing software with objects mirrors real-world mental models (e.g., modeling a vehicle, customer, or order), making code intuition-friendly and clear.</li>
+                    </ul>
+                </article>
+
+                <!-- TOPIC 4 -->
+                <article class="card" id="topic4">
+                    <h3>4. Characteristics of OOP</h3>
+                    <p>Every Object-Oriented language must implement a specific architectural set of characteristics that dictate system execution and structure.</p>
+
+                    <h4>Detailed Explanations of Characteristics</h4>
+                    <p><strong>Dynamic Binding (Late Binding):</strong> Dynamic binding means that the code associated with a given procedure call is not determined until run-time. It is essential for runtime polymorphism in C++, where virtual function calls are resolved dynamically depending on the type of object actually assigned to a pointer during program execution.</p>
+
+                    <p><strong>Message Passing:</strong> In an OOP system, execution consists of objects communicating with one another. Message passing involves three components: the receiving object name, the name of the function to execute, and any parameter arguments required. Example: <code>employee.calculateSalary(bonus);</code>.</p>
+                </article>
+
+                <!-- TOPIC 5 -->
+                <article class="card" id="topic5">
+                    <h3>5. Object-Oriented Languages</h3>
+                    <p>Programming languages support OOP paradigms to varying degrees, generally divided into <em>Pure Object-Oriented Languages</em> (where everything is strictly an object, e.g., Smalltalk) and <em>Hybrid Object-Oriented Languages</em> (which support both procedural and object-oriented paradigms, e.g., C++, Python).</p>
+
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Language</th>
+                                    <th>Paradigm Type</th>
+                                    <th>Main Features</th>
+                                    <th>Common Industrial Uses</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>C++</strong></td>
+                                    <td>Hybrid (Multi-paradigm)</td>
+                                    <td>High performance, manual memory access, system pointers.</td>
+                                    <td>Game engines, operating systems, embedded hardware, compilers.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Java</strong></td>
+                                    <td>Mostly Pure (Class-based)</td>
+                                    <td>Bytecode execution, automatic garbage collection, platform independence.</td>
+                                    <td>Enterprise backends, Android app infrastructure, financial systems.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Python</strong></td>
+                                    <td>Multi-paradigm Dynamic</td>
+                                    <td>Highly readable, clear syntax, dynamically typed, multi-purpose libraries.</td>
+                                    <td>AI/ML, data science, web automation, rapid scripting.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>C#</strong></td>
+                                    <td>Component-oriented</td>
+                                    <td>Deep .NET framework integration, managed memory, strong async tools.</td>
+                                    <td>Windows desktop apps, enterprise web services, Unity game engine.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Smalltalk</strong></td>
+                                    <td>Pure OOP</td>
+                                    <td>Everything is strictly an object; reflective runtime execution model.</td>
+                                    <td>Academic research, historical OOP foundation development.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+
+                <!-- TOPIC 6 -->
+                <article class="card" id="topic6">
+                    <h3>6. Applications of OOP</h3>
+                    <p>Due to its modularity and scalability, OOP is the primary paradigm used across major software engineering domains:</p>
+                    <ul>
+                        <li><strong>Real-Time Systems & Simulation:</strong> Modeling complex physical entities (e.g., flight simulators, weather prediction systems) using distinct autonomous objects.</li>
+                        <li><strong>Object-Oriented Databases (OODBMS):</strong> Storing complex user-defined object data types directly without mapping them into relational flat tables.</li>
+                        <li><strong>Computer Graphics & Game Development:</strong> Game engines model players, enemies, items, terrain, and physics using hierarchical object classes.</li>
+                        <li><strong>Enterprise & Banking Architectures:</strong> High-reliability transaction processing systems built using encapsulated, secure account objects.</li>
+                    </ul>
+                </article>
+            </section>
+
+            <!-- ==========================================================================
+               SECTION 2: INTRODUCTION TO C++
+               ========================================================================== -->
+            <section id="section2">
+                <h2>Section 2: Introduction to C++</h2>
+
+                <!-- TOPIC 7 -->
+                <article class="card" id="topic7">
+                    <h3>7. Introduction to C++</h3>
+                    
+                    <div class="exam-card">
+                        <div class="exam-card-title">📌 Quick Exam Answer (2–5 Marks)</div>
+                        <p><strong>Definition:</strong> C++ is a statically-typed, compiled, high-performance, general-purpose multi-paradigm programming language created by Bjarne Stroustrup in 1979 at Bell Labs. It was originally titled <em>"C with Classes"</em> because it retained the speed and low-level control of C while introducing object-oriented features.</p>
+                    </div>
+
+                    <h4>Detailed 10-Mark Answer</h4>
+                    <p>During the late 1970s, procedural programming in C was widely favored for systems programming due to its high execution speed, direct memory access capability, and portability. However, as software systems grew larger, C programs became difficult to maintain. Dr. Bjarne Stroustrup sought a language that combined the hardware-level speed of C with the clean object-oriented abstraction capabilities of Simula 67. The result of this work was C++.</p>
+
+                    <p>The double-plus operator (<code>++</code>) in C++ is the increment operator in C, symbolizing that C++ is an advanced, incremental extension of the original C language. C++ is a superset of C; virtually any syntactically correct C program is also a valid C++ program.</p>
+
+                    <p>C++ is described as a <strong>hybrid language</strong> because it does not force developers into a single programming model. Developers can write purely procedural code, purely object-oriented code, or combine both models within the same application. This flexibility, along with zero-overhead abstractions, makes C++ indispensable for performance-critical systems.</p>
+                </article>
+
+                <!-- TOPIC 8 -->
+                <article class="card" id="topic8">
+                    <h3>8. Difference Between C and C++</h3>
+                    <p>A classic, high-frequency university exam topic. Below is a comprehensive point-by-point comparative breakdown:</p>
+
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>C Language</th>
+                                    <th>C++ Language</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Programming Paradigm</strong></td>
+                                    <td>Procedural / Structure-oriented</td>
+                                    <td>Multi-paradigm (Procedural + Object-Oriented)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Approach</strong></td>
+                                    <td>Top-Down design approach</td>
+                                    <td>Bottom-Up design approach</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Data Security</strong></td>
+                                    <td>Low; Global variables accessible everywhere</td>
+                                    <td>High; Access specifiers (private, protected) hide data</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Overloading Support</strong></td>
+                                    <td>Not supported</td>
+                                    <td>Supports Function & Operator Overloading</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Input/Output Mechanism</strong></td>
+                                    <td>Uses <code>printf()</code> and <code>scanf()</code> functions</td>
+                                    <td>Uses <code>cout</code> and <code>cin</code> stream objects</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Memory Allocation</strong></td>
+                                    <td>Dynamic via <code>malloc()</code> and <code>free()</code></td>
+                                    <td>Dynamic via <code>new</code> and <code>delete</code> operators</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Classes & Objects</strong></td>
+                                    <td>Does not support classes or objects</td>
+                                    <td>Fully supports classes, objects, and inheritance</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Reference Variables</strong></td>
+                                    <td>Not supported (Pointers used only)</td>
+                                    <td>Fully supported (via <code>&amp;</code> alias syntax)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Exception Handling</strong></td>
+                                    <td>No built-in exception handling constructs</td>
+                                    <td>Supports <code>try</code>, <code>catch</code>, and <code>throw</code> keywords</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+
+                <!-- TOPIC 9 -->
+                <article class="card" id="topic9">
+                    <h3>9. Tokens in C++</h3>
+                    <div class="exam-card">
+                        <div class="exam-card-title">📌 Quick Exam Answer (2–5 Marks)</div>
+                        <p><strong>Definition:</strong> A token is the smallest individual text unit in a C++ source code file that is meaningful to the compiler during lexical analysis. C++ has six primary token types: Keywords, Identifiers, Constants, Strings, Special Symbols, and Operators.</p>
+                    </div>
+
+                    <h4>Detailed Token Categories Breakdown</h4>
+                    <ul>
+                        <li><strong>Keywords:</strong> Reserved words with pre-defined meanings reserved by the compiler. They cannot be used as user variable names. Examples: <code>int</code>, <code>class</code>, <code>virtual</code>, <code>return</code>, <code>public</code>.</li>
+                        <li><strong>Identifiers:</strong> User-defined names given to variables, functions, arrays, or classes. Must begin with a letter or underscore (<code>_</code>), followed by letters, digits, or underscores. Identifiers are case-sensitive (<code>Total</code> != <code>total</code>).</li>
+                        <li><strong>Constants / Literals:</strong> Fixed values that cannot be modified during program execution. Types include Integer Literals (<code>100</code>), Float Literals (<code>3.1415</code>), Character Literals (<code>'A'</code>), and String Literals (<code>"Hello C++"</code>).</li>
+                        <li><strong>Operators:</strong> Symbols that instruct the compiler to perform specific mathematical, logical, or relational transformations on operands.</li>
+                        <li><strong>Punctuators / Special Symbols:</strong> Brackets, braces, commas, and semicolons that establish syntactic boundaries (e.g., <code>;</code>, <code>{ }</code>, <code>( )</code>, <code>,</code>).</li>
+                    </ul>
+                </article>
+
+                <!-- TOPIC 10 -->
+                <article class="card" id="topic10">
+                    <h3>10. Data Types in C++</h3>
+                    <p>Data types define the type, range, and size of memory allocated for storing variable values.</p>
+
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Data Type Keywords</th>
+                                    <th>Typical Size (32/64-bit)</th>
+                                    <th>Value Range / Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Built-in / Primitive</strong></td>
+                                    <td><code>int</code><br><code>char</code><br><code>float</code><br><code>double</code><br><code>bool</code></td>
+                                    <td>4 Bytes<br>1 Byte<br>4 Bytes<br>8 Bytes<br>1 Byte</td>
+                                    <td>-2,147,483,648 to 2,147,483,647<br>ASCII Character Set (-128 to 127)<br>Single-precision floating-point (~7 digits)<br>Double-precision floating-point (~15 digits)<br>Boolean flags (<code>true</code> / <code>false</code>)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Derived Types</strong></td>
+                                    <td>Arrays<br>Pointers<br>References<br>Functions</td>
+                                    <td>Varies<br>4 / 8 Bytes<br>4 / 8 Bytes<br>N/A</td>
+                                    <td>Homogeneous memory sequences<br>Stores raw memory addresses<br>Alias to an existing variable memory location<br>Executable code block addresses</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>User-Defined Types</strong></td>
+                                    <td><code>class</code><br><code>struct</code><br><code>union</code><br><code>enum</code></td>
+                                    <td>User-dependent</td>
+                                    <td>OOP Blueprint structure<br>Classic C group structure (default public)<br>Shared memory allocation block<br>Enumerated symbolic integer constants</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+
+                <!-- TOPIC 11 -->
+                <article class="card" id="topic11">
+                    <h3>11. Operators in C++</h3>
+                    <p>Operators perform manipulations on variables and constant operands. C++ features a rich set of operators categorized below:</p>
+
+                    <ul>
+                        <li><strong>Arithmetic Operators:</strong> Binary arithmetic operations (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code> [Modulo]).</li>
+                        <li><strong>Relational Operators:</strong> Evaluate comparative conditions returning boolean values (<code>==</code>, <code>!=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>).</li>
+                        <li><strong>Logical Operators:</strong> Combine logical expressions (<code>&amp;&amp;</code> [AND], <code>||</code> [OR], <code>!</code> [NOT]).</li>
+                        <li><strong>Increment / Decrement Operators:</strong> Unary operators altering value by 1. Prefix (<code>++x</code>) alters value before evaluation; Postfix (<code>x++</code>) alters value after current line evaluation.</li>
+                        <li><strong>Scope Resolution Operator (<code>::</code>):</strong> Used to access a global variable when a local variable shares the same name, or to define member functions outside their class body.</li>
+                    </ul>
+
+                    <div class="code-container">
+                        <div class="code-header">Scope Resolution Operator (::) Demonstration</div>
+                        <pre><code><span class="token-keyword">#include</span> <span class="token-string">&lt;iostream&gt;</span>
+<span class="token-keyword">using namespace</span> std;
+
+<span class="token-type">int</span> num = <span class="token-string">100</span>; <span class="token-comment">// Global variable</span>
+
+<span class="token-type">int</span> main() {
+    <span class="token-type">int</span> num = <span class="token-string">10</span>; <span class="token-comment">// Local variable</span>
+    
+    cout &lt;&lt; <span class="token-string">"Local Num: "</span> &lt;&lt; num &lt;&lt; endl;         <span class="token-comment">// Prints 10</span>
+    cout &lt;&lt; <span class="token-string">"Global Num: "</span> &lt;&lt; ::num &lt;&lt; endl;     <span class="token-comment">// Prints 100 via Scope Resolution</span>
+    <span class="token-keyword">return</span> <span class="token-string">0</span>;
+}</code></pre>
+                    </div>
+                </article>
+
+                <!-- TOPIC 12 -->
+                <article class="card" id="topic12">
+                    <h3>12. Structure of a C++ Program</h3>
+                    <p>A standard C++ program follows a structured layout required for compilation and execution:</p>
+
+                    <div class="code-container">
+                        <div class="code-header">Standard C++ Program Layout</div>
+                        <pre><code><span class="token-comment">// Section 1: Preprocessor Directives</span>
+<span class="token-keyword">#include</span> <span class="token-string">&lt;iostream&gt;</span> 
+
+<span class="token-comment">// Section 2: Namespace Declaration</span>
+<span class="token-keyword">using namespace</span> std;
+
+<span class="token-comment">// Section 3: Global Declarations / Classes (Optional)</span>
+<span class="token-keyword">class</span> <span class="token-type">Demo</span> {
+    <span class="token-comment">// Class body</span>
+};
+
+<span class="token-comment">// Section 4: Main Function Entry Point</span>
+<span class="token-type">int</span> main() {
+    <span class="token-comment">// Statements</span>
+    cout &lt;&lt; <span class="token-string">"Hello, BCA University Examination!"</span>;
+    <span class="token-keyword">return</span> <span class="token-string">0</span>; <span class="token-comment">// Exit status</span>
+}</code></pre>
+                    </div>
+
+                    <h4>Detailed Breakdown of Program Sections</h4>
+                    <p><strong>1. Header Inclusions (<code>#include &lt;iostream&gt;</code>):</strong> Instructions starting with <code>#</code> are preprocessor directives. They tell the compiler to copy the contents of header files (like <code>iostream</code> for standard stream I/O) into the code before compiling.</p>
+                    <p><strong>2. Namespace (<code>using namespace std;</code>):</strong> Namespaces prevent global naming conflicts in large codebases. The standard library functions and stream objects (<code>cout</code>, <code>cin</code>) reside inside the <code>std</code> namespace.</p>
+                    <p><strong>3. The <code>main()</code> Function:</strong> The mandatory runtime execution entry point for every C++ executable program.</p>
+                </article>
+
+                <!-- TOPIC 13 & 14 -->
+                <article class="card" id="topic13">
+                    <h3>13 & 14. C++ Statements and Expressions</h3>
+                    <p><strong>Statements</strong> are independent executable units that instruct the computer to perform an action. Every simple C++ statement must terminate with a semicolon (<code>;</code>).</p>
+                    
+                    <ul>
+                        <li><strong>Declaration Statements:</strong> Introduce variable identifiers into a scope (e.g., <code>int count = 0;</code>).</li>
+                        <li><strong>Expression Statements:</strong> Consist of an expression evaluated for side effects or assignments (e.g., <code>x = y + 5;</code>).</li>
+                        <li><strong>Compound Statements (Blocks):</strong> A group of statements enclosed in curly braces (<code>{ ... }</code>) treated syntactically as a single statement.</li>
+                    </ul>
+
+                    <p>An <strong>Expression</strong> is a combination of operators, constants, and variables that evaluates to a single output value. Types include Arithmetic (<code>a + b</code>), Relational (<code>x &gt; y</code>), Logical (<code>condA &amp;&amp; condB</code>), and Conditional/Ternary (<code>(a &gt; b) ? a : b</code>).</p>
+                </article>
+
+                <!-- TOPIC 15 -->
+                <article class="card" id="topic15">
+                    <h3>15. Control Structures</h3>
+                    <p>Control structures govern the execution flow of code based on logical conditions and iterations.</p>
+
+                    <h4>1. Selection / Decision Control Structures</h4>
+                    <ul>
+                        <li><strong>if / if-else:</strong> Evaluates a boolean condition. If true, the <code>if</code> block executes; otherwise, the optional <code>else</code> block executes.</li>
+                        <li><strong>switch Statement:</strong> A multi-way branch selection statement that compares an integer or character expression against matching <code>case</code> constants.</li>
+                    </ul>
+
+                    <h4>2. Iteration / Loop Control Structures</h4>
+                    <ul>
+                        <li><strong>for Loop:</strong> Deterministic entry-controlled loop grouping initialization, exit condition, and iteration update step in one header line.</li>
+                        <li><strong>while Loop:</strong> Non-deterministic entry-controlled loop that executes as long as the test condition evaluates to true.</li>
+                        <li><strong>do-while Loop:</strong> Exit-controlled loop that executes its body <em>at least once</em> before checking the loop condition.</li>
+                    </ul>
+
+                    <div class="code-container">
+                        <div class="code-header">Loop Control Flow Structures Comparison Code</div>
+                        <pre><code><span class="token-keyword">#include</span> <span class="token-string">&lt;iostream&gt;</span>
+<span class="token-keyword">using namespace</span> std;
+
+<span class="token-type">int</span> main() {
+    <span class="token-comment">// Entry-Controlled for-loop</span>
+    <span class="token-keyword">for</span>(<span class="token-type">int</span> i = <span class="token-string">1</span>; i &lt;= <span class="token-string">3</span>; i++) {
+        cout &lt;&lt; <span class="token-string">"For Loop Iteration: "</span> &lt;&lt; i &lt;&lt; endl;
+    }
+
+    <span class="token-comment">// Exit-Controlled do-while loop (Runs at least once)</span>
+    <span class="token-type">int</span> j = <span class="token-string">10</span>;
+    <span class="token-keyword">do</span> {
+        cout &lt;&lt; <span class="token-string">"Do-While executes even if condition fails!"</span> &lt;&lt; endl;
+    } <span class="token-keyword">while</span>(j &lt; <span class="token-string">5</span>);
+
+    <span class="token-keyword">return</span> <span class="token-string">0</span>;
+}</code></pre>
+                    </div>
+                </article>
+            </section>
+
+            <!-- ==========================================================================
+               SECTION 3: FUNCTIONS IN C++
+               ========================================================================== -->
+            <section id="section3">
+                <h2>Section 3: Functions in C++</h2>
+
+                <!-- TOPIC 16 -->
+                <article class="card" id="topic16">
+                    <h3>16. Functions in C++ Fundamentals</h3>
+                    
+                    <div class="exam-card">
+                        <div class="exam-card-title">📌 Quick Exam Answer (2–5 Marks)</div>
+                        <p><strong>Definition:</strong> A function is an independent, self-contained, named subprogram designed to execute a specific task. Functions promote modularity, readability, and reduce duplicate code.</p>
+                    </div>
+
+                    <h4>Detailed 10-Mark Answer</h4>
+                    <p>Large computer programs are difficult to write, debug, and maintain if all code is written inside a single <code>main()</code> block. Functions break complex problems down into smaller, manageable sub-problems, a technique known as <strong>Modular Programming</strong> or "Divide and Conquer."</p>
+
+                    <p>Using functions offers key advantages: it eliminates duplicate code, improves program readability, accelerates debugging, and allows different developers to work on different functions simultaneously.</p>
+
+                    <p>Working with functions involves three core syntax components:</p>
+                    <ol>
+                        <li><strong>Function Declaration (Prototype):</strong> Informs the compiler about the function's name, return type, and argument list before it is called. Example: <code>int calculateSum(int a, int b);</code></li>
+                        <li><strong>Function Definition:</strong> The actual implementation block containing the code logic to execute.</li>
+                        <li><strong>Function Call:</strong> The statement that invokes the function, passing actual argument values to its parameters. Example: <code>int result = calculateSum(10, 20);</code></li>
+                    </ol>
+                </article>
+
+                <!-- TOPIC 17 -->
+                <article class="card" id="topic17">
+                    <h3>17. Argument Passing Mechanisms</h3>
+                    <p>Functions communicate data through parameters. C++ supports two primary ways to pass arguments to functions:</p>
+
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Criteria</th>
+                                    <th>Call by Value</th>
+                                    <th>Call by Reference</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Mechanism</strong></td>
+                                    <td>Copies the <em>value</em> of the actual argument into a separate memory location allocated for the formal parameter.</td>
+                                    <td>Passes a reference (memory alias/address) of the actual argument directly to the formal parameter.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Original Data Impact</strong></td>
+                                    <td>Changes made inside the function <strong>do not affect</strong> the caller's original variable.</td>
+                                    <td>Changes made inside the function <strong>directly modify</strong> the caller's original variable.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Memory Allocation</strong></td>
+                                    <td>Creates additional copy allocations on the stack frame.</td>
+                                    <td>Zero extra allocation; operates directly on existing memory aliases.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Performance</strong></td>
+                                    <td>Slower for large objects/structures due to copying overhead.</td>
+                                    <td>Faster; ideal for large objects or class instances.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="code-container">
+                        <div class="code-header">Call by Value vs Call by Reference Code Comparison</div>
+                        <pre><code><span class="token-keyword">#include</span> <span class="token-string">&lt;iostream&gt;</span>
+<span class="token-keyword">using namespace</span> std;
+
+<span class="token-comment">// Call by Value (Modifies duplicate copy only)</span>
+<span class="token-type">void</span> swapByValue(<span class="token-type">int</span> a, <span class="token-type">int</span> b) {
+    <span class="token-type">int</span> temp = a; a = b; b = temp;
+}
+
+<span class="token-comment">// Call by Reference (Modifies original variables directly via &amp;)</span>
+<span class="token-type">void</span> swapByReference(<span class="token-type">int</span> &amp;a, <span class="token-type">int</span> &amp;b) {
+    <span class="token-type">int</span> temp = a; a = b; b = temp;
+}
+
+<span class="token-type">int</span> main() {
+    <span class="token-type">int</span> x = <span class="token-string">10</span>, y = <span class="token-string">20</span>;
+    
+    swapByValue(x, y);
+    cout &lt;&lt; <span class="token-string">"After Call Value: x="</span> &lt;&lt; x &lt;&lt; <span class="token-string">", y="</span> &lt;&lt; y &lt;&lt; endl; <span class="token-comment">// Unchanged (10, 20)</span>
+    
+    swapByReference(x, y);
+    cout &lt;&lt; <span class="token-string">"After Call Ref:   x="</span> &lt;&lt; x &lt;&lt; <span class="token-string">", y="</span> &lt;&lt; y &lt;&lt; endl; <span class="token-comment">// Swapped (20, 10)</span>
+    
+    <span class="token-keyword">return</span> <span class="token-string">0</span>;
+}</code></pre>
+                    </div>
+                </article>
+
+                <!-- TOPIC 18 -->
+                <article class="card" id="topic18">
+                    <h3>18. Inline Functions</h3>
+                    
+                    <div class="exam-card">
+                        <div class="exam-card-title">📌 Quick Exam Answer (2–5 Marks)</div>
+                        <p><strong>Definition:</strong> An inline function is a function designated by the <code>inline</code> keyword. When compiled, the compiler replaces calls to this function directly with its inline body code, eliminating standard function-call overhead.</p>
+                    </div>
+
+                    <h4>Detailed Explanation & Execution Model</h4>
+                    <p>In standard function execution, invoking a function involves noticeable runtime performance costs: pushing parameter arguments onto the stack frame, saving machine registers, jumping to the function's memory address, executing the code, storing return values, and jumping back to the calling instruction. For small, frequently called functions (like single-line math operations), this overhead can take more time than running the function code itself.</p>
+
+                    <p>Declaring a function <code>inline</code> requests that the compiler copy the function's body directly to every location where it is called at compile time, eliminating call overhead.</p>
+
+                    <p><em>Note:</em> The <code>inline</code> keyword is a <strong>request</strong>, not a command. Compilers automatically ignore inline requests for complex functions containing loops, switch blocks, static variables, or recursive logic.</p>
+
+                    <div class="code-container">
+                        <div class="code-header">Inline Function Syntax Example</div>
+                        <pre><code><span class="token-keyword">#include</span> <span class="token-string">&lt;iostream&gt;</span>
+<span class="token-keyword">using namespace</span> std;
+
+<span class="token-comment">// Inline keyword optimization</span>
+<span class="token-keyword">inline</span> <span class="token-type">int</span> cube(<span class="token-type">int</span> s) {
+    <span class="token-keyword">return</span> s * s * s;
+}
+
+<span class="token-type">int</span> main() {
+    <span class="token-comment">// Compiler replaces 'cube(5)' directly with '5 * 5 * 5'</span>
+    cout &lt;&lt; <span class="token-string">"Cube of 5: "</span> &lt;&lt; cube(<span class="token-string">5</span>) &lt;&lt; endl; 
+    <span class="token-keyword">return</span> <span class="token-string">0</span>;
+}</code></pre>
+                    </div>
+                </article>
+
+                <!-- TOPIC 19 & 20 -->
+                <article class="card" id="topic19">
+                    <h3>19 & 20. Default and Const Arguments</h3>
+                    
+                    <h4>Default Arguments</h4>
+                    <p>A default argument is a value pre-assigned in a function's prototype parameter list. If the caller does not supply an argument for that parameter, the function automatically uses the default value. If a value is provided, it overrides the default.</p>
+
+                    <p><strong>Crucial Rule:</strong> Default parameters must always be assigned from <strong>right to left</strong> in the parameter list. You cannot specify a default value for a parameter unless all parameters to its right also have default values.</p>
+
+                    <div class="code-container">
+                        <div class="code-header">Default Arguments Example Code</div>
+                        <pre><code><span class="token-keyword">#include</span> <span class="token-string">&lt;iostream&gt;</span>
+<span class="token-keyword">using namespace</span> std;
+
+<span class="token-comment">// Default argument rate set to 0.05 (5%)</span>
+<span class="token-type">double</span> calculateInterest(<span class="token-type">double</span> principal, <span class="token-type">int</span> years, <span class="token-type">double</span> rate = <span class="token-string">0.05</span>) {
+    <span class="token-keyword">return</span> principal * years * rate;
+}
+
+<span class="token-type">int</span> main() {
+    cout &lt;&lt; <span class="token-string">"Default Interest: "</span> &lt;&lt; calculateInterest(<span class="token-string">1000</span>, <span class="token-string">2</span>) &lt;&lt; endl;     <span class="token-comment">// Uses rate=0.05</span>
+    cout &lt;&lt; <span class="token-string">"Custom Interest:  "</span> &lt;&lt; calculateInterest(<span class="token-string">1000</span>, <span class="token-string">2</span>, <span class="token-string">0.08</span>) &lt;&lt; endl; <span class="token-comment">// Uses rate=0.08</span>
+    <span class="token-keyword">return</span> <span class="token-string">0</span>;
+}</code></pre>
+                    </div>
+
+                    <h4>Const Arguments</h4>
+                    <p>By adding the <code>const</code> keyword to a function parameter (especially when passing by reference, e.g., <code>const string &amp;str</code>), you instruct the compiler that the function must <strong>not modify</strong> the caller's value. Attempting to assign new values to a const parameter inside the function causes a compile-time error.</p>
+                </article>
+
+                <!-- TOPIC 21 -->
+                <article class="card" id="topic21">
+                    <h3>21. Friend Functions</h3>
+                    
+                    <div class="exam-card">
+                        <div class="exam-card-title">📌 Quick Exam Answer (2–5 Marks)</div>
+                        <p><strong>Definition:</strong> A friend function is a non-member function granted explicit access to a class's <code>private</code> and <code>protected</code> data members using the <code>friend</code> keyword inside that class definition.</p>
+                    </div>
+
+                    <h4>Detailed Explanation & Architectural Rules</h4>
+                    <p>Normally, encapsulation prevents external non-member functions from directly accessing an object's private variables. However, certain operations (like overloading complex binary operators across different class objects) require direct, efficient access to private data members of two distinct classes.</p>
+
+                    <p>Key rules governing Friend Functions:</p>
+                    <ul>
+                        <li>It is not in the scope of the class to which it is declared as a friend.</li>
+                        <li>Because it is not a member function, it cannot be called using an object handle with the dot operator (e.g., <code>obj.friendFunc()</code> is invalid). It is called like a standard global function.</li>
+                        <li>It receives objects of the class as parameter arguments to access their private fields.</li>
+                        <li>Friendship is neither inherited nor mutual, and cannot be transitively granted.</li>
+                    </ul>
+
+                    <div class="code-container">
+                        <div class="code-header">Complete Working C++ Friend Function Example</div>
+                        <pre><code><span class="token-keyword">#include</span> <span class="token-string">&lt;iostream&gt;</span>
+<span class="token-keyword">using namespace</span> std;
+
+<span class="token-keyword">class</span> <span class="token-type">Box</span> {
+<span class="token-keyword">private</span>:
+    <span class="token-type">double</span> width;
+
+<span class="token-keyword">public</span>:
+    <span class="token-type">Box</span>(<span class="token-type">double</span> w) { width = w; }
+    
+    <span class="token-comment">// Declaration of global Friend Function</span>
+    <span class="token-keyword">friend void</span> printWidth(<span class="token-type">Box</span> b);
+};
+
+<span class="token-comment">// Friend function definition (No class scope resolution or member qualifier needed)</span>
+<span class="token-type">void</span> printWidth(<span class="token-type">Box</span> b) {
+    <span class="token-comment">// Directly accessing private member 'width'</span>
+    cout &lt;&lt; <span class="token-string">"Private Box Width = "</span> &lt;&lt; b.width &lt;&lt; endl;
+}
+
+<span class="token-type">int</span> main() {
+    <span class="token-type">Box</span> boxObj(<span class="token-string">14.5</span>);
+    printWidth(boxObj); <span class="token-comment">// Called as a regular standalone function</span>
+    <span class="token-keyword">return</span> <span class="token-string">0</span>;
+}</code></pre>
+                    </div>
+                </article>
+            </section>
+
+            <!-- ==========================================================================
+               IMPORTANT COMPARISON TABLES
+               ========================================================================== -->
+            <section id="comparison-tables">
+                <h2>Important Comparison Tables</h2>
+                <p>These comparison tables synthesize key concepts across Unit-I and are frequently tested in university examinations.</p>
+
+                <h3>1. Class vs Object</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Class</th>
+                                <th>Object</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Definition</strong></td>
+                                <td>User-defined data type / Abstract blueprint.</td>
+                                <td>Real-world run-time instance of a class.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Memory Allocation</strong></td>
+                                <td>Allocates no RAM when defined.</td>
+                                <td>Allocates real RAM when instantiated.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Existence</strong></td>
+                                <td>Declared once in source code files.</td>
+                                <td>Can instantiate multiple unique objects from one class.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>2. Encapsulation vs Abstraction</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Encapsulation</th>
+                                <th>Abstraction</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Core Focus</strong></td>
+                                <td><strong>Implementation/Binding:</strong> Bundles data and methods together to restrict unauthorized access.</td>
+                                <td><strong>Interface/Representation:</strong> Displays essential features while hiding internal operational complexity.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>How Achieved</strong></td>
+                                <td>Using access specifiers (<code>private</code>, <code>public</code>).</td>
+                                <td>Using abstract classes, interfaces, and public function signatures.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>3. Compile-time vs Runtime Polymorphism</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Compile-time Polymorphism</th>
+                                <th>Runtime Polymorphism</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Binding Time</strong></td>
+                                <td>Early / Static Binding (during compilation).</td>
+                                <td>Late / Dynamic Binding (during execution).</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mechanisms</strong></td>
+                                <td>Function Overloading, Operator Overloading.</td>
+                                <td>Virtual Functions & Function Overriding.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Execution Speed</strong></td>
+                                <td>Faster execution speed.</td>
+                                <td>Slightly slower due to pointer table resolution.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ==========================================================================
+               IMPORTANT PRACTICAL C++ PROGRAMS
+               ========================================================================== -->
+            <section id="cpp-programs">
+                <h2>Important C++ Programs</h2>
+                <p>Practical code examples covering core concepts from the syllabus. Use these programs for lab exams and theory questions.</p>
+
+                <!-- Program 1 -->
+                <div class="card">
+                    <h4>Program 1: Basic Class & Object Instantiation</h4>
+                    <p>Demonstrates how to define a class, set member variables, and instantiate an object to print details.</p>
+                    <div class="code-container">
+                        <pre><code><span class="token-keyword">#include</span> <span class="token-string">&lt;iostream&gt;</span>
+<span class="token-keyword">using namespace</span> std;
+
+<span class="token-keyword">class</span> <span class="token-type">Car</span> {
+<span class="token-keyword">public</span>:
+    <span class="token-type">string</span> brand;
+    <span class="token-type">int</span> speed;
+
+    <span class="token-type">void</span> showDetails() {
+        cout &lt;&lt; <span class="token-string">"Brand: "</span> &lt;&lt; brand &lt;&lt; <span class="token-string">", Top Speed: "</span> &lt;&lt; speed &lt;&lt; <span class="token-string">" km/h"</span> &lt;&lt; endl;
+    }
+};
+
+<span class="token-type">int</span> main() {
+    <span class="token-type">Car</span> myCar; <span class="token-comment">// Object Creation</span>
+    myCar.brand = <span class="token-string">"BMW"</span>;
+    myCar.speed = <span class="token-string">250</span>;
+    myCar.showDetails();
+    <span class="token-keyword">return</span> <span class="token-string">0</span>;
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- Program 2 -->
+                <div class="card">
+                    <h4>Program 2: Swapping Two Values using Call by Reference</h4>
+                    <p>Demonstrates changing original variable values in a caller function using reference parameters (<code>&amp;</code>).</p>
+                    <div class="code-container">
+                        <pre><code><span class="token-keyword">#include</span> <span class="token-string">&lt;iostream&gt;</span>
+<span class="token-keyword">using namespace</span> std;
+
+<span class="token-type">void</span> performSwap(<span class="token-type">int</span> &amp;num1, <span class="token-type">int</span> &amp;num2) {
+    <span class="token-type">int</span> temp = num1;
+    num1 = num2;
+    num2 = temp;
+}
+
+<span class="token-type">int</span> main() {
+    <span class="token-type">int</span> a = <span class="token-string">45</span>, b = <span class="token-string">90</span>;
+    cout &lt;&lt; <span class="token-string">"Before Swap: a="</span> &lt;&lt; a &lt;&lt; <span class="token-string">", b="</span> &lt;&lt; b &lt;&lt; endl;
+    performSwap(a, b);
+    cout &lt;&lt; <span class="token-string">"After Swap:  a="</span> &lt;&lt; a &lt;&lt; <span class="token-string">", b="</span> &lt;&lt; b &lt;&lt; endl;
+    <span class="token-keyword">return</span> <span class="token-string">0</span>;
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==========================================================================
+               UNIVERSITY EXAM PREPARATION (Q&A)
+               ========================================================================== -->
+            <section id="exam-prep">
+                <h2>University Exam Preparation</h2>
+                <p>Curated list of high-probability university examination questions categorized by mark distribution.</p>
+
+                <h3>Important 2-Mark Short Questions</h3>
+                <ul>
+                    <li><strong>Q1: What is a programming paradigm?</strong><br><em>Ans:</em> A fundamental style or structural model of software organization and problem-solving.</li>
+                    <li><strong>Q2: Define Encapsulation.</strong><br><em>Ans:</em> The technique of bundling data fields and member functions into a single unit (class) while restricting direct external access.</li>
+                    <li><strong>Q3: What is the Scope Resolution Operator (::)?</strong><br><em>Ans:</em> An operator used to access global variables when shadowed by local variables, or to define class member functions externally.</li>
+                    <li><strong>Q4: Define an Inline Function.</strong><br><em>Ans:</em> A function where the compiler replaces calls directly with the function body to eliminate call overhead.</li>
+                    <li><strong>Q5: What is a Friend Function?</strong><br><em>Ans:</em> A non-member function granted explicit permission to access private and protected class members.</li>
+                    <li><strong>Q6: What is a reference variable in C++?</strong><br><em>Ans:</em> An alias or secondary name for an existing variable in memory (e.g., <code>int &amp;ref = original;</code>).</li>
+                    <li><strong>Q7: Differentiate between cin and cout.</strong><br><em>Ans:</em> <code>cin</code> is an input stream object used with the extraction operator (<code>&gt;&gt;</code>); <code>cout</code> is an output stream object used with the insertion operator (<code>&lt;&lt;</code>).</li>
+                </ul>
+
+                <h3>Important 5-Mark & 10-Mark Questions</h3>
+                <ol>
+                    <li>Explain the core principles of Object-Oriented Programming with diagrams and code examples.</li>
+                    <li>Compare Procedural Programming (C) with Object-Oriented Programming (C++) in detail.</li>
+                    <li>What are C++ tokens? Explain keywords, identifiers, and constants with rules and examples.</li>
+                    <li>Explain control structures in C++ with syntax diagrams for selection and iteration loops.</li>
+                    <li>Compare Call by Value and Call by Reference with complete C++ programs.</li>
+                    <li>Explain Friend Functions with syntax rules, advantages, and a working C++ example.</li>
+                </ol>
+            </section>
+
+            <!-- ==========================================================================
+               QUICK REVISION SUMMARY
+               ========================================================================== -->
+            <section id="quick-revision">
+                <h2>Quick Revision Summary</h2>
+                <div class="quick-grid">
+                    <div class="quick-item">
+                        <strong>OOP</strong>
+                        <span>Paradigm focused on organizing programs around objects and secure data.</span>
+                    </div>
+                    <div class="quick-item">
+                        <strong>Class</strong>
+                        <span>User-defined blueprint defining shared data structures and behaviors.</span>
+                    </div>
+                    <div class="quick-item">
+                        <strong>Object</strong>
+                        <span>A basic run-time instance of a class that occupies memory.</span>
+                    </div>
+                    <div class="quick-item">
+                        <strong>Encapsulation</strong>
+                        <span>Bundles data and methods together; enforces data hiding.</span>
+                    </div>
+                    <div class="quick-item">
+                        <strong>Abstraction</strong>
+                        <span>Displays essential features while hiding internal complexity.</span>
+                    </div>
+                    <div class="quick-item">
+                        <strong>Inheritance</strong>
+                        <span>Allows a child class to inherit properties from a base class.</span>
+                    </div>
+                    <div class="quick-item">
+                        <strong>Polymorphism</strong>
+                        <span>Enables a single interface to take on multiple forms depending on context.</span>
+                    </div>
+                    <div class="quick-item">
+                        <strong>Inline Function</strong>
+                        <span>Function call replaced directly by its body at compile time to save overhead.</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==========================================================================
+               FORMULA / SYNTAX CHEAT SHEET
+               ========================================================================== -->
+            <section id="cheat-sheet">
+                <h2>Syntax Cheat Sheet</h2>
+                
+                <div class="code-container">
+                    <div class="code-header">C++ Key Syntax Quick Reference</div>
+                    <pre><code><span class="token-comment">// 1. Class Structure</span>
+<span class="token-keyword">class</span> <span class="token-type">ClassName</span> {
+<span class="token-keyword">private</span>:
+    <span class="token-comment">// Private variables (Data hiding)</span>
+<span class="token-keyword">public</span>:
+    <span class="token-comment">// Public functions &amp; constructors</span>
+};
+
+<span class="token-comment">// 2. Inline Function</span>
+<span class="token-keyword">inline</span> <span class="token-type">returnType</span> funcName(params) { <span class="token-keyword">return</span> value; }
+
+<span class="token-comment">// 3. Default Parameter Prototype</span>
+<span class="token-type">void</span> display(<span class="token-type">int</span> data, <span class="token-type">int</span> status = <span class="token-string">0</span>);
+
+<span class="token-comment">// 4. Friend Function Declaration (Inside Class Body)</span>
+<span class="token-keyword">friend</span> <span class="token-type">returnType</span> friendFuncName(ClassName &amp;obj);
+
+<span class="token-comment">// 5. Reference Variable Alias</span>
+<span class="token-type">int</span> original = <span class="token-string">50</span>;
+<span class="token-type">int</span> &amp;refVar = original;</code></pre>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Back to Top Floating Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Scroll Back to Top">↑</button>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>Unit–I: Object-Oriented Programming & C++ • Complete BCA Study Material Notes</p>
+            <p style="margin-top: 8px; color: var(--text-muted); font-size: 0.8rem;">Designed for BCA University Examinations • Pure Vanilla HTML5/CSS3/JS</p>
+        </div>
+    </footer>
+
+    <!-- ==========================================================================
+       VANILLA JAVASCRIPT (Theme Management, Mobile Menu, Scroll Animations)
+       ========================================================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Theme Toggle Logic
+            const themeToggleBtn = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+            const htmlTag = document.documentElement;
+
+            // Load saved theme from localStorage
+            const savedTheme = localStorage.getItem('bca_notes_theme') || 'dark';
+            setTheme(savedTheme);
+
+            themeToggleBtn.addEventListener('click', () => {
+                const currentTheme = htmlTag.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                setTheme(newTheme);
+            });
+
+            function setTheme(theme) {
+                htmlTag.setAttribute('data-theme', theme);
+                localStorage.setItem('bca_notes_theme', theme);
+                if (theme === 'dark') {
+                    themeIcon.textContent = '🌙';
+                    themeText.textContent = 'Dark';
+                } else {
+                    themeIcon.textContent = '☀️️';
+                    themeText.textContent = 'Light';
+                }
+            }
+
+            // Mobile Navigation Toggle
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navLinks = document.getElementById('navLinks');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+
+            // Close mobile menu when clicking a link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                });
+            });
+
+            // Back to Top Button Visibility
+            const backToTopBtn = document.getElementById('backToTop');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 400) {
+                    backToTopBtn.classList.add('visible');
+                } else {
+                    backToTopBtn.classList.remove('visible');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Sidebar Active State Link Highlight on Scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -60% 0px',
+                threshold: 0
+            };
+
+            const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
+            const sections = document.querySelectorAll('article[id], section[id]');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        sidebarLinks.forEach(link => {
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            } else {
+                                link.classList.remove('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => observer.observe(section));
+        });
+    </script>
+</body>
+</html>
