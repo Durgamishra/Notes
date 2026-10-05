@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit-III: Inheritance & Polymorphism — BCA Examination Study Module</title>
+    <style>
+        :root[data-theme="dark"] {
+            --bg-primary: #0b0f19;
+            --bg-secondary: #111827;
+            --bg-tertiary: #1f2937;
+            --bg-card: #131b2e;
+            --border-color: #1e293b;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-primary: #06b6d4;
+            --accent-hover: #0891b2;
+            --accent-glow: rgba(6, 182, 212, 0.15);
+            --code-bg: #030712;
+            --note-bg: rgba(6, 182, 212, 0.08);
+            --note-border: #0891b2;
+            --tip-bg: rgba(16, 185, 129, 0.08);
+            --tip-border: #10b981;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        :root[data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f1f5f9;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --accent-primary: #0284c7;
+            --accent-hover: #0369a1;
+            --accent-glow: rgba(2, 132, 199, 0.1);
+            --code-bg: #0f172a;
+            --note-bg: rgba(2, 132, 199, 0.05);
+            --note-border: #0284c7;
+            --tip-bg: rgba(16, 185, 129, 0.05);
+            --tip-border: #059669;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.7;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Top Header Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(8px);
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.5rem 1rem 0.5rem 2rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            width: 250px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+            width: 300px;
+        }
+
+        .search-box::before {
+            content: "🔍";
+            position: absolute;
+            left: 0.7rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        .theme-toggle-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: background 0.3s ease;
+        }
+
+        .theme-toggle-btn:hover {
+            background-color: var(--border-color);
+        }
+
+        /* Layout Container */
+        .layout-container {
+            display: flex;
+            flex: 1;
+        }
+
+        /* Sidebar Navigation */
+        aside {
+            width: 280px;
+            background-color: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem 1rem;
+            position: sticky;
+            top: 60px;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin: 1.2rem 0 0.5rem 0.5rem;
+            font-weight: 700;
+        }
+
+        .sidebar-menu li a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-menu li a:hover, .sidebar-menu li a.active {
+            color: var(--accent-primary);
+            background-color: var(--accent-glow);
+            font-weight: 600;
+        }
+
+        /* Main Content Area */
+        main {
+            flex: 1;
+            padding: 2.5rem 3rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Typography & Components */
+        h1.doc-title {
+            font-size: 2.5rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .doc-subtitle {
+            font-size: 1.1rem;
+            color: var(--accent-primary);
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        h2.section-heading {
+            font-size: 1.8rem;
+            color: var(--accent-primary);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            margin: 3rem 0 1.5rem 0;
+            font-weight: 700;
+        }
+
+        h3.topic-heading {
+            font-size: 1.4rem;
+            color: var(--text-main);
+            margin: 2.5rem 0 1rem 0;
+            font-weight: 600;
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            color: var(--text-main);
+            margin: 1.2rem 0 0.6rem 0;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            color: var(--text-main);
+        }
+
+        ul, ol {
+            margin-bottom: 1.2rem;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.4rem;
+        }
+
+        /* Specialized Box Components */
+        .quick-answer-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-primary);
+            border-radius: 8px;
+            padding: 1.2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .quick-answer-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            font-weight: 800;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .exam-tip-box {
+            background-color: var(--tip-bg);
+            border: 1px solid var(--tip-border);
+            border-radius: 8px;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+        }
+
+        .exam-tip-title {
+            font-weight: 700;
+            color: var(--tip-border);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Code Block Styling */
+        .code-container {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+
+        .code-header {
+            background-color: var(--bg-tertiary);
+            padding: 0.4rem 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: monospace;
+        }
+
+        pre {
+            padding: 1.2rem;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: #e5e7eb;
+            line-height: 1.5;
+        }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        th, td {
+            padding: 0.8rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.92rem;
+        }
+
+        th {
+            background-color: var(--bg-tertiary);
+            color: var(--accent-primary);
+            font-weight: 700;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Diagram Component (Pure CSS) */
+        .diagram-container {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .diagram-node {
+            background-color: var(--bg-tertiary);
+            border: 2px solid var(--accent-primary);
+            color: var(--text-main);
+            padding: 0.6rem 1.5rem;
+            border-radius: 6px;
+            font-weight: bold;
+            min-width: 140px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .diagram-arrow {
+            font-size: 1.5rem;
+            color: var(--accent-primary);
+            margin: 0.3rem 0;
+        }
+
+        .diagram-row {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            width: 100%;
+        }
+
+        /* Question Accordion/Cards */
+        .qa-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .qa-q {
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .layout-container {
+                flex-direction: column;
+            }
+            aside {
+                width: 100%;
+                height: auto;
+                position: relative;
+                top: 0;
+            }
+            main {
+                padding: 1.5rem;
+            }
+            .search-box input {
+                width: 150px;
+            }
+            .search-box input:focus {
+                width: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-title">
+            <span>📚</span> BCA Exam Prep: Unit-III C++
+        </div>
+        <div class="header-controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" onkeyup="searchTopics()" placeholder="Search Unit-III topics...">
+            </div>
+            <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeBtn">
+                🌙 Dark
+            </button>
+        </div>
+    </header>
+
+    <div class="layout-container">
+        <aside>
+            <ul class="sidebar-menu">
+                <li class="sidebar-section-title">SECTION A: INHERITANCE</li>
+                <li><a href="#basics-inheritance">1. Basics of Inheritance</a></li>
+                <li><a href="#types-inheritance">2. Types of Inheritance</a></li>
+                <li><a href="#virtual-base">3. Virtual Base Classes</a></li>
+                <li><a href="#abstract-classes">4. Abstract Classes</a></li>
+                <li><a href="#member-classes">5. Member Classes</a></li>
+                <li><a href="#nesting-classes">6. Nesting of Classes</a></li>
+
+                <li class="sidebar-section-title">SECTION B: POLYMORPHISM</li>
+                <li><a href="#concept-polymorphism">7. Concept of Polymorphism</a></li>
+                <li><a href="#pointers-basics">8. Pointers Fundamentals</a></li>
+                <li><a href="#pointers-objects">9. Pointers to Objects</a></li>
+                <li><a href="#this-pointer">10. this Pointer</a></li>
+                <li><a href="#pointers-derived">11. Pointers to Derived Classes</a></li>
+                <li><a href="#virtual-functions">12. Virtual Functions</a></li>
+                <li><a href="#pure-virtual">13. Pure Virtual Functions</a></li>
+                <li><a href="#func-overloading">14. Function Overloading</a></li>
+                <li><a href="#operator-overloading">15. Operator Overloading</a></li>
+
+                <li class="sidebar-section-title">SUPPLEMENTS & EXAMS</li>
+                <li><a href="#comparisons">Comparison Tables</a></li>
+                <li><a href="#important-programs">Important C++ Programs</a></li>
+                <li><a href="#exam-questions">University Exam Questions</a></li>
+                <li><a href="#quick-revision">Quick Revision Cheat Sheet</a></li>
+            </ul>
+        </aside>
+
+        <main>
+            <h1 class="doc-title">UNIT–III: INHERITANCE & POLYMORPHISM</h1>
+            <p class="doc-subtitle">Comprehensive University Examination Study Textbook for BCA Students</p>
+
+            <!-- ==========================================
+                 SECTION A: INHERITANCE
+            =========================================== -->
+            <h2 class="section-heading" id="section-a">SECTION A — INHERITANCE</h2>
+
+            <!-- 1. BASICS OF INHERITANCE -->
+            <article id="basics-inheritance" class="topic-block">
+                <h3 class="topic-heading">1. Basics of Inheritance</h3>
+
+                <div class="quick-answer-card">
+                    <div class="quick-answer-title">⚡ Quick Exam Answer (2–5 Marks)</div>
+                    <p><strong>Definition:</strong> Inheritance is a fundamental concept of Object-Oriented Programming (OOP) that allows a new class (Derived Class) to acquire the properties, behaviors, and data members of an existing class (Base Class).</p>
+                    <p><strong>Key Points:</strong></p>
+                    <ul>
+                        <li>Promotes code reusability and reduces software development time.</li>
+                        <li>Establishes an <strong>IS-A</strong> relationship between classes (e.g., a Dog <em>IS-A</em> Animal).</li>
+                        <li>Existing class is called the <strong>Base Class</strong> (or Parent Class); the new class is called the <strong>Derived Class</strong> (or Child Class).</li>
+                    </ul>
+                </div>
+
+                <h4>Detailed 10-Mark Explanation</h4>
+                <p>Inheritance is one of the four foundational pillars of Object-Oriented Programming, alongside Encapsulation, Abstraction, and Polymorphism. In software development, writing code from scratch for every single component is highly inefficient. Real-world objects often share common attributes and behaviors. For instance, both a Car and a Truck share common attributes such as speed, fuel capacity, and engine state, alongside common actions like accelerate and brake. Inheritance allows programmers to define these common features in a generalized class and then extend that class to create more specific classes without redefining the existing logic.</p>
+
+                <p>The class whose properties are inherited is termed the <strong>Base Class</strong> (or Parent / Super Class). The class that inherits these properties is known as the <strong>Derived Class</strong> (or Child / Sub Class). The derived class inherits all non-private members of the base class and can also add its own unique variables and functions, or overwrite existing behaviors.</p>
+
+                <p><strong>Why Inheritance is Required:</strong></p>
+                <ul>
+                    <li><strong>Code Reusability:</strong> Once a base class is written, tested, and debugged, its code can be reused freely in child classes. This eliminates redundancy and lowers overall software maintenance costs.</li>
+                    <li><strong>Transitive Nature:</strong> If Class C inherits from Class B, and Class B inherits from Class A, then Class C automatically inherits features of Class A as well.</li>
+                    <li><strong>Extensibility:</strong> Existing classes can be adapted to meet new application demands without modifying the original code, preserving backward compatibility.</li>
+                    <li><strong>Polymorphic Architecture:</strong> Inheritance forms the structural groundwork required for runtime polymorphism using virtual functions.</li>
+                </ul>
+
+                <p><strong>Syntax of Inheritance in C++:</strong></p>
+                <div class="code-container">
+                    <div class="code-header">C++ Syntax</div>
+                    <pre><code>class DerivedClass : access_specifier BaseClass {
+    // Body of the derived class
+};</code></pre>
+                </div>
+
+                <p><strong>Access Specifiers in Inheritance:</strong> The access specifier determines how base class members are made available inside the derived class:</p>
+                <ul>
+                    <li><strong>Public Inheritance (<code>public</code>):</strong> Public members of the base class become public members of the derived class. Protected members of the base class become protected members of the derived class. Private members remain private to the base class and cannot be accessed directly.</li>
+                    <li><strong>Protected Inheritance (<code>protected</code>):</strong> Public and protected members of the base class both become protected members of the derived class.</li>
+                    <li><strong>Private Inheritance (<code>private</code>):</strong> Public and protected members of the base class both become private members of the derived class.</li>
+                </ul>
+
+                <h4>Visual Diagram: Basic Inheritance</h4>
+                <div class="diagram-container">
+                    <div class="diagram-node">Base Class (Parent)</div>
+                    <div class="diagram-arrow">↓</div>
+                    <div class="diagram-node">Derived Class (Child)</div>
+                </div>
+
+                <h4>C++ Example Program</h4>
+                <div class="code-container">
+                    <div class="code-header">Simple_Inheritance.cpp</div>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+// Base Class
+class Animal {
+public:
+    void eat() {
+        cout &lt;&lt; "This animal eats food." &lt;&lt; endl;
+    }
+};
+
+// Derived Class inheriting publicly from Animal
+class Dog : public Animal {
+public:
+    void bark() {
+        cout &lt;&lt; "The dog barks: Woof! Woof!" &lt;&lt; endl;
+    }
+};
+
+int main() {
+    Dog myDog;
+    // Calling inherited member function
+    myDog.eat();
+    // Calling derived class's own member function
+    myDog.bark();
+    return 0;
+}</code></pre>
+                </div>
+
+                <h4>Code Explanation</h4>
+                <p>In this program, <code>Animal</code> is created as a Base Class with a single public function <code>eat()</code>. The <code>Dog</code> class is declared as a Derived Class using public inheritance (<code>class Dog : public Animal</code>). Because of public inheritance, the <code>Dog</code> class acquires public access to <code>eat()</code>. Inside the <code>main()</code> function, an object <code>myDog</code> of type <code>Dog</code> is instantiated. <code>myDog</code> can invoke both its inherited method <code>eat()</code> and its own unique method <code>bark()</code> seamlessly.</p>
+
+                <div class="exam-tip-box">
+                    <div class="exam-tip-title">📌 Important Exam Points to Remember</div>
+                    <ul>
+                        <li>Private members of a base class are NEVER directly accessible in a derived class; they are inherited but hidden.</li>
+                        <li>Protected access specifier acts like private to outer code, but allows child classes to access the members directly.</li>
+                        <li>Default access mode in inheritance is <code>private</code> if not specified (e.g., <code>class Derived : Base</code> is private by default).</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- 2. TYPES OF INHERITANCE -->
+            <article id="types-inheritance" class="topic-block">
+                <h3 class="topic-heading">2. Types of Inheritance</h3>
+
+                <div class="quick-answer-card">
+                    <div class="quick-answer-title">⚡ Quick Exam Answer (2–5 Marks)</div>
+                    <p>C++ supports 5 forms of inheritance based on how base classes and derived classes are structured:</p>
+                    <ol>
+                        <li><strong>Single Inheritance:</strong> One base class, one derived class.</li>
+                        <li><strong>Multilevel Inheritance:</strong> A class derived from another derived class (chain).</li>
+                        <li><strong>Multiple Inheritance:</strong> One derived class inheriting from two or more base classes.</li>
+                        <li><strong>Hierarchical Inheritance:</strong> Multiple derived classes inheriting from a single base class.</li>
+                        <li><strong>Hybrid Inheritance:</strong> Combination of two or more types of inheritance.</li>
+                    </ol>
+                </div>
+
+                <h4>Detailed 10-Mark Explanation of Each Type</h4>
+
+                <h5>1. Single Inheritance</h5>
+                <p>Single inheritance is the simplest form of inheritance where one child class derives directly from a single parent class. It establishes a direct 1-to-1 hierarchy. It is typically used when a specialized entity needs to add extra attributes to a general concept.</p>
+                <div class="diagram-container">
+                    <div class="diagram-node">Class A (Base)</div>
+                    <div class="diagram-arrow">↓</div>
+                    <div class="diagram-node">Class B (Derived)</div>
+                </div>
+
+                <h5>2. Multilevel Inheritance</h5>
+                <p>In multilevel inheritance, a class is derived from another derived class, forming a chain of inheritance. The intermediate derived class acts as both a child class to its parent and a parent class to its descendant. For example: <code>Person -&gt; Employee -&gt; Manager</code>. The bottom-most class inherits attributes from every level above it.</p>
+                <div class="diagram-container">
+                    <div class="diagram-node">Class A (Grandparent)</div>
+                    <div class="diagram-arrow">↓</div>
+                    <div class="diagram-node">Class B (Parent)</div>
+                    <div class="diagram-arrow">↓</div>
+                    <div class="diagram-node">Class C (Child)</div>
+                </div>
+
+                <h5>3. Multiple Inheritance</h5>
+                <p>Multiple inheritance occurs when a single derived class simultaneously inherits properties from two or more separate base classes. Syntax requires separating base classes with commas: <code>class Derived : public Base1, public Base2</code>. While powerful for combining features (e.g., a <code>SmartPhone</code> inheriting from <code>Camera</code> and <code>Phone</code>), it can introduce severe ambiguity problems if both base classes contain members with identical names.</p>
+                <div class="diagram-container">
+                    <div class="diagram-row">
+                        <div class="diagram-node">Class A</div>
+                        <div class="diagram-node">Class B</div>
+                    </div>
+                    <div class="diagram-arrow">↘ ↙</div>
+                    <div class="diagram-node">Class C (Derived)</div>
+                </div>
+
+                <h5>4. Hierarchical Inheritance</h5>
+                <p>In hierarchical inheritance, a single base class serves as the parent for multiple derived classes. It creates a tree-like hierarchy structure. For example, a base class <code>Shape</code> can be inherited by <code>Circle</code>, <code>Rectangle</code>, and <code>Triangle</code>. Every derived class shares base features but provides its own specialized functionality.</p>
+                <div class="diagram-container">
+                    <div class="diagram-node">Class A (Base)</div>
+                    <div class="diagram-arrow">↙ ↘</div>
+                    <div class="diagram-row">
+                        <div class="diagram-node">Class B</div>
+                        <div class="diagram-node">Class C</div>
+                    </div>
+                </div>
+
+                <h5>5. Hybrid Inheritance</h5>
+                <p>Hybrid inheritance is created by combining two or more distinct types of inheritance within a single program. A common configuration is combining Multiple and Hierarchical inheritance (forming the classic diamond arrangement). Because hybrid structures are complex, they frequently cause member duplication and ambiguity issues, requiring C++ features like Virtual Base Classes to resolve them properly.</p>
+
+                <h4>C++ Example: Multiple Inheritance</h4>
+                <div class="code-container">
+                    <div class="code-header">Multiple_Inheritance.cpp</div>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class Printer {
+public:
+    void printDoc() {
+        cout &lt;&lt; "Printing document..." &lt;&lt; endl;
+    }
+};
+
+class Scanner {
+public:
+    void scanDoc() {
+        cout &lt;&lt; "Scanning document..." &lt;&lt; endl;
+    }
+};
+
+// Derived from both Printer and Scanner
+class AllInOnePrinter : public Printer, public Scanner {
+public:
+    void faxDoc() {
+        cout &lt;&lt; "Sending fax..." &lt;&lt; endl;
+    }
+};
+
+int main() {
+    AllInOnePrinter device;
+    device.printDoc(); // inherited from Printer
+    device.scanDoc();  // inherited from Scanner
+    device.faxDoc();   // native to AllInOnePrinter
+    return 0;
+}</code></pre>
+                </div>
+            </article>
+
+            <!-- 3. VIRTUAL BASE CLASSES -->
+            <article id="virtual-base" class="topic-block">
+                <h3 class="topic-heading">3. Virtual Base Classes</h3>
+
+                <div class="quick-answer-card">
+                    <div class="quick-answer-title">⚡ Quick Exam Answer (2–5 Marks)</div>
+                    <p><strong>Definition:</strong> A Virtual Base Class is used in C++ to prevent duplicate copies of a base class from being inherited into a child class when using hybrid or multipath inheritance (The Diamond Problem).</p>
+                    <p><strong>Syntax:</strong> <code>class B : virtual public A { ... };</code></p>
+                </div>
+
+                <h4>Detailed 10-Mark Explanation</h4>
+                <p>The necessity for a Virtual Base Class arises during multipath multiple/hybrid inheritance, widely called the <strong>Diamond Inheritance Problem</strong>. Consider a scenario where Class A is a base class inherited by two child classes, Class B and Class C. Now, a fourth class, Class D, inherits from both Class B and Class C via multiple inheritance.</p>
+
+                <p>Without virtual inheritance, Class B receives a copy of Class A's data members, and Class C also receives a copy of Class A's data members. Consequently, when Class D inherits from both B and C, it gets <strong>two separate copies</strong> of Class A's data members. This duplication causes two severe issues:</p>
+                <ol>
+                    <li><strong>Ambiguity:</strong> When an object of Class D attempts to access a variable inherited from Class A, the C++ compiler cannot decide which path's variable to access (B's copy or C's copy), resulting in a compile-time error.</li>
+                    <li><strong>Memory Wastage:</strong> Storing redundant copies of identical data members wastes system memory unnecessarily.</li>
+                </ol>
+
+                <h4>The Diamond Problem Diagram</h4>
+                <div class="diagram-container">
+                    <div class="diagram-node">Class A (Base)</div>
+                    <div class="diagram-arrow">↙ ↘</div>
+                    <div class="diagram-row">
+                        <div class="diagram-node">Class B (virtual)</div>
+                        <div class="diagram-node">Class C (virtual)</div>
+                    </div>
+                    <div class="diagram-arrow">↘ ↙</div>
+                    <div class="diagram-node">Class D (Child)</div>
+                </div>
+
+                <p><strong>Solution using Virtual Base Class:</strong> By placing the keyword <code>virtual</code> during the inheritance declaration of intermediate classes (B and C), C++ ensures that only <em>one shared single copy</em> of the top-level base class (A) is passed down to any subsequent derived classes (D), completely resolving ambiguity and eliminating duplicate data allocation.</p>
+
+                <h4>C++ Example Program</h4>
+                <div class="code-container">
+                    <div class="code-header">Virtual_Base_Class.cpp</div>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class Student {
+public:
+    int rollNumber;
+    void setRoll(int r) { rollNumber = r; }
+};
+
+// Declaring Student as Virtual Base Class
+class Academic : virtual public Student {
+public:
+    float marks;
+};
+
+// Declaring Student as Virtual Base Class
+class Sports : virtual public Student {
+public:
+    float score;
+};
+
+// Result inherits single copy of Student via Academic and Sports
+class Result : public Academic, public Sports {
+public:
+    void displayTotal() {
+        // No ambiguity accessing rollNumber here
+        cout &lt;&lt; "Roll Number: " &lt;&lt; rollNumber &lt;&lt; endl;
+        cout &lt;&lt; "Total Score: " &lt;&lt; (marks + score) &lt;&lt; endl;
+    }
+};
+
+int main() {
+    Result studentResult;
+    studentResult.setRoll(101); // Ambiguity resolved!
+    studentResult.marks = 85.5;
+    studentResult.score = 90.0;
+    studentResult.displayTotal();
+    return 0;
+}</code></pre>
+                </div>
+            </article>
+
+            <!-- 4. ABSTRACT CLASSES -->
+            <article id="abstract-classes" class="topic-block">
+                <h3 class="topic-heading">4. Abstract Classes</h3>
+
+                <div class="quick-answer-card">
+                    <div class="quick-answer-title">⚡ Quick Exam Answer (2–5 Marks)</div>
+                    <p><strong>Definition:</strong> An Abstract Class in C++ is a class designed specifically to serve as a base class and cannot be instantiated directly into objects. A class becomes abstract when it contains at least one <strong>Pure Virtual Function</strong>.</p>
+                </div>
+
+                <h4>Detailed 10-Mark Explanation</h4>
+                <p>In object-oriented design, abstraction is the principle of hiding internal implementation details while displaying only relevant interfaces to the outside world. An abstract class acts as a blueprint or contract for derived classes. It outlines <em>what</em> functions a child class must implement, without specifying <em>how</em> those functions should be implemented.</p>
+
+                <p><strong>Rules governing Abstract Classes:</strong></p>
+                <ul>
+                    <li>An abstract class <strong>cannot be instantiated</strong> (i.g., you cannot write <code>AbstractClass obj;</code>).</li>
+                    <li>It must contain at least one pure virtual function (declared with <code>= 0</code>).</li>
+                    <li>If a derived class fails to override <em>all</em> pure virtual functions inherited from an abstract base class, that derived class itself becomes an abstract class.</li>
+                    <li>Pointers and references of an abstract class type <strong>can</strong> be legally created to achieve runtime polymorphism.</li>
+                </ul>
+
+                <h4>C++ Example Program</h4>
+                <div class="code-container">
+                    <div class="code-header">Abstract_Class.cpp</div>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+// Abstract Base Class
+class Shape {
+public:
+    // Pure Virtual Function
+    virtual void draw() = 0; 
+};
+
+class Circle : public Shape {
+public:
+    void draw() override {
+        cout &lt;&lt; "Drawing a Circle." &lt;&lt; endl;
+    }
+};
+
+class Rectangle : public Shape {
+public:
+    void draw() override {
+        cout &lt;&lt; "Drawing a Rectangle." &lt;&lt; endl;
+    }
+};
+
+int main() {
+    // Shape s; // ERROR! Cannot instantiate abstract class
+    Shape* shapePtr;
+    Circle c;
+    Rectangle r;
+
+    shapePtr = &c;
+    shapePtr-&gt;draw(); // Output: Drawing a Circle.
+
+    shapePtr = &r;
+    shapePtr-&gt;draw(); // Output: Drawing a Rectangle.
+
+    return 0;
+}</code></pre>
+                </div>
+            </article>
+
+            <!-- 5. MEMBER CLASSES & 6. NESTING OF CLASSES -->
+            <article id="member-nesting-classes" class="topic-block">
+                <h3 class="topic-heading">5 & 6. Member Classes & Nesting of Classes</h3>
+
+                <div class="quick-answer-card">
+                    <div class="quick-answer-title">⚡ Quick Exam Answer (2–5 Marks)</div>
+                    <p><strong>Nested Class:</strong> A class declared inside the scope of another enclosing class. It helps group logically related classes together and prevents namespace pollution.</p>
+                    <p><strong>Member Class (Containment/Composition):</strong> An object of one class declared as a data member inside another class. Represents a <strong>HAS-A</strong> relationship.</p>
+                </div>
+
+                <h4>Detailed 10-Mark Explanation</h4>
+                <p>While inheritance represents an <strong>IS-A</strong> relationship (e.g., Dog IS-A Animal), modern Object-Oriented design frequently utilizes composition, which represents a <strong>HAS-A</strong> relationship (e.g., Car HAS-A Engine). In C++, this can be achieved using Member Classes or Nested Classes.</p>
+
+                <p><strong>1. Member Class (Containment):</strong> When a class uses an instance/object of another class as its internal attribute, the embedded object is referred to as a member class object. For example, a <code>Car</code> class holding an object of an <code>Engine</code> class as its private member.</p>
+
+                <p><strong>2. Nested Class:</strong> A nested class is defined entirely inside the declaration body of an outer class. A nested class is enclosed in the scope of the outer class. Outer class access rules apply: if a nested class is placed under the <code>private</code> section of the outer class, it remains accessible only within the outer class. If placed under <code>public</code>, outside code can instantiate it using the scope resolution operator: <code>Outer::Nested obj;</code>.</p>
+
+                <h4>C++ Example: Nested Class & Composition</h4>
+                <div class="code-container">
+                    <div class="code-header">Nested_Class_Example.cpp</div>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class Computer {
+public:
+    // Nested Class definition
+    class CPU {
+    public:
+        void process() {
+            cout &lt;&lt; "CPU processing instructions..." &lt;&lt; endl;
+        }
+    };
+
+    void startComputer() {
+        processor.process();
+    }
+
+private:
+    CPU processor; // Member class instance (Composition)
+};
+
+int main() {
+    Computer myPC;
+    myPC.startComputer();
+
+    // Accessing public nested class directly using scope resolution
+    Computer::CPU standaloneCPU;
+    standaloneCPU.process();
+
+    return 0;
+}</code></pre>
+                </div>
+            </article>
+
+            <!-- ==========================================
+                 SECTION B: POLYMORPHISM
+            =========================================== -->
+            <h2 class="section-heading" id="section-b">SECTION B — POLYMORPHISM</h2>
+
+            <!-- 7. CONCEPT OF POLYMORPHISM -->
+            <article id="concept-polymorphism" class="topic-block">
+                <h3 class="topic-heading">7. Meaning and Concept of Polymorphism</h3>
+
+                <div class="quick-answer-card">
+                    <div class="quick-answer-title">⚡ Quick Exam Answer (2–5 Marks)</div>
+                    <p><strong>Definition:</strong> Polymorphism is derived from Greek words (<em>Poly</em> = Many, <em>Morphs</em> = Forms). It allows a single operator, function, or interface to display different behaviors depending on the context or operational data type.</p>
+                </div>
+
+                <h4>Detailed 10-Mark Explanation</h4>
+                <p>Polymorphism allows C++ programs to process objects differently depending on their class type or data inputs through a single unified interface. It reduces code complexity and enables dynamic system extensibility.</p>
+
+                <p>Polymorphism is broadly categorized into two major types in C++:</p>
+                <ol>
+                    <li><strong>Compile-time Polymorphism (Static / Early Binding):</strong> The specific function code to execute is determined by the compiler at compile time based on signatures and parameters. It executes faster because no lookup delay occurs at runtime. Achieved through <strong>Function Overloading</strong> and <strong>Operator Overloading</strong>.</li>
+                    <li><strong>Runtime Polymorphism (Dynamic / Late Binding):</strong> The exact function call resolution is deferred until the application is actively executing. It relies on Base Class Pointers and <strong>Virtual Functions</strong>. Although slightly slower due to vtable lookups, it offers immense flexibility.</li>
+                </ol>
+
+                <h4>Polymorphism Hierarchy Diagram</h4>
+                <div class="diagram-container">
+                    <div class="diagram-node">Polymorphism</div>
+                    <div class="diagram-arrow">↙ ↘</div>
+                    <div class="diagram-row">
+                        <div class="diagram-node">Compile-Time (Static)</div>
+                        <div class="diagram-node">Runtime (Dynamic)</div>
+                    </div>
+                    <div class="diagram-arrow">↓ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ↓</div>
+                    <div class="diagram-row">
+                        <div style="font-size:0.8rem; text-align:center;">• Function Overloading<br>• Operator Overloading</div>
+                        <div style="font-size:0.8rem; text-align:center;">• Virtual Functions<br>• Function Overriding</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- 8. POINTERS FUNDAMENTALS -->
+            <article id="pointers-basics" class="topic-block">
+                <h3 class="topic-heading">8. Pointers Fundamentals</h3>
+
+                <div class="quick-answer-card">
+                    <div class="quick-answer-title">⚡ Quick Exam Answer (2–5 Marks)</div>
+                    <p><strong>Pointer:</strong> A variable that stores the memory address of another variable rather than a direct value.</p>
+                    <p><strong>Key Operators:</strong></p>
+                    <ul>
+                        <li><code>&amp;</code> (Address-of operator): Retrieves the memory address of a variable.</li>
+                        <li><code>*</code> (Dereference/Indirection operator): Accesses the value stored at the memory address pointed to by the pointer.</li>
+                    </ul>
+                </div>
+
+                <h4>Detailed 10-Mark Explanation</h4>
+                <p>Pointers are fundamental tools in C++ that allow direct manipulation of computer memory. Every variable stored in memory occupies a specific location identified by a unique memory address (typically expressed in hexadecimal). A pointer is declared using the asterisk symbol (<code>*</code>) before its identifier.</p>
+
+                <div class="code-container">
+                    <div class="code-header">C++ Pointer Syntax</div>
+                    <pre><code>int num = 25;
+int* ptr = &num; // ptr stores memory address of num</code></pre>
+                </div>
+
+                <p><strong>Advantages of Pointers:</strong></p>
+                <ul>
+                    <li>Enables dynamic memory allocation in heap memory using <code>new</code> and <code>delete</code>.</li>
+                    <li>Allows passing large structures/objects to functions efficiently by reference without copying full data.</li>
+                    <li>Required for implementing complex data structures like linked lists, trees, and graphs.</li>
+                    <li>Essential for achieving runtime polymorphism via virtual function call lookup.</li>
+                </ul>
+            </article>
+
+            <!-- 9. POINTERS TO OBJECTS -->
+            <article id="pointers-objects" class="topic-block">
+                <h3 class="topic-heading">9. Pointers to Objects</h3>
+
+                <div class="quick-answer-card">
+                    <div class="quick-answer-title">⚡ Quick Exam Answer (2–5 Marks)</div>
+                    <p><strong>Definition:</strong> A pointer variable declared to hold the memory address of a class object.</p>
+                    <p><strong>Member Access:</strong> Members are accessed using the arrow operator (<code>-&gt;</code>) instead of the standard dot operator (<code>.</code>).</p>
+                </div>
+
+                <h4>Detailed 10-Mark Explanation</h4>
+                <p>Just as pointers can store addresses of primitive data types (<code>int</code>, <code>float</code>), they can store memory addresses of user-defined class instances. Creating pointers to objects allows dynamic object allocation in heap memory during runtime using the <code>new</code> operator.</p>
+
+                <p><strong>Difference between Dot Operator (.) and Arrow Operator (-&gt;):</strong></p>
+                <ul>
+                    <li>Use <strong>Dot Operator (<code>.</code>)</strong> when interacting directly with an object variable: <code>object.memberFunction();</code></li>
+                    <li>Use <strong>Arrow Operator (<code>-&gt;</code>)</strong> when interacting through an object pointer: <code>objectPtr-&gt;memberFunction();</code></li>
+                </ul>
+
+                <h4>C++ Example Program</h4>
+                <div class="code-container">
+                    <div class="code-header">Pointer_To_Object.cpp</div>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class Box {
+private:
+    double length;
+public:
+    Box(double l) : length(l) {}
+    void display() {
+        cout &lt;&lt; "Box Length = " &lt;&lt; length &lt;&lt; endl;
+    }
+};
+
+int main() {
+    // Dynamic object creation in Heap
+    Box* bPtr = new Box(12.5);
+
+    // Invoking function using Arrow Operator
+    bPtr-&gt;display();
+
+    // Freeing memory
+    delete bPtr;
+    return 0;
+}</code></pre>
+                </div>
+            </article>
+
+            <!-- 10. THIS POINTER -->
+            <article id="this-pointer" class="topic-block">
+                <h3 class="topic-heading">10. this Pointer</h3>
+
+                <div class="quick-answer-card">
+                    <div class="quick-answer-title">⚡ Quick Exam Answer (2–5 Marks)</div>
+                    <p><strong>Definition:</strong> <code>this</code> is an implicit, hidden pointer available inside all non-static member functions of a class. It holds the memory address of the specific object that invoked the member function.</p>
+                </div>
+
+                <h4>Detailed 10-Mark Explanation</h4>
+                <p>When a class member function is called, how does C++ know which object's internal variables to modify? C++ automatically passes a hidden pointer named <code>this</code> as an implicit argument to every non-static member function. The <code>this</code> pointer points directly to the invoking object instance.</p>
+
+                <p><strong>Primary Applications of <code>this</code> Pointer:</strong></p>
+                <ol>
+                    <li><strong>Resolving Naming Conflicts (Shadowing):</strong> When function parameter names are identical to class member variable names, <code>this-&gt;var</code> explicitly refers to the class member.</li>
+                    <li><strong>Returning Current Object Reference:</strong> Used in method chaining (e.g., <code>obj.setX(5).setY(10);</code>) by returning <code>*this</code>.</li>
+                </ol>
+
+                <h4>C++ Example Program</h4>
+                <div class="code-container">
+                    <div class="code-header">This_Pointer_Example.cpp</div>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class Student {
+private:
+    int age; // Class member variable
+
+public:
+    // Local parameter name matches class member name
+    void setAge(int age) {
+        // this->age refers to member variable, age refers to parameter
+        this-&gt;age = age; 
+    }
+
+    void display() {
+        cout &lt;&lt; "Student Age: " &lt;&lt; this-&gt;age &lt;&lt; endl;
+    }
+};
+
+int main() {
+    Student s;
+    s.setAge(20);
+    s.display();
+    return 0;
+}</code></pre>
+                </div>
+            </article>
+
+            <!-- 11. POINTERS TO DERIVED CLASSES -->
+            <article id="pointers-derived" class="topic-block">
+                <h3 class="topic-heading">11. Pointers to Derived Classes</h3>
+
+                <div class="quick-answer-card">
+                    <div class="quick-answer-title">⚡ Quick Exam Answer (2–5 Marks)</div>
+                    <p>In C++, a <strong>Base Class Pointer can legally point to a Derived Class Object</strong>. However, through that base pointer, you can access ONLY the members that were inherited from the Base class (unless Virtual Functions are used).</p>
+                </div>
+
+                <h4>Detailed 10-Mark Explanation</h4>
+                <p>C++ allows type compatibility between pointers along inheritance hierarchies. A pointer declared of Base Class type is allowed to store the memory address of any child object derived from that Base Class. This is the structural foundation for achieving runtime polymorphism.</p>
+
+                <div class="code-container">
+                    <div class="code-header">Base Pointer - Derived Object Concept</div>
+                    <pre><code>Base* ptr;    // Base pointer
+Derived obj;  // Derived object
+ptr = &amp;obj;   // Completely Valid in C++!</code></pre>
+                </div>
+
+                <p><strong>Key Limitation without Virtual Functions:</strong> Even though <code>ptr</code> physically holds the memory address of a <code>Derived</code> object, C++ compiler determines accessible members based on the <em>pointer's declaration type</em> (Base), not the target object's type. Calling overridden functions through <code>ptr</code> will execute the Base class version unless functions are declared with the <code>virtual</code> keyword.</p>
+            </article>
+
+            <!-- 12. VIRTUAL FUNCTIONS -->
+            <article id="virtual-functions" class="topic-block">
+                <h3 class="topic-heading">12. Virtual Functions</h3>
+
+                <div class="quick-answer-card">
+                    <div class="quick-answer-title">⚡ Quick Exam Answer (2–5 Marks)</div>
+                    <p><strong>Definition:</strong> A member function in a base class declared using the keyword <code>virtual</code>. It instructs the compiler to perform dynamic/late binding, ensuring that when called via a Base class pointer, the <strong>derived class version of the function is executed</strong> based on the actual object being pointed to.</p>
+                </div>
+
+                <h4>Detailed 10-Mark Explanation</h4>
+                <p>Virtual functions enable <strong>Runtime Polymorphism</strong> in C++. By default, C++ uses early static binding, resolving function calls during compilation based on the pointer type. By prefixing a base class member function with the <code>virtual</code> keyword, you tell the compiler to override early binding and perform late dynamic binding based on the target object at execution time.</p>
+
+                <p><strong>How Virtual Functions Work Internally (VTABLE and VPTR):</strong></p>
+                <ul>
+                    <li><strong>VTABLE (Virtual Table):</strong> The compiler creates a static array table of function pointers for every class that contains or inherits virtual functions.</li>
+                    <li><strong>VPTR (Virtual Pointer):</strong> Every object created from a class containing virtual functions automatically gets a hidden pointer member (vptr) that points directly to the corresponding VTABLE of that class.</li>
+                    <li>At runtime, calling a virtual function causes C++ to follow the object's VPTR to its class VTABLE, executing the correct derived function implementation.</li>
+                </ul>
+
+                <h4>C++ Example: Normal vs Virtual Function Execution</h4>
+                <div class="code-container">
+                    <div class="code-header">Virtual_Function_Demo.cpp</div>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class Base {
+public:
+    void displayNormal() { cout &lt;&lt; "Base Normal Display" &lt;&lt; endl; }
+    virtual void displayVirtual() { cout &lt;&lt; "Base Virtual Display" &lt;&lt; endl; }
+};
+
+class Derived : public Base {
+public:
+    void displayNormal() { cout &lt;&lt; "Derived Normal Display" &lt;&lt; endl; }
+    void displayVirtual() override { cout &lt;&lt; "Derived Virtual Display" &lt;&lt; endl; }
+};
+
+int main() {
+    Base* ptr;
+    Derived obj;
+    ptr = &amp;obj;
+
+    // Static Early Binding calls Base version
+    ptr-&gt;displayNormal();  // Output: Base Normal Display
+
+    // Dynamic Late Binding calls Derived version!
+    ptr-&gt;displayVirtual(); // Output: Derived Virtual Display
+
+    return 0;
+}</code></pre>
+                </div>
+            </article>
+
+            <!-- 13. PURE VIRTUAL FUNCTIONS -->
+            <article id="pure-virtual" class="topic-block">
+                <h3 class="topic-heading">13. Pure Virtual Functions</h3>
+
+                <div class="quick-answer-card">
+                    <div class="quick-answer-title">⚡ Quick Exam Answer (2–5 Marks)</div>
+                    <p><strong>Definition:</strong> A virtual function in a base class that has no definition/body within that base class and is declared by assigning <code>= 0</code>.</p>
+                    <p><strong>Syntax:</strong> <code>virtual void functionName() = 0;</code></p>
+                </div>
+
+                <h4>Detailed 10-Mark Explanation</h4>
+                <p>A pure virtual function is used when a base class represents an abstract concept where a default implementation cannot logically exist. For example, a generalized <code>Shape</code> class cannot provide a meaningful implementation for <code>calculateArea()</code> because area formulas depend entirely on specific geometries like Circle or Triangle.</p>
+
+                <p>By declaring <code>virtual void calculateArea() = 0;</code> inside <code>Shape</code>, you mandate that <em>every derived class must explicitly implement its own version</em> of this function. Any class containing a pure virtual function automatically becomes an <strong>Abstract Class</strong>.</p>
+            </article>
+
+            <!-- 14. FUNCTION OVERLOADING -->
+            <article id="func-overloading" class="topic-block">
+                <h3 class="topic-heading">14. Function Overloading</h3>
+
+                <div class="quick-answer-card">
+                    <div class="quick-answer-title">⚡ Quick Exam Answer (2–5 Marks)</div>
+                    <p><strong>Definition:</strong> Declaring multiple functions in the same scope with the <strong>exact same name</strong> but with <strong>different parameter lists</strong> (different number, types, or order of arguments). Represents Compile-Time Polymorphism.</p>
+                </div>
+
+                <h4>Detailed 10-Mark Explanation</h4>
+                <p>Function overloading enhances readability by allowing developers to use a single intuitive name for operations that perform functionally identical tasks on differing data types (e.g., adding two integers vs adding two floating-point numbers).</p>
+
+                <p><strong>Rules for Overloading Functions:</strong></p>
+                <ul>
+                    <li>Parameter signatures MUST differ in number of arguments, data types of arguments, or order of argument types.</li>
+                    <li>Changing ONLY the function return type is NOT valid overloading and will cause compile errors.</li>
+                </ul>
+
+                <h4>C++ Example Program</h4>
+                <div class="code-container">
+                    <div class="code-header">Function_Overloading.cpp</div>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class Calculator {
+public:
+    // 1. Adds two integers
+    int add(int a, int b) { return a + b; }
+
+    // 2. Overloaded: Adds three integers
+    int add(int a, int b, int c) { return a + b + c; }
+
+    // 3. Overloaded: Adds two double values
+    double add(double a, double b) { return a + b; }
+};
+
+int main() {
+    Calculator calc;
+    cout &lt;&lt; calc.add(5, 10) &lt;&lt; endl;        // Calls version 1
+    cout &lt;&lt; calc.add(5, 10, 15) &lt;&lt; endl;    // Calls version 2
+    cout &lt;&lt; calc.add(2.5, 3.7) &lt;&lt; endl;     // Calls version 3
+    return 0;
+}</code></pre>
+                </div>
+            </article>
+
+            <!-- 15. OPERATOR OVERLOADING -->
+            <article id="operator-overloading" class="topic-block">
+                <h3 class="topic-heading">15. Operator Overloading</h3>
+
+                <div class="quick-answer-card">
+                    <div class="quick-answer-title">⚡ Quick Exam Answer (2–5 Marks)</div>
+                    <p><strong>Definition:</strong> Giving additional customized functionality to standard C++ operators (like <code>+</code>, <code>-</code>, <code>&lt;&lt;</code>) so they can operate directly on user-defined types/objects.</p>
+                </div>
+
+                <h4>Detailed 10-Mark Explanation</h4>
+                <p>By default, built-in C++ operators work exclusively with native primitive types like <code>int</code> or <code>float</code>. If you attempt to add two objects using <code>c3 = c1 + c2;</code>, the compiler throws an error. Operator overloading allows developers to redefine operator actions for custom objects, making complex data structures intuitive to manipulate.</p>
+
+                <p><strong>Operators that CANNOT be Overloaded in C++:</strong></p>
+                <ul>
+                    <li>Scope Resolution Operator (<code>::</code>)</li>
+                    <li>Member Selection Operator (<code>.</code>)</li>
+                    <li>Member Pointer Selector (<code>.*</code>)</li>
+                    <li>Ternary Conditional Operator (<code>?:</code>)</li>
+                    <li>Sizeof Operator (<code>sizeof</code>)</li>
+                </ul>
+
+                <p><strong>Operator Overloading Approaches:</strong> Overloading can be implemented via <strong>Member Functions</strong> or non-member <strong>Friend Functions</strong>.</p>
+
+                <h4>C++ Example: Overloading + Operator (Member Function)</h4>
+                <div class="code-container">
+                    <div class="code-header">Binary_Operator_Overload.cpp</div>
+                    <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class Complex {
+private:
+    float real, imag;
+public:
+    Complex(float r = 0, float i = 0) : real(r), imag(i) {}
+
+    // Overloading '+' operator as a member function
+    Complex operator + (const Complex&amp; obj) {
+        Complex temp;
+        temp.real = real + obj.real;
+        temp.imag = imag + obj.imag;
+        return temp;
+    }
+
+    void display() {
+        cout &lt;&lt; real &lt;&lt; " + " &lt;&lt; imag &lt;&lt; "i" &lt;&lt; endl;
+    }
+};
+
+int main() {
+    Complex c1(3.5, 2.5), c2(1.5, 4.5);
+    Complex c3 = c1 + c2; // Executes c1.operator+(c2)
+    c3.display();         // Output: 5 + 7i
+    return 0;
+}</code></pre>
+                </div>
+            </article>
+
+            <!-- ==========================================
+                 IMPORTANT COMPARISON TABLES
+            =========================================== -->
+            <h2 class="section-heading" id="comparisons">Important Comparison Tables</h2>
+
+            <p>Mastering comparison tables is critical for scoring top marks in BCA written examinations.</p>
+
+            <h4>1. Compile-Time vs Runtime Polymorphism</h4>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Compile-Time Polymorphism</th>
+                            <th>Runtime Polymorphism</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Binding Time</td>
+                            <td>Early Binding / Static Binding at compile time.</td>
+                            <td>Late Binding / Dynamic Binding at runtime.</td>
+                        </tr>
+                        <tr>
+                            <td>Implementation</td>
+                            <td>Function Overloading &amp; Operator Overloading.</td>
+                            <td>Virtual Functions &amp; Function Overriding.</td>
+                        </tr>
+                        <tr>
+                            <td>Execution Speed</td>
+                            <td>Faster execution (no runtime lookup delay).</td>
+                            <td>Slightly slower (VTABLE lookup overhead).</td>
+                        </tr>
+                        <tr>
+                            <td>Flexibility</td>
+                            <td>Less flexible.</td>
+                            <td>Highly flexible and dynamic.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>2. Function Overloading vs Function Overriding</h4>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Function Overloading</th>
+                            <th>Function Overriding</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Class Scope</td>
+                            <td>Occurs within the same single class scope.</td>
+                            <td>Occurs across two classes (Base &amp; Derived).</td>
+                        </tr>
+                        <tr>
+                            <td>Function Signatures</td>
+                            <td>MUST be different (parameter types or counts).</td>
+                            <td>MUST be identical in name, return, and parameters.</td>
+                        </tr>
+                        <tr>
+                            <td>Inheritance</td>
+                            <td>Inheritance is NOT required.</td>
+                            <td>Inheritance is mandatory.</td>
+                        </tr>
+                        <tr>
+                            <td>Binding</td>
+                            <td>Resolved at compile-time.</td>
+                            <td>Resolved at runtime (requires virtual keyword).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>3. Virtual Function vs Pure Virtual Function</h4>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Virtual Function</th>
+                            <th>Pure Virtual Function</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Base Class Body</td>
+                            <td>Contains a default definition/body in Base class.</td>
+                            <td>Has NO body/definition in Base class (<code>= 0</code>).</td>
+                        </tr>
+                        <tr>
+                            <td>Instantiation</td>
+                            <td>Base class can be instantiated if no pure virtual exists.</td>
+                            <td>Base class CANNOT be instantiated (Abstract).</td>
+                        </tr>
+                        <tr>
+                            <td>Derived Class Duty</td>
+                            <td>Overriding is optional in derived class.</td>
+                            <td>Overriding is mandatory for concrete child classes.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ==========================================
+                 IMPORTANT C++ PROGRAMS SECTION
+            =========================================== -->
+            <h2 class="section-heading" id="important-programs">Important Unit–III C++ Programs</h2>
+
+            <p>Below are full, syntactically correct programs frequently asked in university practical &amp; theory examinations.</p>
+
+            <h4>Program: Operator Overloading using Friend Function</h4>
+            <div class="code-container">
+                <div class="code-header">Friend_Operator_Overload.cpp</div>
+                <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class Distance {
+private:
+    int feet, inches;
+public:
+    Distance(int f = 0, int i = 0) : feet(f), inches(i) {}
+
+    // Declare Friend Function for '+' operator
+    friend Distance operator + (const Distance&amp; d1, const Distance&amp; d2);
+
+    void display() {
+        cout &lt;&lt; "Feet: " &lt;&lt; feet &lt;&lt; " Inches: " &lt;&lt; inches &lt;&lt; endl;
+    }
+};
+
+// Friend Function definition (takes 2 explicit arguments)
+Distance operator + (const Distance&amp; d1, const Distance&amp; d2) {
+    Distance temp;
+    temp.feet = d1.feet + d2.feet;
+    temp.inches = d1.inches + d2.inches;
+    if(temp.inches &gt;= 12) {
+        temp.feet += temp.inches / 12;
+        temp.inches %= 12;
+    }
+    return temp;
+}
+
+int main() {
+    Distance dist1(5, 8), dist2(3, 6);
+    Distance total = dist1 + dist2; // Invokes operator+(dist1, dist2)
+    total.display(); // Output: Feet: 9 Inches: 2
+    return 0;
+}</code></pre>
+            </div>
+
+            <!-- ==========================================
+                 UNIVERSITY EXAMINATION PREPARATION
+            =========================================== -->
+            <h2 class="section-heading" id="exam-questions">University Examination Preparation</h2>
+
+            <h3>2-Mark Questions (Short Answers)</h3>
+            <div class="qa-card">
+                <div class="qa-q">Q1. What is inheritance in C++?</div>
+                <p>Ans: Inheritance is an OOP mechanism allowing a child class to inherit non-private properties and behaviors from a parent class, promoting code reusability.</p>
+            </div>
+            <div class="qa-card">
+                <div class="qa-q">Q2. What is the main purpose of a virtual base class?</div>
+                <p>Ans: To resolve the Diamond Inheritance Problem by ensuring only a single shared copy of a grandparent base class is inherited by a grandchild class.</p>
+            </div>
+            <div class="qa-card">
+                <div class="qa-q">Q3. What is an Abstract Class?</div>
+                <p>Ans: A class that contains at least one pure virtual function (<code>= 0</code>). It cannot be instantiated into direct objects.</p>
+            </div>
+            <div class="qa-card">
+                <div class="qa-q">Q4. What is the 'this' pointer?</div>
+                <p>Ans: An implicit pointer available inside non-static class member functions holding the memory address of the calling object.</p>
+            </div>
+
+            <h3>10-Mark Questions (Detailed Essays)</h3>
+            <div class="qa-card">
+                <div class="qa-q">Q1. Explain the Diamond Problem in Multiple Inheritance and describe how Virtual Base Classes solve it with a full program.</div>
+            </div>
+            <div class="qa-card">
+                <div class="qa-q">Q2. What is Runtime Polymorphism? Explain Virtual Functions, VTABLE, VPTR, and dynamic binding with code examples.</div>
+            </div>
+            <div class="qa-card">
+                <div class="qa-q">Q3. Discuss Operator Overloading in C++. Explain rules, un-overloadable operators, and write a program to overload binary operators using friend functions.</div>
+            </div>
+
+            <!-- ==========================================
+                 QUICK REVISION CHEAT SHEET
+            =========================================== -->
+            <h2 class="section-heading" id="quick-revision">Quick Revision Cheat Sheet</h2>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Concept</th>
+                            <th>Essential Syntax Pattern</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Public Inheritance</td>
+                            <td><code>class Child : public Parent { ... };</code></td>
+                        </tr>
+                        <tr>
+                            <td>Virtual Base Class</td>
+                            <td><code>class Intermediate : virtual public Base { ... };</code></td>
+                        </tr>
+                        <tr>
+                            <td>Pure Virtual Function</td>
+                            <td><code>virtual void display() = 0;</code></td>
+                        </tr>
+                        <tr>
+                            <td>Object Pointer Call</td>
+                            <td><code>objPtr-&gt;memberFunction();</code></td>
+                        </tr>
+                        <tr>
+                            <td>Operator Overloading</td>
+                            <td><code>ReturnType operator + (const ClassName&amp; obj);</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Interactive Client JavaScript -->
+    <script>
+        // Theme Toggle Logic
+        function toggleTheme() {
+            const htmlTag = document.documentElement;
+            const currentTheme = htmlTag.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            htmlTag.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            const themeBtn = document.getElementById('themeBtn');
+            themeBtn.innerHTML = newTheme === 'dark' ? '🌙 Dark' : '☀️ Light';
+        }
+
+        // Restore Theme Preference on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.getElementById('themeBtn').innerHTML = savedTheme === 'dark' ? '🌙 Dark' : '☀️ Light';
+        });
+
+        // Client-side Search Functionality
+        function searchTopics() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const blocks = document.querySelectorAll('.topic-block, .qa-card');
+
+            blocks.forEach(block => {
+                const text = block.textContent.toLowerCase();
+                if (text.includes(input)) {
+                    block.style.display = "";
+                } else {
+                    block.style.display = "none";
+                }
+            });
+        }
+    </script>
+</body>
+</html>

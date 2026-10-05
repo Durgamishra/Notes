@@ -1,0 +1,2722 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit-II: Classes, Objects, Constructors & Destructors - BCA Complete Study Module</title>
+    <style>
+        :root {
+            --bg-primary: #0a0f1d;
+            --bg-secondary: #12192c;
+            --bg-card: #182238;
+            --text-primary: #f0f4f8;
+            --text-secondary: #94a3b8;
+            --accent-cyan: #38bdf8;
+            --accent-blue: #3b82f6;
+            --accent-purple: #818cf8;
+            --accent-green: #34d399;
+            --border-color: #24324d;
+            --code-bg: #0d1322;
+            --callout-info-bg: rgba(56, 189, 248, 0.1);
+            --callout-info-border: #38bdf8;
+            --callout-tip-bg: rgba(52, 211, 153, 0.1);
+            --callout-tip-border: #34d399;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.5);
+            --transition-speed: 0.3s;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #f1f5f9;
+            --bg-card: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --accent-cyan: #0284c7;
+            --accent-blue: #2563eb;
+            --accent-purple: #4f46e5;
+            --accent-green: #059669;
+            --border-color: #cbd5e1;
+            --code-bg: #1e293b;
+            --callout-info-bg: #e0f2fe;
+            --callout-info-border: #0284c7;
+            --callout-tip-bg: #d1fae5;
+            --callout-tip-border: #059669;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.05);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        /* Header & Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color var(--transition-speed);
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent-cyan);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all var(--transition-speed);
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .nav-container {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .nav-links {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0.5rem 1.5rem;
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            transition: all var(--transition-speed);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-cyan);
+            background-color: var(--bg-card);
+        }
+
+        /* Layout Structure */
+        .main-layout {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                display: none;
+            }
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 130px;
+            height: calc(100vh - 150px);
+            overflow-y: auto;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.4rem;
+        }
+
+        .sidebar-menu a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: block;
+            padding: 0.4rem 0.6rem;
+            border-radius: 6px;
+            transition: all var(--transition-speed);
+        }
+
+        .sidebar-menu a:hover {
+            color: var(--text-primary);
+            background-color: var(--bg-secondary);
+        }
+
+        .sidebar-section-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--accent-purple);
+            margin: 1rem 0 0.4rem 0.6rem;
+        }
+
+        /* Content Container */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        .hero-banner {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent-cyan), var(--accent-blue));
+        }
+
+        .hero-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.8rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .topic-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            transition: border-color var(--transition-speed);
+        }
+
+        .topic-card:hover {
+            border-color: rgba(56, 189, 248, 0.4);
+        }
+
+        .topic-header {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .topic-number {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .topic-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-top: 0.2rem;
+        }
+
+        /* Subsections within Topic Card */
+        .section-block {
+            margin-bottom: 2rem;
+        }
+
+        .block-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Callout Boxes */
+        .quick-exam-box {
+            background-color: var(--callout-info-bg);
+            border-left: 4px solid var(--callout-info-border);
+            padding: 1.2rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .quick-exam-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .exam-points-box {
+            background-color: var(--callout-tip-bg);
+            border-left: 4px solid var(--callout-tip-border);
+            padding: 1.2rem;
+            border-radius: 0 8px 8px 0;
+            margin-top: 1.5rem;
+        }
+
+        .exam-points-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        /* Formatting Text & Lists */
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        li {
+            margin-bottom: 0.4rem;
+        }
+
+        /* Code Blocks */
+        .code-container {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 1.2rem 0;
+        }
+
+        .code-header {
+            background-color: rgba(0,0,0,0.2);
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-family: monospace;
+        }
+
+        pre {
+            padding: 1.2rem;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Courier New', Courier, monospace;
+            font-size: 0.88rem;
+            color: #e2e8f0;
+            line-height: 1.5;
+        }
+
+        [data-theme="light"] pre {
+            color: #f8fafc;
+        }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 0.8rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: rgba(56, 189, 248, 0.15);
+            color: var(--accent-cyan);
+            font-weight: 700;
+        }
+
+        tr:hover {
+            background-color: rgba(255,255,255,0.02);
+        }
+
+        /* Memory Diagrams */
+        .diagram-box {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .diagram-flex {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .diagram-card {
+            background-color: var(--bg-card);
+            border: 2px dashed var(--accent-blue);
+            padding: 1rem;
+            border-radius: 8px;
+            min-width: 180px;
+        }
+
+        .diagram-card-title {
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Question Accordions / Sections */
+        .q-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .q-title {
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin-bottom: 0.4rem;
+        }
+
+        .q-ans {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            margin-top: 4rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <span>📚</span> BCA Academics: Unit-II C++
+            </div>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search Unit-II topics (e.g., Friend Function, Dynamic Constructor)...">
+            </div>
+            <div class="header-controls">
+                <button class="theme-toggle-btn" id="themeToggleBtn">
+                    <span id="themeIcon">🌙</span> <span id="themeText">Dark Mode</span>
+                </button>
+            </div>
+        </div>
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="#sec-a">Classes & Objects</a></li>
+                <li><a href="#topic-2">Member Functions</a></li>
+                <li><a href="#topic-3">Inline Functions</a></li>
+                <li><a href="#topic-7">Memory Allocation</a></li>
+                <li><a href="#topic-8">Static Members</a></li>
+                <li><a href="#topic-12">Friend Functions</a></li>
+                <li><a href="#sec-b">Constructors</a></li>
+                <li><a href="#topic-17">Copy Constructor</a></li>
+                <li><a href="#topic-18">Dynamic Constructor</a></li>
+                <li><a href="#topic-19">Destructors</a></li>
+                <li><a href="#comp-tables">Comparison Tables</a></li>
+                <li><a href="#practical-programs">Practical Programs</a></li>
+                <li><a href="#exam-prep">Exam Prep Q&A</a></li>
+                <li><a href="#cheat-sheet">Cheat Sheet</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="main-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-title">Unit-II Contents</div>
+            <ul class="sidebar-menu">
+                <div class="sidebar-section-label">Section A: Classes & Objects</div>
+                <li><a href="#topic-1">1. Classes & Objects</a></li>
+                <li><a href="#topic-2">2. Defining Member Functions</a></li>
+                <li><a href="#topic-3">3. Outside Inline Function</a></li>
+                <li><a href="#topic-4">4. Nested Member Functions</a></li>
+                <li><a href="#topic-5">5. Private Member Functions</a></li>
+                <li><a href="#topic-6">6. Arrays within a Class</a></li>
+                <li><a href="#topic-7">7. Memory Allocation</a></li>
+                <li><a href="#topic-8">8. Static Data Members</a></li>
+                <li><a href="#topic-9">9. Static Member Functions</a></li>
+                <li><a href="#topic-10">10. Arrays of Objects</a></li>
+                <li><a href="#topic-11">11. Objects as Arguments</a></li>
+                <li><a href="#topic-12">12. Friend Functions</a></li>
+                
+                <div class="sidebar-section-label">Section B: Constructors</div>
+                <li><a href="#topic-13">13. Constructors Basics</a></li>
+                <li><a href="#topic-14">14. Parameterized Constructor</a></li>
+                <li><a href="#topic-15">15. Default Arguments</a></li>
+                <li><a href="#topic-16">16. Dynamic Initialization</a></li>
+                <li><a href="#topic-17">17. Copy Constructor</a></li>
+                <li><a href="#topic-18">18. Dynamic Constructors</a></li>
+                <li><a href="#topic-19">19. Destructors</a></li>
+
+                <div class="sidebar-section-label">Exam Essentials</div>
+                <li><a href="#comp-tables">Comparison Tables</a></li>
+                <li><a href="#practical-programs">C++ Programs Set</a></li>
+                <li><a href="#exam-prep">University Exam Questions</a></li>
+                <li><a href="#quick-defs">Quick Definitions</a></li>
+                <li><a href="#cheat-sheet">Syntax Cheat Sheet</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="content-area">
+
+            <!-- Hero Banner -->
+            <section class="hero-banner">
+                <h1 class="hero-title">Unit–II: Classes, Objects, Constructors & Destructors</h1>
+                <p class="hero-subtitle">Complete University Examination Study Module for Bachelor of Computer Applications (BCA). Designed strictly according to university syllabus standards with deep textbook explanations, code implementations, memory diagrams, and complete exam preparation kits.</p>
+                <div class="hero-meta">
+                    <span>Course: BCA Object-Oriented Programming</span>
+                    <span>Language: C++</span>
+                    <span>Target: 100% University Exam Preparation</span>
+                </div>
+            </section>
+
+            <!-- SECTION A HEADER -->
+            <div id="sec-a" class="section-divider">
+                <h2 style="font-size: 1.8rem; color: var(--accent-cyan); border-bottom: 2px solid var(--accent-blue); padding-bottom: 0.5rem;">SECTION A: CLASSES AND OBJECTS</h2>
+            </div>
+
+            <!-- TOPIC 1 -->
+            <article id="topic-1" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Topic 01</div>
+                    <h2 class="topic-title">Classes and Objects</h2>
+                </div>
+
+                <div class="quick-exam-box">
+                    <div class="quick-exam-title">⚡ Quick Exam Answer (2 - 5 Marks)</div>
+                    <p><strong>Class:</strong> A class is a user-defined data type in C++ that encapsulates data members (variables) and member functions (methods) into a single logical unit. It acts as a blueprint or template for creating objects.</p>
+                    <p><strong>Object:</strong> An object is an identifiable entity, a real-world instance of a class. When a class is declared, no memory is allocated. Memory is allocated only when an object of that class is instantiated.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">📖 Detailed 10-Mark Answer</div>
+                    <p>In Object-Oriented Programming (OOP), procedural paradigms are replaced by entity-centric structures. At the core of this paradigm is the concept of a <strong>Class</strong> and an <strong>Object</strong>. A class solves the limitations of primitive C structures by allowing functions to be bundled alongside data. It provides the mechanism for Encapsulation and Data Hiding.</p>
+                    
+                    <p><strong>Why Classes and Objects are Required:</strong> In traditional structured programming (like C), data moves freely around the system, making it vulnerable to accidental modification by external functions. Classes restrict this unrestricted access. They force interaction with data exclusively through controlled interfaces (public member functions), ensuring data security and software scalability.</p>
+
+                    <p><strong>Class as a Blueprint vs. Object as an Instance:</strong> Consider an architectural blueprint for a building. The blueprint itself contains dimensions, structure, and design, but it has no physical existence and occupies no land. That blueprint represents a <em>Class</em>. The actual physical building constructed according to that blueprint is an <em>Object</em>. You can build multiple distinct buildings (objects) from a single blueprint (class).</p>
+
+                    <p><strong>Components of a Class:</strong></p>
+                    <ul>
+                        <li><strong>Data Members:</strong> These are variables declared inside the class that store the attributes or state of an object.</li>
+                        <li><strong>Member Functions:</strong> These are functions declared inside or outside the class that define the behavior or operations that can be performed on the object's data members.</li>
+                    </ul>
+
+                    <p><strong>Access Specifiers in C++:</strong> Access specifiers control the visibility and accessibility of class members from outside the class:</p>
+                    <ul>
+                        <li><code>private</code>: Members declared as private are accessible <em>only</em> from within member functions of the same class. They are completely hidden from outside functions. This is the default access level in C++.</li>
+                        <li><code>public</code>: Members declared as public can be accessed from anywhere in the program using the object name and the dot (<code>.</code>) operator.</li>
+                        <li><code>protected</code>: Members are accessible within the class and inside derived classes (used in Inheritance). They remain hidden from external standalone functions.</li>
+                    </ul>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">💻 C++ Program Implementation</div>
+                    <div class="code-container">
+                        <div class="code-header">Program 1.1: Complete Class and Object Example</div>
+                        <pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+class Student {
+private:
+    int rollNumber;
+    string name;
+    float marks;
+
+public:
+    // Function to set student details
+    void setDetails(int r, string n, float m) {
+        rollNumber = r;
+        name = n;
+        marks = m;
+    }
+
+    // Function to display student details
+    void displayDetails() {
+        cout &lt;&lt; "Roll Number : " &lt;&lt; rollNumber &lt;&lt; endl;
+        cout &lt;&lt; "Name        : " &lt;&lt; name &lt;&lt; endl;
+        cout &lt;&lt; "Marks       : " &lt;&lt; marks &lt;&lt; endl;
+    }
+};
+
+int main() {
+    // Instantiating objects of class Student
+    Student s1, s2;
+
+    // Accessing public member functions using dot operator
+    s1.setDetails(101, "Durga Prasad", 92.5);
+    s2.setDetails(102, "Aakash Sharma", 88.0);
+
+    cout &lt;&lt; "--- Student 1 Details ---" &lt;&lt; endl;
+    s1.displayDetails();
+
+    cout &lt;&lt; "\n--- Student 2 Details ---" &lt;&lt; endl;
+    s2.displayDetails();
+
+    return 0;
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">🔍 Code Explanation</div>
+                    <p>1. <code>class Student</code> defines a new user-defined data type named Student.<br>
+                    2. Data members <code>rollNumber</code>, <code>name</code>, and <code>marks</code> are placed under <code>private:</code> access level. Direct access like <code>s1.rollNumber = 101;</code> in main() will cause a compile-time error.<br>
+                    3. Functions <code>setDetails()</code> and <code>displayDetails()</code> are under <code>public:</code> specifier, making them accessible via the main function.<br>
+                    4. In <code>main()</code>, <code>Student s1, s2;</code> allocates memory for two distinct instances in the stack memory.<br>
+                    5. <code>s1.setDetails(...)</code> invokes the member function bound specifically to the memory instance of <code>s1</code>.</p>
+                </div>
+
+                <div class="exam-points-box">
+                    <div class="exam-points-title">💡 Important Exam Points</div>
+                    <ul>
+                        <li>Class definition must end with a semicolon (<code>};</code>).</li>
+                        <li>By default, all members of a C++ class are <code>private</code> if no access specifier is mentioned.</li>
+                        <li>Class is a logical entity; Object is a physical entity that occupies RAM.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- TOPIC 2 -->
+            <article id="topic-2" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Topic 02</div>
+                    <h2 class="topic-title">Defining Member Functions</h2>
+                </div>
+
+                <div class="quick-exam-box">
+                    <div class="quick-exam-title">⚡ Quick Exam Answer (2 - 5 Marks)</div>
+                    <p>A member function is a function declared inside a class that operates on the data members of that class. Member functions can be defined in two ways:</p>
+                    <ol>
+                        <li><strong>Inside the class definition:</strong> Function body is written inside the class. Automatically treated as <code>inline</code>.</li>
+                        <li><strong>Outside the class definition:</strong> Declared inside the class and defined outside using the <strong>Scope Resolution Operator (<code>::</code>)</strong>.</li>
+                    </ol>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">📖 Detailed 10-Mark Answer</div>
+                    <p>Member functions represent the behavioral aspect of an object. They serve as the bridge between the external program environment and the internal private data members of the class. Member functions can take parameters, return values, and manipulate private, protected, or public data members within the same class.</p>
+
+                    <p><strong>Defining Member Function Inside the Class:</strong> When a function is defined directly inside the class body, the C++ compiler automatically attempts to treat it as an <code>inline</code> function. This approach is typically used for short functions containing 1 to 3 lines of code. It eliminates the call overhead, but increases executable binary size if used for large functions.</p>
+
+                    <p><strong>Defining Member Function Outside the Class:</strong> For larger, more complex functions, defining them outside the class keeps the class interface clean and readable. The function is declared inside the class body to inform the compiler about its signature, and its actual implementation is placed outside the class body using the Scope Resolution Operator (<code>::</code>).</p>
+
+                    <p><strong>Syntax for Outside Definition:</strong></p>
+                    <div class="code-container">
+                        <pre><code>return_type ClassName :: functionName(parameter_list) {
+    // Function body
+}</code></pre>
+                    </div>
+
+                    <p>The scope resolution operator (<code>::</code>) informs the compiler that the function <code>functionName</code> belongs to the class scope of <code>ClassName</code>, granting it full permission to access private members of that class.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">💻 C++ Program Implementation</div>
+                    <div class="code-container">
+                        <div class="code-header">Program 2.1: Inside vs Outside Member Function Definitions</div>
+                        <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class Rectangle {
+private:
+    float length;
+    float breadth;
+
+public:
+    // Member function defined INSIDE the class definition
+    void setDimensions(float l, float b) {
+        length = l;
+        breadth = b;
+    }
+
+    // Declarations for functions defined OUTSIDE the class
+    float calculateArea();
+    float calculatePerimeter();
+};
+
+// Member function defined OUTSIDE class using Scope Resolution Operator
+float Rectangle::calculateArea() {
+    return length * breadth;
+}
+
+float Rectangle::calculatePerimeter() {
+    return 2 * (length + breadth);
+}
+
+int main() {
+    Rectangle rect;
+    rect.setDimensions(10.5, 5.0);
+
+    cout &lt;&lt; "Area of Rectangle      : " &lt;&lt; rect.calculateArea() &lt;&lt; endl;
+    cout &lt;&lt; "Perimeter of Rectangle : " &lt;&lt; rect.calculatePerimeter() &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="exam-points-box">
+                    <div class="exam-points-title">💡 Important Exam Points</div>
+                    <ul>
+                        <li>Inside-class function definitions are automatically treated as inline by default.</li>
+                        <li>Outside-class definitions <em>must</em> use the scope resolution operator <code>ClassName::</code>, otherwise they are treated as global standalone functions.</li>
+                        <li>Function prototype must be declared inside the class before defining it outside.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- TOPIC 3 -->
+            <article id="topic-3" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Topic 03</div>
+                    <h2 class="topic-title">Making an Outside Function Inline</h2>
+                </div>
+
+                <div class="quick-exam-box">
+                    <div class="quick-exam-title">⚡ Quick Exam Answer (2 - 5 Marks)</div>
+                    <p>An <strong>Inline Function</strong> is a function for which the compiler expands its execution code directly at the point of call during compilation, rather than issuing a standard function call mechanism. A member function defined outside the class can be explicitly made inline by prefixing its definition header with the keyword <code>inline</code>.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">📖 Detailed 10-Mark Answer</div>
+                    <p><strong>The Need for Inline Functions:</strong> Standard function calls involve significant runtime overhead. When a function is called, the CPU must save register states, push function arguments onto the stack, jump to the function's memory address, execute code, pop values from stack, and jump back to the calling point. For small functions (e.g., getter/setter methods), the time spent performing this calling overhead is greater than the time required to execute the actual code inside the function.</p>
+
+                    <p>Inline functions solve this efficiency bottleneck. When a function is declared as inline, the compiler replaces every invocation call site directly with the compiled code of that function, eliminating the execution jump overhead.</p>
+
+                    <p><strong>Making an Outside Function Inline:</strong> While functions defined <em>inside</em> the class are inline by default, functions defined <em>outside</em> the class are non-inline by default. To make an outside function inline, we place the <code>inline</code> keyword explicitly in front of the outside definition.</p>
+
+                    <p><strong>Syntax:</strong></p>
+                    <div class="code-container">
+                        <pre><code>inline return_type ClassName :: functionName(arguments) {
+    // Small body code
+}</code></pre>
+                    </div>
+
+                    <p><strong>Limitations of Inline Functions:</strong> Inline is a <em>request</em> to the compiler, not a strict command. The compiler will refuse to make a function inline under the following conditions:</p>
+                    <ul>
+                        <li>The function contains loops (<code>for</code>, <code>while</code>, <code>do-while</code>).</li>
+                        <li>The function contains static variables.</li>
+                        <li>The function is recursive (calls itself).</li>
+                        <li>The function contains complex <code>switch</code> or <code>goto</code> statements.</li>
+                        <li>The return type is non-void and return statement is missing.</li>
+                    </ul>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">💻 C++ Program Implementation</div>
+                    <div class="code-container">
+                        <div class="code-header">Program 3.1: Outside Inline Member Function</div>
+                        <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class Operation {
+private:
+    int a, b;
+
+public:
+    void getValues(int x, int y) {
+        a = x;
+        b = y;
+    }
+
+    // Function declarations inside class
+    int add();
+    int multiply();
+};
+
+// Explicitly making outside member functions INLINE
+inline int Operation::add() {
+    return a + b;
+}
+
+inline int Operation::multiply() {
+    return a * b;
+}
+
+int main() {
+    Operation op;
+    op.getValues(12, 5);
+
+    // At compile time, call site is substituted with (a + b) and (a * b)
+    cout &lt;&lt; "Addition Result       : " &lt;&lt; op.add() &lt;&lt; endl;
+    cout &lt;&lt; "Multiplication Result : " &lt;&lt; op.multiply() &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="exam-points-box">
+                    <div class="exam-points-title">💡 Important Exam Points</div>
+                    <ul>
+                        <li>Inlining speeds up program execution at the expense of potential memory expansion (code bloat).</li>
+                        <li>Place the <code>inline</code> keyword in the definition header outside, or both declaration and definition.</li>
+                        <li>Inline functions are ideal for tiny getter and setter methods.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- TOPIC 4 -->
+            <article id="topic-4" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Topic 04</div>
+                    <h2 class="topic-title">Nested Member Functions</h2>
+                </div>
+
+                <div class="quick-exam-box">
+                    <div class="quick-exam-title">⚡ Quick Exam Answer (2 - 5 Marks)</div>
+                    <p>A member function of a class can call another member function of the <em>same</em> class directly by using its name without using the object name and dot operator. This concept of calling a member function from inside another member function of the same class is called <strong>Nesting of Member Functions</strong>.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">📖 Detailed 10-Mark Answer</div>
+                    <p>In standard Object-Oriented programming execution, member functions are typically invoked from the <code>main()</code> function or external driver code using an object and dot operator (e.g., <code>obj.functionName()</code>). However, inside a class environment, all member functions share the same class scope and have direct implicit visibility to one another.</p>
+
+                    <p><strong>Why Nesting is Useful:</strong> Nesting simplifies caller responsibilities and ensures strict operational sequences. For instance, if a calculation function requires mathematical validation beforehand, calling the validation function <em>inside</em> the calculation function prevents the external caller from forgetting to run validation first. It allows modularization and code reusability within the class execution pipeline.</p>
+
+                    <p><strong>Syntax & Mechanism:</strong></p>
+                    <div class="code-container">
+                        <pre><code>class Demo {
+public:
+    void functionOne() {
+        // Code for function one
+    }
+
+    void functionTwo() {
+        // Nesting: Calling functionOne directly without dot operator
+        functionOne(); 
+        // Additional code
+    }
+};</code></pre>
+                    </div>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">💻 C++ Program Implementation</div>
+                    <div class="code-container">
+                        <div class="code-header">Program 4.1: Nesting of Member Functions</div>
+                        <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class Numbers {
+private:
+    int num1, num2;
+
+public:
+    void input() {
+        cout &lt;&lt; "Enter two integers: ";
+        cin &gt;&gt; num1 &gt;&gt; num2;
+    }
+
+    // Member function to find maximum
+    int largest() {
+        if (num1 &gt; num2)
+            return num1;
+        else
+            return num2;
+    }
+
+    // Member function that nests largest()
+    void displayLargest() {
+        // Direct call to member function largest() without using object reference
+        int maxVal = largest(); 
+        cout &lt;&lt; "The largest number between " &lt;&lt; num1 &lt;&lt; " and " &lt;&lt; num2 &lt;&lt; " is: " &lt;&lt; maxVal &lt;&lt; endl;
+    }
+};
+
+int main() {
+    Numbers n;
+    n.input();
+    
+    // External driver calls displayLargest(), which internally nests largest()
+    n.displayLargest(); 
+
+    return 0;
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="exam-points-box">
+                    <div class="exam-points-title">💡 Important Exam Points</div>
+                    <ul>
+                        <li>No dot operator (<code>.</code>) or object reference is required when calling a sibling member function inside the same class.</li>
+                        <li>Nesting works seamlessly across public and private member functions within the same class.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- TOPIC 5 -->
+            <article id="topic-5" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Topic 05</div>
+                    <h2 class="topic-title">Private Member Functions</h2>
+                </div>
+
+                <div class="quick-exam-box">
+                    <div class="quick-exam-title">⚡ Quick Exam Answer (2 - 5 Marks)</div>
+                    <p>A member function declared under the <code>private:</code> access specifier of a class is called a <strong>Private Member Function</strong>. It cannot be invoked directly from outside the class using an object and dot operator (e.g., <code>obj.privateFunc()</code> will throw a compile error). It can only be called by a public member function belonging to the same class.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">📖 Detailed 10-Mark Answer</div>
+                    <p>While data members are routinely placed in private sections for Encapsulation, developers often overlook that <em>functions</em> can also be declared private. Private member functions are an abstraction mechanism designed to hide utility code, validation logic, or internal implementation details that external code should never touch.</p>
+
+                    <p><strong>Why Private Functions are Used:</strong> Consider a Banking Application class <code>Account</code>. The class might have a public function <code>withdrawMoney()</code>. Before dispensing cash, it needs to perform authentication, log transaction histories, and update encryption keys. These internal routines should not be callable by external programmers directly. Placing them inside private member functions ensures they are invoked only at proper execution stages inside public interfaces.</p>
+
+                    <p><strong>Data Hiding and Encapsulation:</strong> Private member functions enforce encapsulation by separating public operational interfaces from internal helper routines. If an internal algorithm changes later, only the private function code changes; external code calling the public function remains entirely unaffected.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">💻 C++ Program Implementation</div>
+                    <div class="code-container">
+                        <div class="code-header">Program 5.1: Private Member Functions Demonstration</div>
+                        <pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+class BankAccount {
+private:
+    string accountHolder;
+    double balance;
+    int pinNumber;
+
+    // PRIVATE MEMBER FUNCTION: Cannot be called from main()
+    bool validatePin(int enteredPin) {
+        return (enteredPin == pinNumber);
+    }
+
+public:
+    void createAccount(string name, double initialBalance, int pin) {
+        accountHolder = name;
+        balance = initialBalance;
+        pinNumber = pin;
+    }
+
+    // PUBLIC MEMBER FUNCTION: Invokes private function internally
+    void withdraw(double amount, int pin) {
+        if (validatePin(pin)) { // Invoking Private Function
+            if (amount &lt;= balance) {
+                balance -= amount;
+                cout &lt;&lt; "Withdrawal successful! New balance: $" &lt;&lt; balance &lt;&lt; endl;
+            } else {
+                cout &lt;&lt; "Error: Insufficient funds!" &lt;&lt; endl;
+            }
+        } else {
+            cout &lt;&lt; "Security Alert: Invalid PIN number!" &lt;&lt; endl;
+        }
+    }
+};
+
+int main() {
+    BankAccount user;
+    user.createAccount("Durga Prasad", 5000.0, 4321);
+
+    // user.validatePin(4321); // COMPILE ERROR: Cannot access private function directly
+
+    // Valid invocation via public interface
+    user.withdraw(1500.0, 4321); // Correct PIN
+    user.withdraw(500.0, 0000);  // Wrong PIN
+
+    return 0;
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="exam-points-box">
+                    <div class="exam-points-title">💡 Important Exam Points</div>
+                    <ul>
+                        <li>Attempting <code>obj.privateFunction()</code> in <code>main()</code> generates a compiler access error.</li>
+                        <li>Private functions provide helper/utility functionality to public member functions.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- TOPIC 6 -->
+            <article id="topic-6" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Topic 06</div>
+                    <h2 class="topic-title">Arrays within a Class</h2>
+                </div>
+
+                <div class="quick-exam-box">
+                    <div class="quick-exam-title">⚡ Quick Exam Answer (2 - 5 Marks)</div>
+                    <p>Arrays can be declared as data members inside a class. When an array is declared inside a class, every object created from that class gets its own independent set of array memory locations. They are used to manage collections of similar attributes belonging to a single entity (e.g., marks of a student in 5 subjects).</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">📖 Detailed 10-Mark Answer</div>
+                    <p>In many practical OOP applications, an object contains sets of related data items rather than single primitive values. C++ supports arrays (integer arrays, character strings, floating-point arrays) as member variables inside a class scope.</p>
+
+                    <p><strong>Declaration and Memory:</strong> An array data member is declared inside the class just like a normal variable, but with specified array dimension boundaries (e.g., <code>int marks[5];</code>). When an object of such a class is created, contiguous memory required for the entire array size is allocated directly within that object's instance boundary.</p>
+
+                    <p><strong>Practical Applications:</strong></p>
+                    <ul>
+                        <li>Storing monthly sales data inside an <code>Employee</code> class instance.</li>
+                        <li>Storing test subject scores inside a <code>Student</code> class instance.</li>
+                        <li>Managing inventory item codes inside a <code>ShoppingList</code> class instance.</li>
+                    </ul>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">💻 C++ Program Implementation</div>
+                    <div class="code-container">
+                        <div class="code-header">Program 6.1: Storing and Processing Arrays inside a Class</div>
+                        <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+const int MAX_ITEMS = 5;
+
+class ShoppingCart {
+private:
+    int itemCode[MAX_ITEMS];
+    float itemPrice[MAX_ITEMS];
+    int count;
+
+public:
+    void initCount() { 
+        count = 0; 
+    }
+
+    void addItem(int code, float price) {
+        if (count &lt; MAX_ITEMS) {
+            itemCode[count] = code;
+            itemPrice[count] = price;
+            count++;
+        } else {
+            cout &lt;&lt; "Cart is full!" &lt;&lt; endl;
+        }
+    }
+
+    void displayTotalValue() {
+        float total = 0;
+        cout &lt;&lt; "\n--- Cart Summary ---" &lt;&lt; endl;
+        for (int i = 0; i &lt; count; i++) {
+            cout &lt;&lt; "Item Code: " &lt;&lt; itemCode[i] &lt;&lt; " | Price: $" &lt;&lt; itemPrice[i] &lt;&lt; endl;
+            total += itemPrice[i];
+        }
+        cout &lt;&lt; "Total Value: $" &lt;&lt; total &lt;&lt; endl;
+    }
+};
+
+int main() {
+    ShoppingCart cart;
+    cart.initCount();
+
+    cart.addItem(1001, 25.50);
+    cart.addItem(1002, 12.00);
+    cart.addItem(1003, 85.75);
+
+    cart.displayTotalValue();
+
+    return 0;
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="exam-points-box">
+                    <div class="exam-points-title">💡 Important Exam Points</div>
+                    <ul>
+                        <li>Each object maintains its own separate copy of array elements.</li>
+                        <li>Array index boundaries must be strictly monitored inside member functions to avoid memory overflow errors.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- TOPIC 7 -->
+            <article id="topic-7" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Topic 07</div>
+                    <h2 class="topic-title">Memory Allocation for Objects</h2>
+                </div>
+
+                <div class="quick-exam-box">
+                    <div class="quick-exam-title">⚡ Quick Exam Answer (2 - 5 Marks)</div>
+                    <p>When a class is defined, zero bytes of memory are allocated for data. Memory allocation happens only when an <strong>Object</strong> is instantiated. Separate memory space is allocated for non-static data members of every object, whereas <strong>Member Functions are allocated memory only once</strong> during compilation and shared across all instantiated objects of that class.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">📖 Detailed 10-Mark Answer</div>
+                    <p>Understanding memory representation is vital for performance optimization in C++. A common misconception is that memory is created when writing a class. In reality, a class is merely a compiler type specification. RAM is consumed only upon object creation.</p>
+
+                    <p><strong>Common Code vs. Individual Object Data:</strong></p>
+                    <p>If 100 objects of a class are instantiated, creating 100 duplicate copies of identical member function code would waste memory. C++ optimizes this:</p>
+                    <ul>
+                        <li><strong>Data Member Memory:</strong> Allocated <em>separately</em> for each object. Object 1 and Object 2 have completely independent memory locations for storing their respective variables.</li>
+                        <li><strong>Member Function Memory:</strong> Placed in the Code/Text segment of memory <em>once</em> when the class is compiled. All objects call this single code block. The C++ compiler passes the implicit <code>this</code> pointer to identify which object's data members should be operated upon.</li>
+                    </ul>
+
+                    <div class="diagram-box">
+                        <strong style="color: var(--accent-cyan);">Visual Representation: Memory Distribution for Objects</strong>
+                        <div class="diagram-flex">
+                            <div class="diagram-card">
+                                <div class="diagram-card-title">Object 1 (RAM)</div>
+                                <p>int x = 10;</p>
+                                <p>float y = 20.5;</p>
+                            </div>
+                            <div class="diagram-card">
+                                <div class="diagram-card-title">Object 2 (RAM)</div>
+                                <p>int x = 30;</p>
+                                <p>float y = 40.8;</p>
+                            </div>
+                            <div class="diagram-card" style="border-style: solid; border-color: var(--accent-green);">
+                                <div class="diagram-card-title">Shared Function Memory (Text Segment)</div>
+                                <p>void display() { ... }</p>
+                                <p><em>Shared by Object 1 & Object 2</em></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p><strong>Stack vs. Dynamic Heap Allocation:</strong></p>
+                    <ul>
+                        <li><strong>Stack Allocation:</strong> Created automatically (e.g., <code>Student s1;</code>). Memory is freed automatically when the object goes out of scope.</li>
+                        <li><strong>Dynamic Heap Allocation:</strong> Allocated manually using the <code>new</code> operator (e.g., <code>Student *s1 = new Student();</code>). Memory remains allocated until explicitly released using the <code>delete</code> operator.</li>
+                    </ul>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">💻 C++ Program Implementation</div>
+                    <div class="code-container">
+                        <div class="code-header">Program 7.1: Stack vs Dynamic Heap Object Allocation</div>
+                        <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class Sample {
+public:
+    int id;
+    void show() {
+        cout &lt;&lt; "Object ID: " &lt;&lt; id &lt;&lt; " at memory address: " &lt;&lt; this &lt;&lt; endl;
+    }
+};
+
+int main() {
+    // 1. Stack Allocation (Automatic)
+    Sample obj1;
+    obj1.id = 1;
+    obj1.show();
+
+    Sample obj2;
+    obj2.id = 2;
+    obj2.show();
+
+    // 2. Heap Allocation (Dynamic)
+    Sample *heapObj = new Sample();
+    heapObj-&gt;id = 3;
+    heapObj-&gt;show();
+
+    // Free heap memory manually
+    delete heapObj; 
+
+    return 0;
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="exam-points-box">
+                    <div class="exam-points-title">💡 Important Exam Points</div>
+                    <ul>
+                        <li>Data members take unique memory locations for each object instance.</li>
+                        <li>Member functions are loaded into memory once and shared among all instances.</li>
+                        <li><code>sizeof(ClassName)</code> equals the sum of its non-static data members (plus padding bytes for memory alignment).</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- TOPIC 8 -->
+            <article id="topic-8" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Topic 08</div>
+                    <h2 class="topic-title">Static Data Members</h2>
+                </div>
+
+                <div class="quick-exam-box">
+                    <div class="quick-exam-title">⚡ Quick Exam Answer (2 - 5 Marks)</div>
+                    <p>A <strong>Static Data Member</strong> is a class variable prefixed with the <code>static</code> keyword. Unlike normal data members, only a single copy of a static data member is created for the entire class, and this single copy is <strong>shared by all objects</strong> of that class. It must be defined outside the class scope.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">📖 Detailed 10-Mark Answer</div>
+                    <p>In standard C++ class structures, each object retains its own private copy of variables. However, situations arise where a single state variable must be shared across all objects of a class (for example, counting the total number of active objects in memory or tracking a global interest rate in a banking system).</p>
+
+                    <p><strong>Characteristics of Static Data Members:</strong></p>
+                    <ol>
+                        <li><strong>Single Memory Allocation:</strong> It is initialized to zero automatically when the first object of its class is created, if no other initialization is present.</li>
+                        <li><strong>Global Class Visibility:</strong> It belongs to the class as a whole, rather than any specific object instance.</li>
+                        <li><strong>Outside Definition Requirement:</strong> Declaring a static data member inside a class does not allocate memory. Memory must be allocated explicitly outside the class definition in global scope using the Scope Resolution Operator.</li>
+                    </ol>
+
+                    <p><strong>Outside Definition Syntax:</strong></p>
+                    <div class="code-container">
+                        <pre><code>dataType ClassName :: staticVariableName = initialValue;</code></pre>
+                    </div>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">💻 C++ Program Implementation</div>
+                    <div class="code-container">
+                        <div class="code-header">Program 8.1: Shared Static Data Member for Object Counter</div>
+                        <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class Item {
+private:
+    int itemCode;
+    // Declaration of static data member inside class
+    static int count; 
+
+public:
+    void setData(int c) {
+        itemCode = c;
+        count++; // Incrementing shared counter
+    }
+
+    void displayCount() {
+        cout &lt;&lt; "Item Code: " &lt;&lt; itemCode &lt;&lt; " | Total Items Created (count): " &lt;&lt; count &lt;&lt; endl;
+    }
+};
+
+// MANDATORY: Definition and memory allocation outside class
+int Item :: count = 0;
+
+int main() {
+    Item i1, i2, i3;
+
+    i1.setData(101);
+    i2.setData(102);
+    i3.setData(103);
+
+    // All objects reflect the exact same shared count value
+    i1.displayCount();
+    i2.displayCount();
+    i3.displayCount();
+
+    return 0;
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="exam-points-box">
+                    <div class="exam-points-title">💡 Important Exam Points</div>
+                    <ul>
+                        <li>Static data members exist in memory even before any object of the class is instantiated.</li>
+                        <li>Failure to define a static data member outside the class results in a Linker Error (<code>undefined reference</code>).</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- TOPIC 9 -->
+            <article id="topic-9" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Topic 09</div>
+                    <h2 class="topic-title">Static Member Functions</h2>
+                </div>
+
+                <div class="quick-exam-box">
+                    <div class="quick-exam-title">⚡ Quick Exam Answer (2 - 5 Marks)</div>
+                    <p>A member function declared with the <code>static</code> keyword is a <strong>Static Member Function</strong>. Key rules:</p>
+                    <ul>
+                        <li>It can access <strong>ONLY static data members</strong> or other static member functions of the class.</li>
+                        <li>It can be called using the class name directly (<code>ClassName::functionName()</code>) without creating an object.</li>
+                        <li>It does not have access to the implicit <code>this</code> pointer.</li>
+                    </ul>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">📖 Detailed 10-Mark Answer</div>
+                    <p>Static member functions are designed to operate at the class level rather than the instance level. They act as manager functions for static data members.</p>
+
+                    <p><strong>Why Static Functions Cannot Access Non-Static Data:</strong> Non-static data members require a specific object instance to exist (they depend on the object's <code>this</code> pointer address). Because a static member function can be invoked using the class name when zero objects exist in memory, it has no <code>this</code> pointer. Attempting to access non-static variables inside a static function produces a compile error: <em>"invalid use of member in static member function"</em>.</p>
+
+                    <p><strong>Syntax & Invocation:</strong></p>
+                    <div class="code-container">
+                        <pre><code>// Calling via class name (Recommended)
+ClassName::staticFunctionName();
+
+// Calling via object instance
+objectName.staticFunctionName();</code></pre>
+                    </div>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">💻 C++ Program Implementation</div>
+                    <div class="code-container">
+                        <div class="code-header">Program 9.1: Static Member Function Usage</div>
+                        <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class StudentCounter {
+private:
+    int id;
+    static int totalStudents; // Static data member
+
+public:
+    void setID(int i) {
+        id = i;
+        totalStudents++;
+    }
+
+    // STATIC MEMBER FUNCTION
+    static void showTotal() {
+        // cout &lt;&lt; id; // COMPILE ERROR! Cannot access non-static member 'id'
+        cout &lt;&lt; "Current Total Enrolled Students: " &lt;&lt; totalStudents &lt;&lt; endl;
+    }
+};
+
+// Defining static data member
+int StudentCounter::totalStudents = 0;
+
+int main() {
+    // Calling static function BEFORE creating any objects
+    StudentCounter::showTotal();
+
+    StudentCounter s1, s2;
+    s1.setID(501);
+    s2.setID(502);
+
+    // Invoking static function via Class Name
+    StudentCounter::showTotal();
+
+    return 0;
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="exam-points-box">
+                    <div class="exam-points-title">💡 Important Exam Points</div>
+                    <ul>
+                        <li>Static member functions can be called without instantiating an object.</li>
+                        <li>They cannot be marked as <code>const</code> or <code>virtual</code>.</li>
+                        <li>They cannot access normal (non-static) variables or functions directly.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- TOPIC 10 -->
+            <article id="topic-10" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Topic 10</div>
+                    <h2 class="topic-title">Arrays of Objects</h2>
+                </div>
+
+                <div class="quick-exam-box">
+                    <div class="quick-exam-title">⚡ Quick Exam Answer (2 - 5 Marks)</div>
+                    <p>An <strong>Array of Objects</strong> is a collection of multiple object instances stored in contiguous memory under a single identifier name. Just as an array of <code>int</code> stores multiple integers, an array of objects stores multiple instances of a class type. Syntax: <code>ClassName arrayName[size];</code>.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">📖 Detailed 10-Mark Answer</div>
+                    <p>When managing datasets representing multiple real-world entities (e.g., 60 students in a classroom, 500 employee records, or 100 inventory items), creating individual object variables like <code>emp1, emp2, emp3...</code> is inefficient and unmaintainable. An array of objects provides an organized structure.</p>
+
+                    <p><strong>Memory Layout:</strong> Declaring <code>Employee emp[50];</code> allocates a single contiguous block of memory large enough to hold 50 individual <code>Employee</code> objects sequentially. Member functions are accessed by combining the array subscript index with the dot operator: <code>emp[i].getData();</code>.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">💻 C++ Program Implementation</div>
+                    <div class="code-container">
+                        <div class="code-header">Program 10.1: Managing Student Records using Array of Objects</div>
+                        <pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+class Manager {
+private:
+    int empID;
+    string name;
+    float salary;
+
+public:
+    void inputData() {
+        cout &lt;&lt; "Enter Employee ID: ";
+        cin &gt;&gt; empID;
+        cout &lt;&lt; "Enter Name: ";
+        cin &gt;&gt; name;
+        cout &lt;&lt; "Enter Salary: ";
+        cin &gt;&gt; salary;
+    }
+
+    void displayData() {
+        cout &lt;&lt; "ID: " &lt;&lt; empID &lt;&lt; " | Name: " &lt;&lt; name &lt;&lt; " | Salary: $" &lt;&lt; salary &lt;&lt; endl;
+    }
+};
+
+int main() {
+    const int SIZE = 3;
+    // Declaring Array of Objects
+    Manager team[SIZE]; 
+
+    cout &lt;&lt; "=== ENTER DETAILS FOR 3 EMPLOYEES ===" &lt;&lt; endl;
+    for (int i = 0; i &lt; SIZE; i++) {
+        cout &lt;&lt; "\nEmployee " &lt;&lt; (i + 1) &lt;&lt; ":" &lt;&lt; endl;
+        team[i].inputData();
+    }
+
+    cout &lt;&lt; "\n=== DISPLAYING ALL EMPLOYEE RECORDS ===" &lt;&lt; endl;
+    for (int i = 0; i &lt; SIZE; i++) {
+        team[i].displayData();
+    }
+
+    return 0;
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="exam-points-box">
+                    <div class="exam-points-title">💡 Important Exam Points</div>
+                    <ul>
+                        <li>If a class has constructors, declaring an array of objects invokes the default constructor for <em>every</em> element in the array.</li>
+                        <li>Array index starts at 0 and goes up to <code>SIZE - 1</code>.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- TOPIC 11 -->
+            <article id="topic-11" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Topic 11</div>
+                    <h2 class="topic-title">Objects as Function Arguments</h2>
+                </div>
+
+                <div class="quick-exam-box">
+                    <div class="quick-exam-title">⚡ Quick Exam Answer (2 - 5 Marks)</div>
+                    <p>Objects can be passed to functions as parameters in two ways:</p>
+                    <ol>
+                        <li><strong>Pass by Value:</strong> A copy of the object is passed into the function. Changes made inside the function do not affect the original object.</li>
+                        <li><strong>Pass by Reference:</strong> The memory address of the object is passed using reference variables (<code>&</code>). Modifications inside the function directly update the caller's original object.</li>
+                    </ol>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">📖 Detailed 10-Mark Answer</div>
+                    <p>Because a class is a user-defined type, object variables behave like built-in types in C++. You can pass objects to standalone functions or to member functions of another object, and functions can also return objects.</p>
+
+                    <p><strong>1. Pass by Value Mechanics:</strong> The system creates a temporary copy of the argument object inside the function parameter using its copy constructor. This guarantees that the original object cannot be altered accidentally, but causes memory and performance overhead for large classes.</p>
+
+                    <p><strong>2. Pass by Reference Mechanics:</strong> An alias of the original object is passed. No secondary copy is created in memory, making execution faster. If read-only security is required during pass by reference, pass it as a <code>const</code> reference parameter: <code>void process(const Complex &obj);</code>.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">💻 C++ Program Implementation</div>
+                    <div class="code-container">
+                        <div class="code-header">Program 11.1: Adding Two Time Duration Objects</div>
+                        <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class Time {
+private:
+    int hours;
+    int minutes;
+
+public:
+    void setTime(int h, int m) {
+        hours = h;
+        minutes = m;
+    }
+
+    void showTime() {
+        cout &lt;&lt; hours &lt;&lt; " Hours and " &lt;&lt; minutes &lt;&lt; " Minutes." &lt;&lt; endl;
+    }
+
+    // Object passed by value as arguments
+    void sum(Time t1, Time t2) {
+        minutes = t1.minutes + t2.minutes;
+        hours = t1.hours + t2.hours + (minutes / 60);
+        minutes = minutes % 60;
+    }
+};
+
+int main() {
+    Time T1, T2, T3;
+
+    T1.setTime(2, 45); // 2 hrs 45 mins
+    T2.setTime(3, 30); // 3 hrs 30 mins
+
+    // T3 calculates total time by receiving T1 and T2 as arguments
+    T3.sum(T1, T2);
+
+    cout &lt;&lt; "T1: "; T1.showTime();
+    cout &lt;&lt; "T2: "; T2.showTime();
+    cout &lt;&lt; "T3 (Sum): "; T3.showTime();
+
+    return 0;
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="exam-points-box">
+                    <div class="exam-points-title">💡 Important Exam Points</div>
+                    <ul>
+                        <li>Passing by reference avoids memory overhead caused by copying large objects.</li>
+                        <li>Functions can also return objects using standard return syntax: <code>Time result; return result;</code>.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- TOPIC 12 -->
+            <article id="topic-12" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Topic 12</div>
+                    <h2 class="topic-title">Friend Functions</h2>
+                </div>
+
+                <div class="quick-exam-box">
+                    <div class="quick-exam-title">⚡ Quick Exam Answer (2 - 5 Marks)</div>
+                    <p>A <strong>Friend Function</strong> is a non-member function that is granted access to the <code>private</code> and <code>protected</code> members of a class. It is declared inside the class using the keyword <code>friend</code>, but defined outside without using any scope resolution operator.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">📖 Detailed 10-Mark Answer</div>
+                    <p>One of the foundational rules of Object-Oriented Programming is Data Hiding: external functions cannot access private members of a class. However, situations arise where two independent classes must collaborate closely (for example, comparing private data between a <code>Manager</code> class and a <code>Scientist</code> class, or overloading complex mathematical operators). C++ provides the <code>friend</code> mechanism to handle these cases safely.</p>
+
+                    <p><strong>Key Characteristics of Friend Functions:</strong></p>
+                    <ol>
+                        <li>It is <strong>not in the scope</strong> of the class in which it is declared as friend.</li>
+                        <li>It <strong>cannot be called using an object</strong> and dot operator (e.g., <code>obj.friendFunc()</code> is invalid). It is invoked like a standard C++ function: <code>friendFunc(obj)</code>.</li>
+                        <li>It usually accepts objects of the class as arguments to access their private data members using the dot operator (e.g., <code>obj.privateData</code>).</li>
+                        <li>It can be declared in either the <code>public</code> or <code>private</code> section of the class without changing its access rights.</li>
+                    </ol>
+
+                    <p><strong>Friendship is Not Mutual or Transitive:</strong> If Class A declares Function F as a friend, Function F can access Class A's private members. But Class A does not automatically gain access to Function F's private data. Friendship must be explicitly granted.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">💻 C++ Program Implementation</div>
+                    <div class="code-container">
+                        <div class="code-header">Program 12.1: Friend Function Bridging Two Private Classes</div>
+                        <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+// Forward declaration of Class B
+class ClassB; 
+
+class ClassA {
+private:
+    int valueA;
+
+public:
+    void setValue(int val) { valueA = val; }
+
+    // Declaring Friend Function
+    friend void findMax(ClassA objA, ClassB objB); 
+};
+
+class ClassB {
+private:
+    int valueB;
+
+public:
+    void setValue(int val) { valueB = val; }
+
+    // Declaring Friend Function
+    friend void findMax(ClassA objA, ClassB objB); 
+};
+
+// DEFINITION of Friend Function (NO scope resolution :: operator used!)
+void findMax(ClassA objA, ClassB objB) {
+    // Accessing private members 'valueA' and 'valueB' directly
+    if (objA.valueA &gt; objB.valueB) {
+        cout &lt;&lt; "ClassA has larger value: " &lt;&lt; objA.valueA &lt;&lt; endl;
+    } else {
+        cout &lt;&lt; "ClassB has larger value: " &lt;&lt; objB.valueB &lt;&lt; endl;
+    }
+}
+
+int main() {
+    ClassA a;
+    ClassB b;
+
+    a.setValue(150);
+    b.setValue(280);
+
+    // Calling friend function like a standard global function
+    findMax(a, b); 
+
+    return 0;
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="exam-points-box">
+                    <div class="exam-points-title">💡 Important Exam Points</div>
+                    <ul>
+                        <li>Friend function definitions do <em>not</em> use the <code>Classname::</code> scope resolution operator.</li>
+                        <li>The <code>friend</code> keyword appears only in the declaration inside the class, not in the outside definition.</li>
+                        <li>Friend functions break strict data encapsulation; use them judiciously.</li>
+                    </ul>
+                </div>
+            </article>
+
+
+            <!-- SECTION B HEADER -->
+            <div id="sec-b" class="section-divider" style="margin-top: 3rem;">
+                <h2 style="font-size: 1.8rem; color: var(--accent-cyan); border-bottom: 2px solid var(--accent-blue); padding-bottom: 0.5rem;">SECTION B: CONSTRUCTORS AND DESTRUCTORS</h2>
+            </div>
+
+            <!-- TOPIC 13 -->
+            <article id="topic-13" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Topic 13</div>
+                    <h2 class="topic-title">Constructors</h2>
+                </div>
+
+                <div class="quick-exam-box">
+                    <div class="quick-exam-title">⚡ Quick Exam Answer (2 - 5 Marks)</div>
+                    <p>A <strong>Constructor</strong> is a special member function of a class whose primary purpose is to initialize the data members of an object automatically when that object is instantiated. Key rules:</p>
+                    <ul>
+                        <li>It has the <strong>exact same name</strong> as its class.</li>
+                        <li>It has <strong>no return type</strong> (not even <code>void</code>).</li>
+                        <li>It is executed automatically whenever an object is created.</li>
+                    </ul>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">📖 Detailed 10-Mark Answer</div>
+                    <p>In standard C programming, variables often contain garbage values until explicitly initialized. If an object's variables are uninitialized, executing member operations will lead to unpredictable runtime crashes. A constructor solves this problem by ensuring that every object is created in a valid, initialized state.</p>
+
+                    <p><strong>Characteristics of Constructors:</strong></p>
+                    <ol>
+                        <li>They must be declared in the <code>public:</code> access section of a class to allow external object instantiation.</li>
+                        <li>They are invoked automatically by the compiler when memory is allocated for an object.</li>
+                        <li>They cannot return values, so specifying a return type (even <code>void</code>) results in a compilation error.</li>
+                        <li>They can be overloaded (a class can define multiple constructors with different parameter signatures).</li>
+                        <li>They cannot be inherited, though a derived class can invoke a base class constructor.</li>
+                        <li>They cannot be declared <code>virtual</code> or <code>static</code>.</li>
+                    </ol>
+
+                    <p><strong>Types of Constructors:</strong></p>
+                    <ul>
+                        <li><strong>Default Constructor:</strong> Takes no arguments.</li>
+                        <li><strong>Parameterized Constructor:</strong> Accepts parameters to initialize objects with custom values.</li>
+                        <li><strong>Copy Constructor:</strong> Initializes an object using the values of another existing object of the same class.</li>
+                        <li><strong>Dynamic Constructor:</strong> Allocates memory dynamically at runtime using <code>new</code> inside the constructor.</li>
+                    </ul>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">💻 C++ Program Implementation</div>
+                    <div class="code-container">
+                        <div class="code-header">Program 13.1: Basic Default Constructor Demonstration</div>
+                        <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class Point {
+private:
+    int x, y;
+
+public:
+    // DEFAULT CONSTRUCTOR: Same name as Class, No Return Type
+    Point() {
+        x = 0;
+        y = 0;
+        cout &lt;&lt; "Default Constructor Invoked! Point initialized to (0,0)" &lt;&lt; endl;
+    }
+
+    void display() {
+        cout &lt;&lt; "Coordinates: (" &lt;&lt; x &lt;&lt; ", " &lt;&lt; y &lt;&lt; ")" &lt;&lt; endl;
+    }
+};
+
+int main() {
+    // Constructor triggers automatically upon instantiation
+    Point p1; 
+    p1.display();
+
+    return 0;
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="exam-points-box">
+                    <div class="exam-points-title">💡 Important Exam Points</div>
+                    <ul>
+                        <li>If no user constructor is defined, the C++ compiler automatically generates an implicit default constructor.</li>
+                        <li>If a user defines <em>any</em> custom constructor, the compiler suppresses its implicit default constructor.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- TOPIC 14 -->
+            <article id="topic-14" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Topic 14</div>
+                    <h2 class="topic-title">Parameterized Constructors</h2>
+                </div>
+
+                <div class="quick-exam-box">
+                    <div class="quick-exam-title">⚡ Quick Exam Answer (2 - 5 Marks)</div>
+                    <p>A constructor that accepts parameters/arguments is called a <strong>Parameterized Constructor</strong>. It enables developers to initialize different objects with distinct initial state values at the exact moment of instantiation.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">📖 Detailed 10-Mark Answer</div>
+                    <p>Default constructors initialize every object of a class with identical values. However, real-world applications require objects to hold distinct data upon creation (for instance, creating two bank account objects with different initial balances).</p>
+
+                    <p><strong>Methods of Invoking Parameterized Constructors:</strong></p>
+                    <ol>
+                        <li><strong>Implicit Call (Shorthand):</strong><br>
+                        <code>Complex c1(10, 20);</code></li>
+                        <li><strong>Explicit Call:</strong><br>
+                        <code>Complex c1 = Complex(10, 20);</code></li>
+                    </ol>
+
+                    <p><strong>Constructor Overloading:</strong> A class can feature both a default constructor and multiple parameterized constructors simultaneously. The compiler selects the appropriate constructor based on the number and type of arguments passed during instantiation.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">💻 C++ Program Implementation</div>
+                    <div class="code-container">
+                        <div class="code-header">Program 14.1: Parameterized Constructor and Overloading</div>
+                        <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class Account {
+private:
+    int accountNumber;
+    double balance;
+
+public:
+    // Default Constructor
+    Account() {
+        accountNumber = 0;
+        balance = 0.0;
+    }
+
+    // PARAMETERIZED CONSTRUCTOR
+    Account(int accNum, double initialBal) {
+        accountNumber = accNum;
+        balance = initialBal;
+    }
+
+    void display() {
+        cout &lt;&lt; "Acc No: " &lt;&lt; accountNumber &lt;&lt; " | Balance: $" &lt;&lt; balance &lt;&lt; endl;
+    }
+};
+
+int main() {
+    Account acc1; // Calls Default Constructor
+    Account acc2(1001, 5500.75); // Calls Parameterized Constructor (Implicit)
+    Account acc3 = Account(1002, 9200.00); // Calls Parameterized Constructor (Explicit)
+
+    acc1.display();
+    acc2.display();
+    acc3.display();
+
+    return 0;
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="exam-points-box">
+                    <div class="exam-points-title">💡 Important Exam Points</div>
+                    <ul>
+                        <li>Providing explicit constructor parameters eliminates the need for extra initialization functions like <code>setData()</code>.</li>
+                        <li>When using parameterized constructors, ensure a default constructor is defined if arrays of objects will be instantiated.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- TOPIC 15 -->
+            <article id="topic-15" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Topic 15</div>
+                    <h2 class="topic-title">Constructors with Default Arguments</h2>
+                </div>
+
+                <div class="quick-exam-box">
+                    <div class="quick-exam-title">⚡ Quick Exam Answer (2 - 5 Marks)</div>
+                    <p>Like normal functions, constructor parameters can specify default values. A constructor that provides default values for one or more of its parameters is called a <strong>Constructor with Default Arguments</strong>. It allows objects to be instantiated with or without arguments.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">📖 Detailed 10-Mark Answer</div>
+                    <p>Constructors with default arguments combine the flexibility of default constructors and parameterized constructors into a single declaration.</p>
+
+                    <p><strong>Rules for Default Arguments:</strong></p>
+                    <ul>
+                        <li>Default values must be specified starting from the rightmost parameter inward. You cannot leave gaps (e.g., <code>void func(int a = 10, int b)</code> is invalid).</li>
+                        <li><strong>Avoid Ambiguity Errors:</strong> Defining both a default constructor (<code>Box()</code>) and a constructor where all parameters have default values (<code>Box(int l = 1, int b = 1)</code>) creates a compiler error on <code>Box b1;</code> because the compiler cannot determine which constructor to invoke.</li>
+                    </ul>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">💻 C++ Program Implementation</div>
+                    <div class="code-container">
+                        <div class="code-header">Program 15.1: Constructor with Default Arguments</div>
+                        <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class Box {
+private:
+    int length, width, height;
+
+public:
+    // Constructor with default arguments (height defaults to 10, width defaults to 5)
+    Box(int l, int w = 5, int h = 10) {
+        length = l;
+        width = w;
+        height = h;
+    }
+
+    int calculateVolume() {
+        return length * width * height;
+    }
+};
+
+int main() {
+    Box b1(2);       // Uses length=2, width=5 (default), height=10 (default) -> Vol = 100
+    Box b2(2, 4);    // Uses length=2, width=4, height=10 (default) -> Vol = 80
+    Box b3(2, 4, 6); // Overrides all default arguments -> Vol = 48
+
+    cout &lt;&lt; "Volume Box 1: " &lt;&lt; b1.calculateVolume() &lt;&lt; endl;
+    cout &lt;&lt; "Volume Box 2: " &lt;&lt; b2.calculateVolume() &lt;&lt; endl;
+    cout &lt;&lt; "Volume Box 3: " &lt;&lt; b3.calculateVolume() &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="exam-points-box">
+                    <div class="exam-points-title">💡 Important Exam Points</div>
+                    <ul>
+                        <li>Default parameters reduce code duplication across overloaded constructors.</li>
+                        <li>Default argument values must be provided right-to-left without skipping positions.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- TOPIC 16 -->
+            <article id="topic-16" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Topic 16</div>
+                    <h2 class="topic-title">Dynamic Initialization of Objects</h2>
+                </div>
+
+                <div class="quick-exam-box">
+                    <div class="quick-exam-title">⚡ Quick Exam Answer (2 - 5 Marks)</div>
+                    <p><strong>Dynamic Initialization</strong> refers to initializing an object's data members at runtime using dynamic values (e.g., user input or variable calculations) rather than hardcoded compile-time constants. This is achieved by overloading constructors with different argument types.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">📖 Detailed 10-Mark Answer</div>
+                    <p>In many real-world applications, initial object values cannot be known when writing the code. Values may depend on user input, file reads, or complex calculations at runtime. Dynamic initialization allows C++ applications to select and execute different constructors based on runtime data inputs.</p>
+
+                    <p><strong>Key Application Scenario:</strong> A fixed-deposit banking application where interest can be supplied either as an integer percentage rate (e.g., 9%) or as a fractional floating-point rate (e.g., 0.09). Overloading constructors allows the system to construct the object correctly based on the runtime format provided by the user.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">💻 C++ Program Implementation</div>
+                    <div class="code-container">
+                        <div class="code-header">Program 16.1: Dynamic Initialization of Fixed Deposit Object</div>
+                        <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class FixedDeposit {
+private:
+    long int principal;
+    int years;
+    float rate;
+    float returnAmount;
+
+public:
+    FixedDeposit() {}
+
+    // Constructor 1: Rate as fractional float (e.g., 0.08)
+    FixedDeposit(long int p, int y, float r) {
+        principal = p;
+        years = y;
+        rate = r;
+        returnAmount = principal;
+        for (int i = 1; i &lt;= y; i++)
+            returnAmount *= (1.0 + rate);
+    }
+
+    // Constructor 2: Rate as percentage integer (e.g., 8)
+    FixedDeposit(long int p, int y, int r) {
+        principal = p;
+        years = y;
+        rate = float(r) / 100.0;
+        returnAmount = principal;
+        for (int i = 1; i &lt;= y; i++)
+            returnAmount *= (1.0 + rate);
+    }
+
+    void display() {
+        cout &lt;&lt; "Principal: $" &lt;&lt; principal &lt;&lt; " | Maturity Value: $" &lt;&lt; returnAmount &lt;&lt; endl;
+    }
+};
+
+int main() {
+    long int p;
+    int y, R;
+    float r;
+
+    cout &lt;&lt; "Enter Principal, Years, and Rate (as fraction, e.g., 0.08): ";
+    cin &gt;&gt; p &gt;&gt; y &gt;&gt; r;
+    // Object initialized dynamically at runtime using floating point rate
+    FixedDeposit fd1(p, y, r); 
+
+    cout &lt;&lt; "Enter Principal, Years, and Rate (as integer %, e.g., 8): ";
+    cin &gt;&gt; p &gt;&gt; y &gt;&gt; R;
+    // Object initialized dynamically at runtime using integer rate
+    FixedDeposit fd2(p, y, R); 
+
+    fd1.display();
+    fd2.display();
+
+    return 0;
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="exam-points-box">
+                    <div class="exam-points-title">💡 Important Exam Points</div>
+                    <ul>
+                        <li>Dynamic initialization binds data to objects using runtime user input.</li>
+                        <li>Overloaded constructors evaluate parameter types at runtime to select the correct constructor.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- TOPIC 17 -->
+            <article id="topic-17" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Topic 17</div>
+                    <h2 class="topic-title">Copy Constructor</h2>
+                </div>
+
+                <div class="quick-exam-box">
+                    <div class="quick-exam-title">⚡ Quick Exam Answer (2 - 5 Marks)</div>
+                    <p>A <strong>Copy Constructor</strong> is a member function that initializes a new object using the values of an existing object of the same class. Syntax: <code>ClassName (const ClassName &obj)</code>. The parameter <strong>must be passed by reference</strong> using the <code>&</code> symbol.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">📖 Detailed 10-Mark Answer</div>
+                    <p>A copy constructor is invoked whenever an object is initialized using another existing object of the same class type.</p>
+
+                    <p><strong>When is a Copy Constructor Invoked?</strong></p>
+                    <ol>
+                        <li>When an object is explicitly initialized from another object: <code>Student s2 = s1;</code> or <code>Student s2(s1);</code>.</li>
+                        <li>When an object is passed by value to a function.</li>
+                        <li>When a function returns an object by value.</li>
+                    </ol>
+
+                    <p><strong>Why Pass Parameter by Reference?</strong><br>
+                    The signature <em>must</em> be <code>ClassName(const ClassName &obj)</code>. If you attempt to pass the object by value (<code>ClassName(ClassName obj)</code>), passing the parameter would itself require creating a copy, which would invoke the copy constructor again. This creates an infinite recursion loop until the call stack overflows. Passing by reference avoids this loop.</p>
+
+                    <p><strong>Shallow Copy vs. Deep Copy:</strong></p>
+                    <ul>
+                        <li><strong>Shallow Copy:</strong> The default copy constructor performs a bitwise, field-by-field copy. If the class contains raw heap pointer members (e.g., <code>int *ptr;</code>), both objects will end up pointing to the exact same memory address. Deallocating memory in one object leaves the second object with a dangling pointer, leading to double-free runtime errors.</li>
+                        <li><strong>Deep Copy:</strong> A user-defined copy constructor allocates new, independent heap memory for the destination object and copies the underlying values, ensuring complete independence between objects.</li>
+                    </ul>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">💻 C++ Program Implementation</div>
+                    <div class="code-container">
+                        <div class="code-header">Program 17.1: User-Defined Deep Copy Constructor</div>
+                        <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class Sample {
+private:
+    int id;
+
+public:
+    // Normal Parameterized Constructor
+    Sample(int i) {
+        id = i;
+    }
+
+    // USER-DEFINED COPY CONSTRUCTOR
+    Sample(const Sample &obj) {
+        id = obj.id; // Copying data value from source object
+        cout &lt;&lt; "Copy Constructor Invoked!" &lt;&lt; endl;
+    }
+
+    void display() {
+        cout &lt;&lt; "ID Value: " &lt;&lt; id &lt;&lt; endl;
+    }
+};
+
+int main() {
+    Sample s1(100); // Calls Parameterized Constructor
+    
+    Sample s2 = s1; // Calls Copy Constructor implicitly
+    Sample s3(s1);  // Calls Copy Constructor explicitly
+
+    cout &lt;&lt; "s1: "; s1.display();
+    cout &lt;&lt; "s2: "; s2.display();
+    cout &lt;&lt; "s3: "; s3.display();
+
+    return 0;
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="exam-points-box">
+                    <div class="exam-points-title">💡 Important Exam Points</div>
+                    <ul>
+                        <li>The copy constructor parameter must use reference pass (<code>&</code>) to prevent infinite recursion.</li>
+                        <li>Use <code>const</code> in the reference parameter to prevent the copy constructor from accidentally modifying the source object.</li>
+                        <li>Deep copying is essential for classes that manage dynamic pointer memory.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- TOPIC 18 -->
+            <article id="topic-18" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Topic 18</div>
+                    <h2 class="topic-title">Dynamic Constructors</h2>
+                </div>
+
+                <div class="quick-exam-box">
+                    <div class="quick-exam-title">⚡ Quick Exam Answer (2 - 5 Marks)</div>
+                    <p>When memory allocation for class data members is performed dynamically at runtime inside a constructor using the <code>new</code> operator, the constructor is called a <strong>Dynamic Constructor</strong>. It enables objects to request exact RAM sizing on demand.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">📖 Detailed 10-Mark Answer</div>
+                    <p>Static member array allocations (e.g., <code>char name[100];</code>) waste memory if only a few bytes are used, or overflow if the input exceeds array bounds. A dynamic constructor solves this by allocating the exact required memory on the heap at runtime using pointers and the <code>new</code> operator.</p>
+
+                    <p><strong>Object Lifecycle with Dynamic Allocation:</strong></p>
+                    <p><code>Constructor (new)</code> ➔ <code>Object Usage</code> ➔ <code>Destructor (delete)</code></p>
+                    <p>Memory allocated by a dynamic constructor inside the heap is not released automatically when the object goes out of scope. A custom <strong>Destructor</strong> must be implemented to explicitly release heap memory using the <code>delete</code> operator.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">💻 C++ Program Implementation</div>
+                    <div class="code-container">
+                        <div class="code-header">Program 18.1: Dynamic Constructor allocating String Memory</div>
+                        <pre><code>#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+class StringManager {
+private:
+    char *name; // Pointer data member
+
+public:
+    // DYNAMIC CONSTRUCTOR
+    StringManager(const char *s) {
+        int length = strlen(s);
+        name = new char[length + 1]; // Dynamically allocating memory on Heap
+        strcpy(name, s);
+    }
+
+    // DESTRUCTOR releasing dynamic heap allocation
+    ~StringManager() {
+        delete[] name; // Releasing allocated heap memory
+        cout &lt;&lt; "Heap memory freed by Destructor." &lt;&lt; endl;
+    }
+
+    void display() {
+        cout &lt;&lt; "Stored String: " &lt;&lt; name &lt;&lt; endl;
+    }
+};
+
+int main() {
+    // Dynamic constructor allocates exact memory required for string length
+    StringManager str1("Durga Prasad Mishra - BCA C++ Unit II");
+    str1.display();
+
+    return 0; // Destructor executes automatically upon exiting scope
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="exam-points-box">
+                    <div class="exam-points-title">💡 Important Exam Points</div>
+                    <ul>
+                        <li>Dynamic constructors allocate heap memory using the <code>new</code> operator.</li>
+                        <li>Every class with a dynamic constructor must include a destructor with <code>delete</code> to prevent memory leaks.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- TOPIC 19 -->
+            <article id="topic-19" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Topic 19</div>
+                    <h2 class="topic-title">Destructors</h2>
+                </div>
+
+                <div class="quick-exam-box">
+                    <div class="quick-exam-title">⚡ Quick Exam Answer (2 - 5 Marks)</div>
+                    <p>A <strong>Destructor</strong> is a special member function that is automatically executed when an object goes out of scope or is explicitly deleted. Its purpose is to release resources (like heap memory or open file handles) allocated by the object. Syntax: <code>~ClassName()</code>.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">📖 Detailed 10-Mark Answer</div>
+                    <p>Destructors clean up resources before an object is removed from memory, preventing resource leaks in long-running software applications.</p>
+
+                    <p><strong>Characteristics of Destructors:</strong></p>
+                    <ol>
+                        <li>It has the <strong>exact same name</strong> as its class, prefixed with a tilde (<code>~</code>).</li>
+                        <li>It takes <strong>no arguments</strong> and has <strong>no return type</strong> (not even <code>void</code>).</li>
+                        <li>A class can have <strong>only ONE destructor</strong> (destructors cannot be overloaded).</li>
+                        <li>It is invoked automatically in <strong>reverse order</strong> of object construction.</li>
+                        <li>It cannot be declared <code>static</code> or <code>const</code>.</li>
+                    </ol>
+
+                    <p><strong>Order of Execution:</strong> When objects are created in stack memory, they are constructed in sequence (1, 2, 3). When the enclosing block ends, destructors run in reverse order (3, 2, 1) following Last-In, First-Out (LIFO) stack order.</p>
+                </div>
+
+                <div class="section-block">
+                    <div class="block-title">💻 C++ Program Implementation</div>
+                    <div class="code-container">
+                        <div class="code-header">Program 19.1: Constructor and Destructor Execution Sequence</div>
+                        <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+int globalCount = 0;
+
+class LifeCycle {
+public:
+    LifeCycle() {
+        globalCount++;
+        cout &lt;&lt; "Constructor Invoked! Object ID: " &lt;&lt; globalCount &lt;&lt; endl;
+    }
+
+    // DESTRUCTOR
+    ~LifeCycle() {
+        cout &lt;&lt; "Destructor Invoked! Destroying Object ID: " &lt;&lt; globalCount &lt;&lt; endl;
+        globalCount--;
+    }
+};
+
+int main() {
+    cout &lt;&lt; "--- Entering Main ---" &lt;&lt; endl;
+    LifeCycle obj1;
+    LifeCycle obj2;
+
+    {
+        cout &lt;&lt; "--- Entering Local Block ---" &lt;&lt; endl;
+        LifeCycle obj3;
+        cout &lt;&lt; "--- Exiting Local Block ---" &lt;&lt; endl;
+    } // obj3 goes out of scope here and its destructor is called immediately
+
+    cout &lt;&lt; "--- Exiting Main ---" &lt;&lt; endl;
+    return 0; // obj2 and obj1 destructors run in reverse order of creation
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="exam-points-box">
+                    <div class="exam-points-title">💡 Important Exam Points</div>
+                    <ul>
+                        <li>Destructors cannot accept arguments, so they cannot be overloaded.</li>
+                        <li>Destructors execute automatically in reverse order (LIFO) of constructor execution.</li>
+                        <li>For objects created using <code>new</code>, the destructor runs only when <code>delete</code> is explicitly called.</li>
+                    </ul>
+                </div>
+            </article>
+
+
+            <!-- IMPORTANT CONCEPT COMPARISONS -->
+            <section id="comp-tables" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Exam Reference</div>
+                    <h2 class="topic-title">Core Comparison Tables</h2>
+                </div>
+
+                <!-- Table 1 -->
+                <div class="section-block">
+                    <div class="block-title">1. Class vs Object</div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr><th>Feature</th><th>Class</th><th>Object</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><strong>Definition</strong></td><td>User-defined data type and blueprint.</td><td>Real-world instance of a class.</td></tr>
+                                <tr><td><strong>Memory Allocation</strong></td><td>No memory allocated upon definition.</td><td>Memory allocated in RAM upon instantiation.</td></tr>
+                                <tr><td><strong>Existence</strong></td><td>Logical entity.</td><td>Physical entity.</td></tr>
+                                <tr><td><strong>Declaration Syntax</strong></td><td><code>class ClassName { ... };</code></td><td><code>ClassName objectName;</code></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Table 2 -->
+                <div class="section-block">
+                    <div class="block-title">2. Public vs Private Member Functions</div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr><th>Feature</th><th>Public Member Function</th><th>Private Member Function</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><strong>Accessibility</strong></td><td>Accessible from anywhere using the dot operator.</td><td>Accessible only inside sibling member functions.</td></tr>
+                                <tr><td><strong>Purpose</strong></td><td>Provides the public interface for the class.</td><td>Hides internal logic and helper routines.</td></tr>
+                                <tr><td><strong>Outside Calling</strong></td><td><code>obj.publicFunc();</code> (Allowed)</td><td><code>obj.privateFunc();</code> (Compile Error)</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Table 3 -->
+                <div class="section-block">
+                    <div class="block-title">3. Static vs Non-Static Data Members</div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr><th>Feature</th><th>Static Data Member</th><th>Non-Static Data Member</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><strong>Memory Allocation</strong></td><td>Single shared memory allocation for the entire class.</td><td>Separate memory allocated for every object instance.</td></tr>
+                                <tr><td><strong>Lifetime</strong></td><td>Created when the program starts; destroyed at exit.</td><td>Created with the object; destroyed when object goes out of scope.</td></tr>
+                                <tr><td><strong>Outside Definition</strong></td><td>Must be defined outside the class scope.</td><td>Declared inside class body; no outside definition required.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Table 4 -->
+                <div class="section-block">
+                    <div class="block-title">4. Member Function vs Friend Function</div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr><th>Feature</th><th>Member Function</th><th>Friend Function</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><strong>Scope</strong></td><td>Inside the scope of its class.</td><td>Global scope (non-member).</td></tr>
+                                <tr><td><strong>Invocation</strong></td><td>Called using object reference: <code>obj.func()</code>.</td><td>Called like a standard function: <code>func(obj)</code>.</td></tr>
+                                <tr><td><strong>Scope Resolution Operator</strong></td><td>Uses <code>ClassName::</code> in outside definitions.</td><td>Does NOT use <code>ClassName::</code> in outside definitions.</td></tr>
+                                <tr><td><strong><code>this</code> Pointer</strong></td><td>Has access to implicit <code>this</code> pointer.</td><td>No access to <code>this</code> pointer.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Table 5 -->
+                <div class="section-block">
+                    <div class="block-title">5. Constructor vs Destructor</div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr><th>Feature</th><th>Constructor</th><th>Destructor</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><strong>Name Syntax</strong></td><td><code>ClassName()</code></td><td><code>~ClassName()</code></td></tr>
+                                <tr><td><strong>Purpose</strong></td><td>Initializes object state during creation.</td><td>Releases resources during object destruction.</td></tr>
+                                <tr><td><strong>Parameters</strong></td><td>Can accept parameters.</td><td>Cannot accept parameters.</td></tr>
+                                <tr><td><strong>Overloading</strong></td><td>Can be overloaded.</td><td>Cannot be overloaded (only 1 destructor per class).</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Table 6 -->
+                <div class="section-block">
+                    <div class="block-title">6. Copy Constructor vs Assignment Operator</div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr><th>Feature</th><th>Copy Constructor</th><th>Assignment Operator (<code>=</code>)</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><strong>Object State</strong></td><td>Initializes a <em>newly created</em> object from an existing one.</td><td>Copies values into an <em>already initialized</em> existing object.</td></tr>
+                                <tr><td><strong>Syntax Example</strong></td><td><code>Student s2 = s1;</code> (New Object)</td><td><code>s2 = s1;</code> (Pre-existing Objects)</td></tr>
+                                <tr><td><strong>Invocation</strong></td><td>Invoked automatically during object creation.</td><td>Invoked when the <code>=</code> operator is executed on existing objects.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- PRACTICAL PROGRAMS SET -->
+            <section id="practical-programs" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Practical Laboratory</div>
+                    <h2 class="topic-title">Important C++ Practical Programs</h2>
+                </div>
+
+                <!-- Program 1 -->
+                <div class="section-block">
+                    <div class="block-title">Program 1: Complex Number Addition using Objects as Arguments</div>
+                    <p><strong>Problem Statement:</strong> Create a C++ class <code>Complex</code> representing complex numbers. Implement member functions to take input, display results, and perform addition of two complex numbers passed as arguments.</p>
+                    <div class="code-container">
+                        <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class Complex {
+private:
+    float real;
+    float imag;
+
+public:
+    void input() {
+        cout &lt;&lt; "Enter real part: ";
+        cin &gt;&gt; real;
+        cout &lt;&lt; "Enter imaginary part: ";
+        cin &gt;&gt; imag;
+    }
+
+    void addComplex(Complex c1, Complex c2) {
+        real = c1.real + c2.real;
+        imag = c1.imag + c2.imag;
+    }
+
+    void display() {
+        cout &lt;&lt; real &lt;&lt; " + " &lt;&lt; imag &lt;&lt; "i" &lt;&lt; endl;
+    }
+};
+
+int main() {
+    Complex c1, c2, c3;
+
+    cout &lt;&lt; "--- First Complex Number ---" &lt;&lt; endl;
+    c1.input();
+
+    cout &lt;&lt; "--- Second Complex Number ---" &lt;&lt; endl;
+    c2.input();
+
+    // c3 adds c1 and c2
+    c3.addComplex(c1, c2);
+
+    cout &lt;&lt; "\nResultant Complex Number (Sum): ";
+    c3.display();
+
+    return 0;
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- Program 2 -->
+                <div class="section-block">
+                    <div class="block-title">Program 2: Swapping Private Data of Two Classes using Friend Function</div>
+                    <p><strong>Problem Statement:</strong> Write a C++ program to swap the private data values of two distinct classes using a common friend function.</p>
+                    <div class="code-container">
+                        <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class Class_2; // Forward declaration
+
+class Class_1 {
+private:
+    int value1;
+
+public:
+    void setData(int val) { value1 = val; }
+    void display() { cout &lt;&lt; "Value 1 = " &lt;&lt; value1 &lt;&lt; endl; }
+    friend void swapValues(Class_1 &c1, Class_2 &c2);
+};
+
+class Class_2 {
+private:
+    int value2;
+
+public:
+    void setData(int val) { value2 = val; }
+    void display() { cout &lt;&lt; "Value 2 = " &lt;&lt; value2 &lt;&lt; endl; }
+    friend void swapValues(Class_1 &c1, Class_2 &c2);
+};
+
+// Friend function passing parameters by REFERENCE to swap original values
+void swapValues(Class_1 &c1, Class_2 &c2) {
+    int temp = c1.value1;
+    c1.value1 = c2.value2;
+    c2.value2 = temp;
+}
+
+int main() {
+    Class_1 obj1;
+    Class_2 obj2;
+
+    obj1.setData(100);
+    obj2.setData(500);
+
+    cout &lt;&lt; "=== BEFORE SWAPPING ===" &lt;&lt; endl;
+    obj1.display();
+    obj2.display();
+
+    swapValues(obj1, obj2);
+
+    cout &lt;&lt; "\n=== AFTER SWAPPING ===" &lt;&lt; endl;
+    obj1.display();
+    obj2.display();
+
+    return 0;
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- UNIVERSITY EXAMINATION PREPARATION -->
+            <section id="exam-prep" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Exam Ready</div>
+                    <h2 class="topic-title">University Examination Question Bank</h2>
+                </div>
+
+                <!-- 2 MARK QUESTIONS -->
+                <div class="section-block">
+                    <div class="block-title" style="color: var(--accent-cyan);">SECTION 1: 2-MARK SHORT QUESTIONS</div>
+                    
+                    <div class="q-card">
+                        <div class="q-title">Q1. Define a Class in C++.</div>
+                        <div class="q-ans">An encapsulated user-defined data type that binds data members and member functions into a single unit. It acts as a blueprint for objects.</div>
+                    </div>
+
+                    <div class="q-card">
+                        <div class="q-title">Q2. What is an Object?</div>
+                        <div class="q-ans">An identifiable real-world instance of a class that occupies memory space in RAM upon creation.</div>
+                    </div>
+
+                    <div class="q-card">
+                        <div class="q-title">Q3. What is the scope resolution operator (::) used for?</div>
+                        <div class="q-ans">It is used to define member functions outside class boundaries and to access global variables hidden by local variables.</div>
+                    </div>
+
+                    <div class="q-card">
+                        <div class="q-title">Q4. What is a Friend Function?</div>
+                        <div class="q-ans">A non-member function granted special permission to directly access private and protected members of a class.</div>
+                    </div>
+
+                    <div class="q-card">
+                        <div class="q-title">Q5. Why do destructors have no arguments?</div>
+                        <div class="q-ans">Destructors run automatically during object destruction without explicit parameter calls, so arguments are not applicable.</div>
+                    </div>
+
+                    <div class="q-card">
+                        <div class="q-title">Q6. What is a static data member?</div>
+                        <div class="q-ans">A single class-level variable shared by all object instances, defined in global memory outside the class.</div>
+                    </div>
+
+                    <div class="q-card">
+                        <div class="q-title">Q7. What is a copy constructor?</div>
+                        <div class="q-ans">A constructor that initializes a new object using an existing object of the same class as a reference parameter.</div>
+                    </div>
+
+                    <div class="q-card">
+                        <div class="q-title">Q8. What happens if a destructor is declared private?</div>
+                        <div class="q-ans">Objects cannot be instantiated on the stack because compiler auto-cleanup will trigger a compile error.</div>
+                    </div>
+                </div>
+
+                <!-- 5 MARK QUESTIONS -->
+                <div class="section-block">
+                    <div class="block-title" style="color: var(--accent-blue);">SECTION 2: 5-MARK MEDIUM QUESTIONS</div>
+                    
+                    <div class="q-card">
+                        <div class="q-title">Q1. Explain inline functions and when the compiler may refuse inlining.</div>
+                        <div class="q-ans">An inline function replaces function call sites with actual body code to eliminate call overhead. The compiler refuses inlining if the function contains loops, recursion, switch statements, or static variables.</div>
+                    </div>
+
+                    <div class="q-card">
+                        <div class="q-title">Q2. Differentiate between shallow copy and deep copy in C++.</div>
+                        <div class="q-ans">Shallow copying copies pointer addresses field-by-field, causing multiple objects to point to the same memory location. Deep copying allocates separate dynamic heap memory and copies the actual values, ensuring independence.</div>
+                    </div>
+
+                    <div class="q-card">
+                        <div class="q-title">Q3. Explain static member functions and their access restrictions.</div>
+                        <div class="q-ans">Static member functions operate at the class level and can be invoked using the class name. They lack a <code>this</code> pointer and can access <em>only</em> static data members or static functions.</div>
+                    </div>
+                </div>
+
+                <!-- 10 MARK QUESTIONS -->
+                <div class="section-block">
+                    <div class="block-title" style="color: var(--accent-purple);">SECTION 3: 10-MARK LONG DESCRIPTIVE QUESTIONS</div>
+                    
+                    <div class="q-card">
+                        <div class="q-title">Q1. Explain classes and objects in detail. Describe access specifiers, memory allocation, and write a complete C++ program to demonstrate them.</div>
+                    </div>
+
+                    <div class="q-card">
+                        <div class="q-title">Q2. What is a Friend Function? Explain its characteristics, syntax, advantages, and write a program that uses a friend function to access private data across two classes.</div>
+                    </div>
+
+                    <div class="q-card">
+                        <div class="q-title">Q3. What are Constructors and Destructors? Explain the different types of constructors with code examples.</div>
+                    </div>
+
+                    <div class="q-card">
+                        <div class="q-title">Q4. Explain copy constructors and dynamic constructors with code implementations. Highlight memory safety considerations.</div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- QUICK DEFINITIONS -->
+            <section id="quick-defs" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Revision Kit</div>
+                    <h2 class="topic-title">Definitions for Quick Revision</h2>
+                </div>
+
+                <ul style="line-height: 2;">
+                    <li><strong>Class:</strong> An encapsulated blueprint defining data members and member functions.</li>
+                    <li><strong>Object:</strong> A memory-allocated instance of a class.</li>
+                    <li><strong>Encapsulation:</strong> Wrapping data members and member functions into a single class unit.</li>
+                    <li><strong>Data Hiding:</strong> Restricting direct outside access to private variables.</li>
+                    <li><strong>Scope Resolution Operator (::):</strong> Defines outside functions and accesses global scope.</li>
+                    <li><strong>Inline Function:</strong> Expands function code at call sites to eliminate call overhead.</li>
+                    <li><strong>Static Data Member:</strong> A single memory variable shared across all instances of a class.</li>
+                    <li><strong>Static Member Function:</strong> A class-level function that can access only static members.</li>
+                    <li><strong>Friend Function:</strong> A non-member function granted access to private class members.</li>
+                    <li><strong>Constructor:</strong> A special member function that initializes objects automatically upon creation.</li>
+                    <li><strong>Copy Constructor:</strong> Initializes a new object by copying an existing object of the same class.</li>
+                    <li><strong>Dynamic Constructor:</strong> Allocates dynamic memory inside a constructor using <code>new</code>.</li>
+                    <li><strong>Destructor:</strong> Replaces and cleans up allocated memory when an object goes out of scope.</li>
+                </ul>
+            </section>
+
+
+            <!-- CHEAT SHEET -->
+            <section id="cheat-sheet" class="topic-card searchable-topic">
+                <div class="topic-header">
+                    <div class="topic-number">Syntax Reference</div>
+                    <h2 class="topic-title">Quick Revision Cheat Sheet</h2>
+                </div>
+
+                <div class="code-container">
+                    <div class="code-header">Core C++ Unit-II Syntax Reference</div>
+                    <pre><code>// 1. CLASS DEFINITION SYNTAX
+class ClassName {
+private:
+    int privateVar;
+public:
+    ClassName();                          // Default Constructor
+    ClassName(int val);                   // Parameterized Constructor
+    ClassName(const ClassName &obj);      // Copy Constructor
+    ~ClassName();                         // Destructor
+
+    void setVal(int v);                   // Inside Member Function Declaration
+    friend void friendFunc(ClassName obj);// Friend Function Declaration
+    static void staticFunc();             // Static Function Declaration
+};
+
+// 2. OUTSIDE MEMBER FUNCTION DEFINITION
+void ClassName :: setVal(int v) {
+    privateVar = v;
+}
+
+// 3. OUTSIDE INLINE FUNCTION DEFINITION
+inline void ClassName :: setVal(int v) {
+    privateVar = v;
+}
+
+// 4. STATIC DATA MEMBER OUTSIDE DEFINITION
+int ClassName :: staticVar = 0;
+
+// 5. FRIEND FUNCTION DEFINITION (NO :: OPERATOR)
+void friendFunc(ClassName obj) {
+    cout &lt;&lt; obj.privateVar;
+}
+
+// 6. DYNAMIC MEMORY ALLOCATION
+ClassName *ptr = new ClassName();
+delete ptr;</code></pre>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 BCA University Academic Module | Unit-II: Classes, Objects, Constructors & Destructors</p>
+        <p>Designed for BCA Examination Preparation</p>
+    </footer>
+
+    <!-- JavaScript for Dynamic Interactions -->
+    <script>
+        // 1. Theme Toggle Functionality
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        const htmlElement = document.documentElement;
+
+        // Load saved theme from localStorage
+        const savedTheme = localStorage.getItem('bca_notes_theme') || 'dark';
+        setTheme(savedTheme);
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            setTheme(newTheme);
+        });
+
+        function setTheme(theme) {
+            htmlElement.setAttribute('data-theme', theme);
+            localStorage.setItem('bca_notes_theme', theme);
+
+            if (theme === 'dark') {
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark Mode';
+            } else {
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light Mode';
+            }
+        }
+
+        // 2. Real-Time Client-Side Search Filtering
+        const searchInput = document.getElementById('searchInput');
+        const searchableTopics = document.querySelectorAll('.searchable-topic');
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+
+            searchableTopics.forEach(topic => {
+                const textContent = topic.textContent.toLowerCase();
+                if (textContent.includes(query)) {
+                    topic.classList.remove('hidden');
+                } else {
+                    topic.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
