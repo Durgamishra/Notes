@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ Programming Notes | BCA Study Material</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Dark Theme (Default) */
+            --bg-primary: #0a0d14;
+            --bg-secondary: #111622;
+            --bg-card: rgba(17, 22, 34, 0.75);
+            --bg-card-hover: rgba(23, 31, 48, 0.85);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(56, 189, 248, 0.3);
+            
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            
+            --accent-cyan: #38bdf8;
+            --accent-blue: #3b82f6;
+            --accent-glow: rgba(56, 189, 248, 0.15);
+            
+            --card-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --radius-lg: 16px;
+            --radius-md: 10px;
+            --radius-sm: 6px;
+            
+            --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-card-hover: #ffffff;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --border-hover: rgba(2, 132, 199, 0.3);
+            
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            
+            --accent-cyan: #0284c7;
+            --accent-blue: #2563eb;
+            --accent-glow: rgba(2, 132, 199, 0.1);
+            
+            --card-glow: 0 8px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Ambient Background Grid & Glow */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: 
+                linear-gradient(to right, var(--border-color) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--border-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(circle at 50% 30%, black 30%, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at 50% 30%, black 30%, transparent 80%);
+            z-index: -2;
+            opacity: 0.5;
+        }
+
+        .bg-glow {
+            position: fixed;
+            top: 15%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 400px;
+            background: radial-gradient(circle, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+            filter: blur(140px);
+            opacity: 0.12;
+            z-index: -1;
+            pointer-events: none;
+            border-radius: 50%;
+        }
+
+        /* Header & Navbar */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            background: rgba(10, 13, 20, 0.7);
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        [data-theme="light"] header {
+            background: rgba(248, 250, 252, 0.8);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 1.15rem;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 0.95rem;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent-cyan);
+            background: var(--accent-glow);
+        }
+
+        /* Hero Section */
+        .hero {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 5rem 1.5rem 4rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.85rem;
+            border-radius: 99px;
+            background: var(--accent-glow);
+            border: 1px solid var(--border-hover);
+            color: var(--accent-cyan);
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.02em;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+            background: linear-gradient(180deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.05rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: #ffffff;
+            padding: 0.85rem 1.8rem;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 20px var(--accent-glow);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(56, 189, 248, 0.35);
+        }
+
+        /* Units Grid Section */
+        .units-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 6rem;
+            width: 100%;
+        }
+
+        .units-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 1.75rem;
+        }
+
+        .unit-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: var(--transition);
+            box-shadow: var(--card-glow);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .unit-card.fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .unit-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .unit-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-hover);
+            transform: translateY(-6px);
+        }
+
+        .unit-card:hover::before {
+            opacity: 1;
+        }
+
+        .unit-header {
+            margin-bottom: 1.25rem;
+        }
+
+        .unit-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: 0.5rem;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .unit-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+        }
+
+        .topics-list {
+            list-style: none;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+
+        .topic-item {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            padding: 0.4rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .topic-item:last-child {
+            border-bottom: none;
+        }
+
+        .topic-bullet {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: var(--accent-cyan);
+            flex-shrink: 0;
+        }
+
+        .btn-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .unit-card:hover .btn-card {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            border-color: transparent;
+            color: #ffffff;
+        }
+
+        .btn-card svg {
+            transition: transform 0.2s ease;
+        }
+
+        .btn-card:hover svg, .unit-card:hover .btn-card svg {
+            transform: translateX(4px);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .footer-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive Tweaks */
+        @media (max-width: 640px) {
+            .nav-links {
+                display: none; /* Mobile simplicity */
+            }
+            .hero {
+                padding-top: 3rem;
+            }
+            .units-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+
+    <!-- Navigation Bar -->
+    <header>
+        <nav class="nav-container">
+            <a href="cpp.html" class="logo">
+                <div class="logo-icon">C++</div>
+                <span>Notes Repository</span>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="cpp.html" class="nav-link">Home</a></li>
+                <li><a href="#units" class="nav-link">Units</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+            </ul>
+
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">
+                <svg id="moonIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                <svg id="sunIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <main>
+        <section class="hero" id="about">
+            <div class="badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                BCA Curriculum Standard
+            </div>
+            <h1 class="hero-title">C++ Programming Notes</h1>
+            <p class="hero-subtitle">Complete BCA C++ Study Material (Unit 1 - Unit 4)<br>Complete unit-wise notes, programs, explanations and exam preparation material for BCA students.</p>
+            <a href="#units" class="btn-primary">
+                Explore Notes
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+            </a>
+        </section>
+
+        <!-- Units Grid Section -->
+        <section class="units-section" id="units">
+            <div class="units-grid">
+                
+                <!-- Card 1 -->
+                <article class="unit-card">
+                    <div class="unit-header">
+                        <span class="unit-badge">Unit I</span>
+                        <h2 class="unit-title">Introduction to C++ and Object-Oriented Programming</h2>
+                    </div>
+                    <ul class="topics-list">
+                        <li class="topic-item"><span class="topic-bullet"></span>Principles of OOP</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Introduction to C++</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Difference between C and C++</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Tokens</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Data Types</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Operators</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Control Structures</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Functions in C++</li>
+                    </ul>
+                    <a href="Unit1.html" class="btn-card">
+                        Open Unit 1
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                </article>
+
+                <!-- Card 2 -->
+                <article class="unit-card">
+                    <div class="unit-header">
+                        <span class="unit-badge">Unit II</span>
+                        <h2 class="unit-title">Classes, Objects and Constructors</h2>
+                    </div>
+                    <ul class="topics-list">
+                        <li class="topic-item"><span class="topic-bullet"></span>Classes and Objects</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Member Functions</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Friend Functions</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Static Members</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Constructors</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Destructors</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Copy Constructor</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Dynamic Initialization of Objects</li>
+                    </ul>
+                    <a href="Unit2.html" class="btn-card">
+                        Open Unit 2
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                </article>
+
+                <!-- Card 3 -->
+                <article class="unit-card">
+                    <div class="unit-header">
+                        <span class="unit-badge">Unit III</span>
+                        <h2 class="unit-title">Inheritance and Polymorphism</h2>
+                    </div>
+                    <ul class="topics-list">
+                        <li class="topic-item"><span class="topic-bullet"></span>Types of Inheritance</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Virtual Base Classes</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Abstract Classes</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Pointers</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Virtual Functions</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Pure Virtual Functions</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Function Overloading</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Operator Overloading</li>
+                    </ul>
+                    <a href="Unit3.html" class="btn-card">
+                        Open Unit 3
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                </article>
+
+                <!-- Card 4 -->
+                <article class="unit-card">
+                    <div class="unit-header">
+                        <span class="unit-badge">Unit IV</span>
+                        <h2 class="unit-title">Console I/O and File Operations</h2>
+                    </div>
+                    <ul class="topics-list">
+                        <li class="topic-item"><span class="topic-bullet"></span>C++ Streams</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Stream Classes</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Formatted and Unformatted I/O</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Manipulators</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>File Handling</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>File Modes</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>File Pointers</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Random Access</li>
+                        <li class="topic-item"><span class="topic-bullet"></span>Command Line Arguments</li>
+                    </ul>
+                    <a href="Unit4.html" class="btn-card">
+                        Open Unit 4
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                </article>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p class="footer-title">C++ Notes Repository</p>
+            <p class="footer-subtitle">Created for BCA Students</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Theme Toggle Logic
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const moonIcon = document.getElementById('moonIcon');
+        const sunIcon = document.getElementById('sunIcon');
+
+        // Check local storage or system preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            moonIcon.style.display = 'none';
+            sunIcon.style.display = 'block';
+        } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            moonIcon.style.display = 'block';
+            sunIcon.style.display = 'none';
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            let newTheme = 'dark';
+
+            if (currentTheme === 'dark') {
+                newTheme = 'light';
+                moonIcon.style.display = 'none';
+                sunIcon.style.display = 'block';
+            } else {
+                moonIcon.style.display = 'block';
+                sunIcon.style.display = 'none';
+            }
+
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Entrance Animation for Cards
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.unit-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('fade-in');
+                }, index * 120);
+            });
+        });
+    </script>
+</body>
+</html>
